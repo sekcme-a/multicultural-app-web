@@ -33,7 +33,7 @@ const Home = () => {
           <button type="button" onClick={() => signIn("google")}>
             Google Login
           </button>
-        )}
+        )} 
       </main>
     </div>
   )
