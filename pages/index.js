@@ -7,7 +7,7 @@ export default function Home() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    window.addEventListener('message', ({data}) => {
+    document.addEventListener('message', ({data}) => {
       setMessage(data)
     })
 
