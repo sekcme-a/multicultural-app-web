@@ -2,9 +2,15 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { signIn, useSession, signOut } from "next-auth/react";
 import styles from '../styles/Home.module.css'
+import React, { useEffect } from "react"
 
 const Home = () => {
   const { data, status } = useSession();
+
+  useEffect(() => {
+    console.log(data)
+    console.log(data.user)
+  },[data])
   
   return (
     <div className={styles.container}>
