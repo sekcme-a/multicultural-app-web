@@ -7,12 +7,12 @@ import React, { useEffect } from "react"
 const Home = () => {
   const { data, status } = useSession();
 
-  useEffect(() => {
-    if (data!=undefined) {
-    console.log(data)
-    console.log(data.user)
-    }
-  },[data])
+  // useEffect(() => {
+  //   if (data!=undefined) {
+  //   console.log(data)
+  //   console.log(data.user)
+  //   }
+  // },[data])
   
   return (
     <div className={styles.container}>
