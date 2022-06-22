@@ -9,5 +9,8 @@ export default NextAuth({
     })
     // 원하는 소셜 provider를 같은 방식으로 추가
   ],
-  secret: process.env.NEXT_PUBLIC_SECRET,
+  // secret: process.env.NEXT_PUBLIC_SECRET,
+  pages: {
+    signIn: "/login",
+  },
 });
