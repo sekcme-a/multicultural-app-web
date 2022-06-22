@@ -20,6 +20,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h3>Receive Message : {message}</h3>
+      <h4>{`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}</h4>
     </div>
   )
 }
