@@ -2,9 +2,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import React, { useEffect, useState } from "react"
+import useAuth from 'src/hook/auth'
 
 export default function Home() {
   const [message, setMessage] = useState('')
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     document.addEventListener('message', ({data}) => {
@@ -20,6 +22,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h3>Receive Message : {message}</h3>
+      <h3>User : {user?.uid}</h3>
+      <button onClick={logout}>Logout</button>
     </div>
   )
 }
