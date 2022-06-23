@@ -2,9 +2,9 @@ import { auth, facebookAuthProvider, googleAuthProvider } from "firebase/firebas
 
 export const AuthService = {
   loginWithGoogle: async () => {
-    const provider = googleAuthProvider;
+    const provider = googleAuthProvider
     try {
-      const userCred = await auth.signInWithCredential(provider);
+      const userCred = await auth.signInWithRedirect(provider);
       return {
         user: userCred.user
       };
