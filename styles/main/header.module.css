@@ -1,5 +1,5 @@
 .header{
-  height: 58px;
+  height: 68px;
   width: 100%;
   position: fixed;
 }
@@ -63,6 +63,7 @@
   flex-wrap: wrap;
   justify-content: center;
   text-align: center;
+  padding-top: 3px;
 }
 .menu_container .menu_items p{
   width: 100%;

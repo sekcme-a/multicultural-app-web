@@ -5,10 +5,12 @@ import logo from "public/logo.png"
 import Link from "next/link"
 import SearchIcon from '@mui/icons-material/Search';
 import { firestore as db } from "firebase/firebase"
+import Inko from "inko" 
 
 const Header = (props) => {
   const [isSearchClick, setIsSearchClick] = useState(false)
   const [categoryList, setCategoryList] = useState([""])
+  let inko = new Inko();
   // const [selectedCategory, setSelectedCategory] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const onSearchContainerClick = () => {
@@ -32,7 +34,7 @@ const Header = (props) => {
     <div className={styles.header}>
       <div className={styles.logo_search_container}>
         <Link href="/" passHref>
-          <Image src={logo} width={120} height={22} layout="fixed" priority/>
+          <Image src={logo} width={130} height={24} layout="fixed" priority/>
         </Link>
         <div className={styles.search_container} onClick={onSearchContainerClick}>
           <SearchIcon sx={{fontSize: 15}} />
