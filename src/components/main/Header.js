@@ -6,6 +6,7 @@ import Link from "next/link"
 import SearchIcon from '@mui/icons-material/Search';
 import { firestore as db } from "firebase/firebase"
 import Inko from "inko" 
+import { useRouter } from "next/router"
 
 const Header = (props) => {
   const [isSearchClick, setIsSearchClick] = useState(false)
@@ -13,6 +14,7 @@ const Header = (props) => {
   let inko = new Inko();
   // const [selectedCategory, setSelectedCategory] = useState("")
   const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
   const onSearchContainerClick = () => {
   }
   useEffect(() => {
@@ -21,6 +23,7 @@ const Header = (props) => {
       setIsLoading(false)
     })
   }, [])
+
 
   const onItemClick = (category) => {
     props.handleChange(category)
@@ -34,23 +37,29 @@ const Header = (props) => {
     <div className={styles.header}>
       <div className={styles.logo_search_container}>
         <Link href="/" passHref>
-          <Image src={logo} width={130} height={24} layout="fixed" priority/>
+          <a><Image src={logo} width={130} height={24} layout="fixed" priority/></a>
         </Link>
         <div className={styles.search_container} onClick={onSearchContainerClick}>
           <SearchIcon sx={{fontSize: 15}} />
           <input type="text" className={styles.search_input} placeholder="뉴스 검색"></input>
         </div>
       </div>
-      <div className={styles.menu_container}>
+      <ul className={styles.menu_container}>
         {categoryList.map((category,index) => {
           return (
-            <div key={index} className={styles.menu_items} onClick={()=>onItemClick(category)}>
-              <p className={props.selectedCategory===category && styles.selected}>{category}</p>
-              <div className={props.selectedCategory===category ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
-            </div>
+            // <Link href="/category/[name]" as={`/category/${inko.ko2en(category)}`}>
+              <li key={index} className={styles.menu_items}>
+                {/* <Link href="/category/[name]" as={`/category/${inko.ko2en(category)}`} passHref> */}
+                <Link href={`/category/${inko.ko2en(category)}`} passHref>
+                  <a>
+                    <p className={router.query.slug===inko.ko2en(category) ? styles.selected : undefined}>{category}</p>
+                    <div className={router.query.slug===inko.ko2en(category) ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
+                  </a>
+                </Link>
+              </li>
           )
         })}
-      </div>
+      </ul>
     </div>
   )
 }

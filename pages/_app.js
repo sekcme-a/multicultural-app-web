@@ -4,7 +4,7 @@ import { AuthProvider } from "src/hook/auth"
 import AuthStateChanged from 'src/layout/AuthStateChanged'
 import React, { useEffect, useState } from "react"
 import Header from "src/components/main/Header"
-import Body from "src/components/main/Body"
+import Footer from "src/components/main/Footer"
 
 function MyApp({ Component, pageProps }) {
   const [selectedCategory, setSelectedCategory] = useState("")
@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }) {
       <AuthStateChanged>
         <Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} />
         <Component {...pageProps} />
-        <Body selectedCategory={selectedCategory} />
+        <Footer />
       </AuthStateChanged>
     </AuthProvider>
   )

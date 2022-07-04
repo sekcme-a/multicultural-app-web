@@ -64,12 +64,19 @@
   justify-content: center;
   text-align: center;
   padding-top: 3px;
+  align-items: center;
 }
-.menu_container .menu_items p{
+.menu_container .menu_items a{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.menu_container .menu_items a p{
   width: 100%;
   transition: .6s ease-out;
 }
-.menu_container .menu_items .selected_item{
+.menu_container .menu_items a .selected_item{
   background-color: transparent;
   height: 2px;
   width: 15px;
