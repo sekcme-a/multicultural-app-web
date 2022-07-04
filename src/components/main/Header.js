@@ -6,10 +6,10 @@ import Link from "next/link"
 import SearchIcon from '@mui/icons-material/Search';
 import { firestore as db } from "firebase/firebase"
 
-const Header = () => {
+const Header = (props) => {
   const [isSearchClick, setIsSearchClick] = useState(false)
   const [categoryList, setCategoryList] = useState([""])
-  const [selectedCategory, setSelectedCategory] = useState("")
+  // const [selectedCategory, setSelectedCategory] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const onSearchContainerClick = () => {
   }
@@ -21,7 +21,7 @@ const Header = () => {
   }, [])
 
   const onItemClick = (category) => {
-    setSelectedCategory(category)
+    props.handleChange(category)
   }
   if (isLoading) {
     return (
@@ -40,11 +40,11 @@ const Header = () => {
         </div>
       </div>
       <div className={styles.menu_container}>
-        {categoryList.map((category) => {
+        {categoryList.map((category,index) => {
           return (
-            <div className={styles.menu_items} onClick={()=>onItemClick(category)}>
-              <p className={selectedCategory===category && styles.selected}>{category}</p>
-              <div className={selectedCategory===category ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
+            <div key={index} className={styles.menu_items} onClick={()=>onItemClick(category)}>
+              <p className={props.selectedCategory===category && styles.selected}>{category}</p>
+              <div className={props.selectedCategory===category ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
             </div>
           )
         })}
