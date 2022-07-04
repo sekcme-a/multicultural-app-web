@@ -2,10 +2,11 @@ import React from "react"
 import { withProtected } from "src/hook/route";
 
 const Profile = ({ auth }) => {
-  const { logout } = auth
+  const { loginWithGoogle, userrole } = auth
   return (
     <div>
-      <button onClick={logout}>Logout</button>
+      <h1></h1>{console.log(userrole)}
+      <button onClick={loginWithGoogle}>Logout</button>
     </div>
   )
 }

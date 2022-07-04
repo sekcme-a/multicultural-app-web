@@ -9,9 +9,9 @@ export function withPublic(Component) {
     const router = useRouter();
     const pathname = router.pathname;
 
-    if (auth.user && auth.user.emailVerified) {
+    if (auth.user) {
       router.replace("/")
-      return <h1>loading...</h1>
+      return <div></div>
     }
     return <Component auth={auth} pathname={pathname} {...props} />
   }
@@ -24,9 +24,9 @@ export function withProtected(Component) {
     const router = useRouter();
     const pathname = router.pathname;
 
-    if (!auth.user || !auth.user.emailVerified) {
+    if (!auth.user) {
       router.replace("/login")
-      return <h1>loading...</h1>
+      return <div></div>
     }
     return <Component auth={auth} pathname={pathname} {...props} />
   }

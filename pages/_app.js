@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import 'styles/loader.css'
 import { AuthProvider } from "src/hook/auth"
 import AuthStateChanged from 'src/layout/AuthStateChanged'
 

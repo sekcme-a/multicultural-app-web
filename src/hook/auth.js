@@ -10,6 +10,7 @@ export default function useAuth() {
 
 export function AuthProvider(props) {
   const [user, setUser] = useState(null);
+  const [userrole, setUserrole] = useState();
   const [error, setError] = useState("");
 
   const router = useRouter()
@@ -18,18 +19,19 @@ export function AuthProvider(props) {
   const loginWithGoogle = async () => {
     const { error, user } = await AuthService.loginWithGoogle();
     setUser(user ?? null)
-    setError(error ?? "")
+		setError(error ?? "")
   }
 
   const loginWithFacebook = async () => {
     const { error, user } = await AuthService.loginWithFacebook();
     setUser(user ?? null)
-    setError(error ?? "")
+		setError(error ?? "")
   }
 
   const logout = async () => {
     await AuthService.logout();
-    setUser(null);
+		setUser(null);
+		setUserrole(null)
   }
 	const createUserWithEmailAndPassword = async (email, password) => {
 		if (email && password) {
@@ -93,11 +95,13 @@ export function AuthProvider(props) {
 
 	const value = {
 		user,
+		userrole,
 		error,
     loginWithGoogle,
     loginWithFacebook,
 		logout,
 		setUser,
+		setUserrole,
 		createUserWithEmailAndPassword,
 		signInUserWithEmailAndPassword,
 		resetPassword,
