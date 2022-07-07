@@ -18,7 +18,6 @@ const MainNews = () => {
     const doc = await db.collection("setting").doc("recommand").get()
       if (doc.exists) {
         const idList = doc.data().list
-        console.log(idList)
         idList.map((docId) => {
           db.collection("posts").doc(docId).get().then((doc) => {
             tempIdList = ([

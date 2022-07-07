@@ -11,6 +11,7 @@
   align-items: center;
   background-color: white;
   font-family: 'SUIT-Medium', 'Pretendard-Regular','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 99999999999;
 }
 .item_container{
   width: 20%;

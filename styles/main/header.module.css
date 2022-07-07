@@ -3,6 +3,7 @@
   width: 100%;
   position: fixed;
   background-color: white;
+  z-index: 9999999999;
 }
 
 .logo_search_container{

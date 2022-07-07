@@ -7,7 +7,6 @@ import "react-quill/dist/quill.snow.css";
 import { uploadImage } from "firebase/uploadImage"
 import Loader from "components/public/Loader"
 import useAuth from "src/hook/auth";
-import Inko from "inko"   //한글 to 영어, 영어 to 한글
 import { compressImage } from "src/hook/compressImage"
 import { useLeavePageConfirm } from "src/hook/useLeavePageConfirm"
 const Editor = dynamic(import('components/public/Editor'), {
@@ -26,7 +25,6 @@ const EditArticle = () => {
   const { user } = useAuth();
   const [docId, setDocId] = useState("")
   const router = useRouter()
-  let inko = new Inko();
 
   useLeavePageConfirm()
 
@@ -110,33 +108,33 @@ const EditArticle = () => {
         const batch = db.batch();
         previousCategoryList.forEach((category) => {
           if(category!=="")
-            batch.delete(db.collection(inko.ko2en(category)).doc(docId))
+            batch.delete(db.collection(category).doc(docId))
         })
         if (previousLocalList.length !== 0) {
           previousLocalList.forEach((local) => {
             if(local!=="")
-              batch.delete(db.collection(inko.ko2en(local)).doc(docId))
+              batch.delete(db.collection(local).doc(docId))
           })
         }
         if (previousCountryList.length !== 0) {
           previousCountryList.forEach((country) => {
             if(country!=="")
-              batch.delete(db.collection(inko.ko2en(country)).doc(docId))
+              batch.delete(db.collection(country).doc(docId))
           })
         }
         selectedCategoryList.forEach((category) => {
-          batch.set(db.collection(inko.ko2en(category)).doc(docId), thumbnailHashMap);
+          batch.set(db.collection(category).doc(docId), thumbnailHashMap);
         })
         if (selectedLocalList.length !== 0) {
           selectedLocalList.forEach((local) => {
             if(local!=="")
-              batch.set(db.collection(inko.ko2en(local)).doc(docId), thumbnailHashMap)
+              batch.set(db.collection(local).doc(docId), thumbnailHashMap)
           })
         }
         if (selectedCountryList.length !== 0) {
           selectedCountryList.forEach((country) => {
             if(country!=="")
-              batch.set(db.collection(inko.ko2en(country)).doc(docId), thumbnailHashMap)
+              batch.set(db.collection(country).doc(docId), thumbnailHashMap)
           })
         }
         batch.set(db.collection("posts").doc(docId), postHashMap)
@@ -232,15 +230,15 @@ const EditArticle = () => {
     const batch = db.batch();
     previousCategoryList.forEach((category) => {
       if(category!=="")
-        batch.delete(db.collection(inko.ko2en(category)).doc(docId))
+        batch.delete(db.collection(category).doc(docId))
     })
     previousLocalList.forEach((local) => {
       if(local!=="")
-        batch.delete(db.collection(inko.ko2en(local)).doc(docId))
+        batch.delete(db.collection(local).doc(docId))
     })
     previousCountryList.forEach((country) => {
       if(country!=="")
-      batch.delete(db.collection(inko.ko2en(country)).doc(docId))
+      batch.delete(db.collection(country).doc(docId))
     })
       batch.delete(db.collection("posts").doc(docId))
       batch.delete(db.collection("count").doc(docId))

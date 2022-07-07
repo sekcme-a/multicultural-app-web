@@ -7,7 +7,6 @@ import "react-quill/dist/quill.snow.css";
 import { uploadImage } from "firebase/uploadImage"
 import Loader from "components/public/Loader"
 import useAuth from "src/hook/auth";
-import Inko from "inko"   //한글 to 영어, 영어 to 한글
 import { compressImage } from "src/hook/compressImage"
 import { useLeavePageConfirm } from "src/hook/useLeavePageConfirm"
 const Editor = dynamic(import('components/public/Editor'), {
@@ -25,7 +24,6 @@ const NewArticle = () => {
   const { user } = useAuth();
   const [docId, setDocId] = useState("")
   const router = useRouter()
-  let inko = new Inko();
 
   // const [text, setText] = useState();
   let text="";
@@ -108,16 +106,16 @@ const NewArticle = () => {
         }
         const batch = db.batch();
         selectedCategoryList.forEach((category) => {
-          batch.set(db.collection(inko.ko2en(category)).doc(docId), thumbnailHashMap);
+          batch.set(db.collection(category).doc(docId), thumbnailHashMap);
         })
         if (selectedLocalList.length !== 0) {
           selectedLocalList.forEach((local) => {
-            batch.set(db.collection(inko.ko2en(local)).doc(docId), thumbnailHashMap)
+            batch.set(db.collection(local).doc(docId), thumbnailHashMap)
           })
         }
         if (selectedCountryList.length !== 0) {
-          selectedCountryList.forEach((local) => {
-            batch.set(db.collection(inko.ko2en(local)).doc(docId), thumbnailHashMap)
+          selectedCountryList.forEach((country) => {
+            batch.set(db.collection(country).doc(docId), thumbnailHashMap)
           })
         }
         batch.set(db.collection("posts").doc(docId), postHashMap)

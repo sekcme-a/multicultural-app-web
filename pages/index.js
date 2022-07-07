@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import useAuth from 'src/hook/auth'
 import { firestore } from "firebase/firebase"
 import MainNews from "src/components/main/MainNews"
 import Recommand from "src/components/main/Recommand"
 
 
-export default function Home() {
+export default function Home(props) {
   const [message, setMessage] = useState('')
   const { user, userrole, logout, setUserrole } = useAuth();
 
@@ -24,6 +24,7 @@ export default function Home() {
       })
     }
   }, [user])
+
   
         {/* <h3>Receive Message : {message}</h3>
       <h3>User : {user?.uid}</h3>
@@ -37,7 +38,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainNews />
-      <Recommand />
+      <Recommand isBottom={props.isBottom} />
     </div>
   )
 }
