@@ -10,6 +10,7 @@ import { firestore } from "firebase/firebase"
 import NewArticle from "components/admin/NewArticle"
 import EditArticle from "components/admin/EditArticle"
 import Setting from "components/admin/Setting"
+import Recommand from "src/components/admin/Recommand"
 
 const Admin = () => {
   const router = useRouter();
@@ -73,6 +74,7 @@ const Admin = () => {
           {slug === "category" &&  <Setting loc="category" />}
           {slug === "local" &&  <Setting loc="local" />}
           {slug === "country" &&  <Setting loc="country" />}
+          {slug === "recommand" &&  <Recommand />}
         </div>
       </div>
     </div>

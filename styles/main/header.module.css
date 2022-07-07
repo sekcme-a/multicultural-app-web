@@ -1,7 +1,8 @@
 .header{
-  height: 68px;
+  height: 73px;
   width: 100%;
   position: fixed;
+  background-color: white;
 }
 
 .logo_search_container{
@@ -31,10 +32,11 @@
   font-size: 11px;
   font-family: 'SUIT-Medium', 'Pretendard-Regular','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.search_input:focus{
-  border: none;
+.search_clicked{
+    border: none;
   width: 150px;
 }
+
 .menu_container{
   height: 45%;
   display: flex;
@@ -45,13 +47,10 @@
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  padding-top: 5px;
-  /* background-color: blue; */
   box-shadow: 0 2px 2px -2px rgb(205, 205, 205);
-  /* background-color: #ff9db6; */
-  /* color: white; */
   border-bottom: .5px solid rgb(174, 174, 174);
   border-top: .5px solid rgb(211, 211, 211);
+  background-color: white;
 }
 .menu_container::-webkit-scrollbar{
   display: none;
@@ -63,7 +62,7 @@
   flex-wrap: wrap;
   justify-content: center;
   text-align: center;
-  padding-top: 3px;
+  padding-top: 5px;
   align-items: center;
 }
 .menu_container .menu_items a{
@@ -74,14 +73,12 @@
 }
 .menu_container .menu_items a p{
   width: 100%;
-  transition: .6s ease-out;
 }
 .menu_container .menu_items a .selected_item{
   background-color: transparent;
   height: 2px;
   width: 15px;
   border-radius: 50%;
-  transition: .4s ease-out;
 }
 p.selected{
   font-weight: bold;

@@ -191,6 +191,10 @@ const NewArticle = () => {
   return (
     <div className={style.mainContainer}>
       <div className={style.container}>
+        <h4>기사 ID</h4>
+        <p>기사 ID : <input type="text" value={docId} size="60" required disabled/></p>
+      </div>
+      <div className={style.container}>
         <h4>제목</h4>
         <p className={style.warning}>*필수</p>
         <p>제목 문구 : <input type="text" value={title} onChange={onTitleChange} size="60" required/></p>

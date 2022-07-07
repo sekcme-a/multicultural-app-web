@@ -6,7 +6,9 @@ const Category = () => {
   const router = useRouter();
   const { slug } = router.query
   return (
-    <div className={styles.main_container}>{slug}</div>
+    <div className={styles.main_container}>
+      
+    </div>
   )
 }
 export default Category

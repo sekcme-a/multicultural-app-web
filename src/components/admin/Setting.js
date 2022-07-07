@@ -53,7 +53,7 @@ const Setting = (props) => {
     <div className={style.mainContainer}>
       <div className={style.container}>
         <h4>{text}</h4>
-        <p className={style.warning}>{`${text},${text},${text} 형식으로 저장`}</p>
+        <p className={style.warning}>{`${text},${text},${text} 형식으로 저장(빈칸없이)`}</p>
         <p className={style.warning}>{`${text} 순서 변경이나 삭제나 추가가 아닌 이름 변경 혹은 카테고리 이전 시 개발자 문의`}</p>
         <p>{`${text} 편집`} : <input type="text" value={list} onChange={onListChange} size="60" required/></p>
       </div>

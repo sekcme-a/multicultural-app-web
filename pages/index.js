@@ -3,6 +3,8 @@ import Image from 'next/image'
 import React, { useEffect, useState } from "react"
 import useAuth from 'src/hook/auth'
 import { firestore } from "firebase/firebase"
+import MainNews from "src/components/main/MainNews"
+import Recommand from "src/components/main/Recommand"
 
 
 export default function Home() {
@@ -21,7 +23,12 @@ export default function Home() {
         setUserrole(doc.data()?.roles)
       })
     }
-  },[user])
+  }, [user])
+  
+        {/* <h3>Receive Message : {message}</h3>
+      <h3>User : {user?.uid}</h3>
+      <h3>User : {userrole}</h3>
+      <button onClick={logout}>Logout</button> */}
   return (
     <div>
       <Head>
@@ -29,10 +36,8 @@ export default function Home() {
         <meta name="description" content="Korea Multicultural News" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <h3>Receive Message : {message}</h3>
-      <h3>User : {user?.uid}</h3>
-      <h3>User : {userrole}</h3>
-      <button onClick={logout}>Logout</button> */}
+      <MainNews />
+      <Recommand />
     </div>
   )
 }

@@ -16,7 +16,12 @@ const Header = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const onSearchContainerClick = () => {
+    setIsSearchClick(true)
   }
+  const onSearchContainerBlur = () => {
+    setIsSearchClick(false)
+  }
+
   useEffect(() => {
     db.collection("setting").doc("category").get().then((doc) => {
       setCategoryList(doc.data().list)
@@ -39,17 +44,23 @@ const Header = (props) => {
         <Link href="/" passHref>
           <a><Image src={logo} width={130} height={24} layout="fixed" priority/></a>
         </Link>
-        <div className={styles.search_container} onClick={onSearchContainerClick}>
+        <div className={styles.search_container} onClick={onSearchContainerClick} onBlur={onSearchContainerBlur}>
           <SearchIcon sx={{fontSize: 15}} />
-          <input type="text" className={styles.search_input} placeholder="뉴스 검색"></input>
+          <input type="text" className={isSearchClick ? `${styles.search_input} ${styles.search_clicked}`: styles.search_input} placeholder="뉴스 검색" ></input>
         </div>
       </div>
       <ul className={styles.menu_container}>
+        <li className={styles.menu_items}>
+          <Link href={'/'} passHref>
+            <a>
+              <p className={router.pathname==='/' ? styles.selected : undefined}>메인</p>
+              <div className={router.pathname==='/' ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
+            </a>
+          </Link>
+        </li>
         {categoryList.map((category,index) => {
           return (
-            // <Link href="/category/[name]" as={`/category/${inko.ko2en(category)}`}>
               <li key={index} className={styles.menu_items}>
-                {/* <Link href="/category/[name]" as={`/category/${inko.ko2en(category)}`} passHref> */}
                 <Link href={`/category/${inko.ko2en(category)}`} passHref>
                   <a>
                     <p className={router.query.slug===inko.ko2en(category) ? styles.selected : undefined}>{category}</p>

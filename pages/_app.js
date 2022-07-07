@@ -5,9 +5,11 @@ import AuthStateChanged from 'src/layout/AuthStateChanged'
 import React, { useEffect, useState } from "react"
 import Header from "src/components/main/Header"
 import Footer from "src/components/main/Footer"
+import { useRouter } from "next/router"
 
 function MyApp({ Component, pageProps }) {
   const [selectedCategory, setSelectedCategory] = useState("")
+  const router = useRouter()
 
   const onSelectedCategoryChange = (category) => {
     setSelectedCategory(category)
@@ -16,8 +18,10 @@ function MyApp({ Component, pageProps }) {
     <AuthProvider>
       <AuthStateChanged>
         <Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} />
-        <Component {...pageProps} />
-        <Footer />
+        <div className="body_container">
+          <Component {...pageProps} />
+        </div>
+        {!router.pathname.includes("rhksflwk") && <Footer />}
       </AuthStateChanged>
     </AuthProvider>
   )
