@@ -14,7 +14,7 @@ const PostList = (props) => {
       let count = 0;
     //시간순으로 정렬해 최근 10개의 기사 사용.
     setTimeout(async () => {
-      const posts = await db.collection("posts").orderBy("createdAt", 'desc').limit(fetchCountInOneLoad).get()
+      const posts = await db.collection(props.category).orderBy("createdAt", 'desc').limit(fetchCountInOneLoad).get()
       posts.docs.map((doc) => {
         tempIdList = ([
           ...tempIdList,
@@ -43,7 +43,7 @@ const PostList = (props) => {
       let tempIdList = []
       let count = 0;
       if (props.isBottom && list) {
-        const posts = await db.collection("posts").orderBy("createdAt", 'desc').startAfter(lastDoc).limit(fetchCountInOneLoad).get()
+        const posts = await db.collection(props.category).orderBy("createdAt", 'desc').startAfter(lastDoc).limit(fetchCountInOneLoad).get()
         posts.docs.map((doc) => {
         tempIdList = ([
           ...tempIdList,
@@ -82,7 +82,7 @@ const PostList = (props) => {
   }
   return (
     <div className={styles.main_container} ref={lazyRoot}>
-      <h1 className={styles.title}>실시간 뉴스</h1>
+      {props.category === "posts" && <h1 className={styles.title}>실시간 뉴스</h1>}
       {list?.map((doc, index) => {
         return (
           <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} />

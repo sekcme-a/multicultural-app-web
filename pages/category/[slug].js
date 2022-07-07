@@ -6,12 +6,9 @@ import PostList from "components/main/PostList"
 const Category = (props) => {
   const router = useRouter();
   const { slug } = router.query
-  useEffect(() => {
-    console.log(props.isBottom)
-  },[])
+
   return (
-    // <PostList></PostList>
-    <></>
+    <PostList isBottom={props.isBottom} category={slug}></PostList>
   )
 }
 export default Category

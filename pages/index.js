@@ -38,7 +38,7 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainNews />
-      <PostList isBottom={props.isBottom} />
+      <PostList isBottom={props.isBottom} category="posts"/>
     </div>
   )
 }
