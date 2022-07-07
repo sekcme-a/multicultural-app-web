@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react"
 import useAuth from 'src/hook/auth'
 import { firestore } from "firebase/firebase"
 import MainNews from "src/components/main/MainNews"
-import Recommand from "src/components/main/Recommand"
+import PostList from "src/components/main/PostList"
 
 
 export default function Home(props) {
@@ -38,7 +38,7 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainNews />
-      <Recommand isBottom={props.isBottom} />
+      <PostList isBottom={props.isBottom} />
     </div>
   )
 }

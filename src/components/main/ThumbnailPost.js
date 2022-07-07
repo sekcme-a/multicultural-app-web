@@ -18,13 +18,13 @@ const ThumbnailPost = (props) => {
             <p className={randomNumber === 0 ? `${styles.category} ${styles.color1}` : randomNumber === 1 ? `${styles.category} ${styles.color2}` : 
               randomNumber === 2 ? `${styles.category} ${styles.color3}` : randomNumber === 3 ? `${styles.category} ${styles.color4}` :
               randomNumber === 4 ? `${styles.category} ${styles.color5}` : randomNumber === 5 ? `${styles.category} ${styles.color6}` :
-              randomNumber === 6 ? `${styles.category} ${styles.color7}` : randomNumber === 7 && `${styles.category} ${styles.color8}`
+              randomNumber === 6 ? `${styles.category} ${styles.color7}` : randomNumber === 7 ? `${styles.category} ${styles.color8}` : `${styles.category} ${styles.color6}`
             }>
               {props.data.category}
             </p>
             <BookmarkBorderIcon className={styles.icon} />
           </div>
-          <Image src={props.data.thumbnail} alt={props.data.title} layout="fill" objectFit="cover" objectPosition="center"/>
+          <Image src={props.data.thumbnail} alt={props.data.title} layout="fill" objectFit="cover" objectPosition="center" priority/>
         </div>
         <div className={styles.footer_container}>
           <h2>{props.data.title}</h2>

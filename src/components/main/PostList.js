@@ -3,7 +3,7 @@ import styles from "styles/main/recommand.module.css"
 import { firestore as db } from "firebase/firebase"
 import ThumbnailPost from "src/components/main/ThumbnailPost"
 
-const Recommand = (props) => {
+const PostList = (props) => {
   const [list, setList] = useState([])
   const [lastDoc, setLastDoc] = useState()
   const fetchCountInOneLoad = 6
@@ -90,4 +90,4 @@ const Recommand = (props) => {
     </div>
   )
 }
-export default Recommand
+export default PostList
