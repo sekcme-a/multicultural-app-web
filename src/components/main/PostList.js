@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react"
-import styles from "styles/main/recommand.module.css"
+import React, {useEffect, useState, useRef} from "react"
+import styles from "styles/main/postList.module.css"
 import { firestore as db } from "firebase/firebase"
 import ThumbnailPost from "src/components/main/ThumbnailPost"
 
@@ -7,6 +7,7 @@ const PostList = (props) => {
   const [list, setList] = useState([])
   const [lastDoc, setLastDoc] = useState()
   const fetchCountInOneLoad = 6
+  const lazyRoot = React.useRef(null)
   useEffect(() => {
     const fetchData = async () => {
       let tempIdList = []
@@ -80,11 +81,11 @@ const PostList = (props) => {
       return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate()
   }
   return (
-    <div className={styles.main_container}>
+    <div className={styles.main_container} ref={lazyRoot}>
       <h1 className={styles.title}>실시간 뉴스</h1>
       {list?.map((doc, index) => {
         return (
-          <ThumbnailPost data={doc} key={index} />
+          <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} />
         )
       })}
     </div>

@@ -24,7 +24,7 @@ const ThumbnailPost = (props) => {
             </p>
             <BookmarkBorderIcon className={styles.icon} />
           </div>
-          <Image src={props.data.thumbnail} alt={props.data.title} layout="fill" objectFit="cover" objectPosition="center" priority/>
+          <Image src={props.data.thumbnail} alt={props.data.title} layout="fill" objectFit="cover" objectPosition="center" priority lazyRoot={props.lazyRoot}/>
         </div>
         <div className={styles.footer_container}>
           <h2>{props.data.title}</h2>
