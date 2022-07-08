@@ -102,7 +102,7 @@ div.selected{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 25px;
+  height: 30px;
   box-shadow: 0 2px 2px -2px rgb(205, 205, 205);
   border-bottom: .5px solid rgb(174, 174, 174);
   border-top: .5px solid rgb(211, 211, 211);
