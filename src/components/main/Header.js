@@ -11,6 +11,8 @@ import { useRouter } from "next/router"
 const Header = (props) => {
   const [isSearchClick, setIsSearchClick] = useState(false)
   const [categoryList, setCategoryList] = useState([""])
+  const [categoryIdList, setCategoryIdList] = useState([])
+  const [categoryObject, setCategoryObject] = useState({})
   let inko = new Inko();
   // const [selectedCategory, setSelectedCategory] = useState("")
   const [isLoading, setIsLoading] = useState(true)
@@ -23,8 +25,12 @@ const Header = (props) => {
   }
 
   useEffect(() => {
-    db.collection("setting").doc("category").get().then((doc) => {
-      setCategoryList(doc.data().list)
+    let temp = []
+    db.collection("category").doc("list").get().then((doc) => {
+      for (let i = 0; i < doc.data().list.length; i++){
+        temp.push({ name:doc.data().list[i], id: doc.data().idList[i]})
+      }
+      setCategoryList(temp)
       setIsLoading(false)
     })
   }, [])
@@ -33,6 +39,7 @@ const Header = (props) => {
   const onItemClick = (category) => {
     props.handleChange(category)
   }
+
   if (isLoading) {
     return (
       <></>
@@ -42,7 +49,7 @@ const Header = (props) => {
     <div className={styles.header}>
       <div className={styles.logo_search_container}>
         <Link href="/" passHref>
-          <a><Image src={logo} width={130} height={24} layout="fixed" priority/></a>
+          <a><Image src={logo} width={150} height={27} layout="fixed" priority/></a>
         </Link>
         <div className={styles.search_container} onClick={onSearchContainerClick} onBlur={onSearchContainerBlur}>
           <SearchIcon sx={{fontSize: 15}} />
@@ -61,10 +68,10 @@ const Header = (props) => {
         {categoryList.map((category,index) => {
           return (
               <li key={index} className={styles.menu_items}>
-                <Link href={`/category/${inko.ko2en(category)}`} passHref>
+                <Link href={`/category/${category.id}`} passHref>
                   <a>
-                    <p className={router.query.slug===inko.ko2en(category) ? styles.selected : undefined}>{category}</p>
-                    <div className={router.query.slug===inko.ko2en(category) ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
+                    <p className={router.query.slug===category.id ? styles.selected : undefined}>{category.name}</p>
+                    <div className={router.query.slug===category.id ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
                   </a>
                 </Link>
               </li>

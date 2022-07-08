@@ -9,7 +9,7 @@ import { firestore } from "firebase/firebase"
 
 import NewArticle from "components/admin/NewArticle"
 import EditArticle from "components/admin/EditArticle"
-import Setting from "components/admin/Setting"
+import Setting from "src/components/admin/Setting"
 import Recommand from "src/components/admin/Recommand"
 
 const Admin = () => {

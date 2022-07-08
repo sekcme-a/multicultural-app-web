@@ -56,13 +56,13 @@ const NewArticle = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await db.collection("setting").doc("category").get().then((doc) => {
+      await db.collection("category").doc("list").get().then((doc) => {
         setCategoryList(doc.data()?.list)
       })
-      await db.collection("setting").doc("local").get().then((doc) => {
+      await db.collection("local").doc("list").get().then((doc) => {
         setLocalList(doc.data()?.list)
       })
-      await db.collection("setting").doc("country").get().then((doc) => {
+      await db.collection("country").doc("list").get().then((doc) => {
         setCountryList(doc.data()?.list)
       })
       const fetchedDocId = await db.collection("likesAndComments").doc()
@@ -79,7 +79,31 @@ const NewArticle = () => {
 
   const onSubmitClick = async() => {
     try {
+      const catLi = await db.collection("category").doc("list").get()
+      const locLi = await db.collection('local').doc("list").get()
+      const couLi = await db.collection('country').doc("list").get()
+      let categoryIdList = []
+      let localIdList = []
+      let countryIdList = []
       if (checkInput() && user) {
+        selectedCategoryList.map((cat) => {
+          for (let i = 0; i < catLi.data().list.length; i++){
+            if (cat === catLi.data().list[i])
+              categoryIdList.push(catLi.data().idList[i])
+          }
+        })
+        selectedLocalList.map((loc) => {
+          for (let i = 0; i < locLi.data().list.length; i++){
+            if (loc === locLi.data().list[i])
+              localIdList.push(locLi.data().idList[i])
+          }
+        })
+        selectedCountryList.map((cou) => {
+          for (let i = 0; i < couLi.data().list.length; i++){
+            if (cou === couLi.data().list[i])
+              countryIdList.push(couLi.data().idList[i])
+          }
+        })
         const postHashMap = {
           title: title,
           thumbnail: thumbnail,
@@ -89,6 +113,9 @@ const NewArticle = () => {
           category: selectedCategoryList.toString(),
           local: selectedLocalList.toString(),
           country: selectedCountryList.toString(),
+          categoryId: categoryIdList,
+          localId: localIdList,
+          countryId: countryIdList,
           tag: tag,
           importance: parseInt(importance),
           text: textData
@@ -102,19 +129,22 @@ const NewArticle = () => {
           category: selectedCategoryList.toString(),
           local: selectedLocalList.toString(),
           country: selectedCountryList.toString(),
+          categoryId: categoryIdList,
+          localId: localIdList,
+          countryId: countryIdList,
           tag: tag,
         }
         const batch = db.batch();
-        selectedCategoryList.forEach((category) => {
+        categoryIdList.forEach((category) => {
           batch.set(db.collection(category).doc(docId), thumbnailHashMap);
         })
-        if (selectedLocalList.length !== 0) {
-          selectedLocalList.forEach((local) => {
+        if (localIdList.length !== 0) {
+          localIdList.forEach((local) => {
             batch.set(db.collection(local).doc(docId), thumbnailHashMap)
           })
         }
-        if (selectedCountryList.length !== 0) {
-          selectedCountryList.forEach((country) => {
+        if (countryIdList.length !== 0) {
+          countryIdList.forEach((country) => {
             batch.set(db.collection(country).doc(docId), thumbnailHashMap)
           })
         }

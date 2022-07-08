@@ -36,13 +36,13 @@ const PostList = (props) => {
     },0)
   }
     fetchData()
-  }, [])
+  }, [props.category])
 
   useEffect(() => {
     const fetchData = async () => {
       let tempIdList = []
       let count = 0;
-      if (props.isBottom && list) {
+      if (props.isBottom && list && lastDoc) {
         const posts = await db.collection(props.category)?.orderBy("createdAt", 'desc').startAfter(lastDoc).limit(fetchCountInOneLoad).get()
         posts.docs.map((doc) => {
         tempIdList = ([

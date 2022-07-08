@@ -60,8 +60,8 @@ const AdminNavbar = (props) => {
                 </li>
               }
               {(item.type === "main" && item.child===false)&&
-                <Link href={`${customUrl}${item.path}`} >
-                  <li className={style.mainItem} onClick={() => onMainItemClick(item.title)} key={index}>
+                <Link href={`${customUrl}${item.path}`} key={index} >
+                  <li className={style.mainItem} onClick={() => onMainItemClick(item.title)}>
                     {getIcon(item.icon)}<p>{item.title}</p>
                   </li>
                 </Link>
@@ -83,15 +83,15 @@ const AdminNavbar = (props) => {
                 </li>
               }
               {(item.type === "main" && item.child===false && item.level==="author")&&
-                <Link href={`${customUrl}${item.path}`} >
-                  <li className={style.mainItem} onClick={() => onMainItemClick(item.title)} key={index}>
+                <Link href={`${customUrl}${item.path}`} key={index} >
+                  <li className={style.mainItem} onClick={() => onMainItemClick(item.title)}>
                     {getIcon(item.icon)}<p>{item.title}</p>
                   </li>
                 </Link>
               }
               {(item.type === "sub" && item.title===clickedMain && item.level==="author") &&
-                <Link href={`${customUrl}${item.path}`} >
-                  <li className={style.subItem} key={index} >
+                <Link href={`${customUrl}${item.path}`} key={index} >
+                  <li className={style.subItem} >
                     {item.subtitle}
                   </li>
                 </Link>

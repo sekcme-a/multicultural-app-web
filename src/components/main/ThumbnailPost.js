@@ -9,7 +9,8 @@ const ThumbnailPost = (props) => {
   useEffect(() => {
     //Random number from 0~8 (int)
     setRandomNumber(Math.floor(Math.random() * 9))
-  },[])
+  }, [])
+
   return (
     <Link href={`/post/${props.data.docId}`}>
       <div className={styles.main_container}>
