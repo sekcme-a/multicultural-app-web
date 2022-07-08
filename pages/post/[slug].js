@@ -27,6 +27,7 @@ const Post = (props) => {
     setRandomNumber(Math.floor(Math.random() * 9))
   }, [])
 
+
   useEffect(() => {
     const fetchData = async () => {
       const doc = await db.collection("posts").doc(slug).get()
@@ -59,6 +60,10 @@ const Post = (props) => {
     else if(date.getMonth()+1>=10 && date.getDate()>=10)
       return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
   }
+
+  const onArrowBackIconClick = () => {
+    router.back()
+  }
   if (isLoading) {
     return <></>
   }
@@ -70,7 +75,7 @@ const Post = (props) => {
       <div className={styles.header_container}>
         <div className={styles.overlay}>
           <div className={styles.icons}>
-            <ArrowBackIcon className={styles.icon}/>
+            <ArrowBackIcon className={styles.icon} onClick={onArrowBackIconClick} />
             <ShareIcon className={styles.icon}/>
           </div>
           <div className={styles.info_container}>
@@ -79,7 +84,7 @@ const Post = (props) => {
             <p>{`${data.createdAt} | ${data.author}`}</p>
           </div>
         </div>
-        <Image src={data.thumbnail} alt={data.title} layout="fill" objectFit="cover" objectPosition="center"  priority={true}/>
+        <Image src={data.thumbnail} alt={data.title}placeholder="blur" blurDataURL="/public/placeholder.png" layout="fill" objectFit="cover" objectPosition="center"  priority={true}/>
         <div className={styles.bookmark_icon_container} ><BookmarkBorderIcon className={styles.bookmark_icon} /></div>
             <p className={randomNumber === 0 ? `${styles.category} ${styles.color1}` : randomNumber === 1 ? `${styles.category} ${styles.color2}` : 
               randomNumber === 2 ? `${styles.category} ${styles.color3}` : randomNumber === 3 ? `${styles.category} ${styles.color4}` :
@@ -90,6 +95,7 @@ const Post = (props) => {
         </p>
       </div>
       <div className={styles.content_container}>
+        <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
         <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
       </div>
       <Comments />

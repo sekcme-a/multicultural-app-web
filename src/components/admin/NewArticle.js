@@ -32,9 +32,8 @@ const NewArticle = () => {
 
   const [textData, setTextData] = useState()
   const [isLoading, setIsLoading] = useState(true)
-
   const [title, setTitle] = useState("")
-  const [thumbnail, setThumbnail] = useState("")
+  const [thumbnailImg, setThumbnailImg] = useState()
   const [tag, setTag] = useState("")
   const [author, setAuthor] = useState("")
   const [importance, setImportance] = useState("")
@@ -85,6 +84,7 @@ const NewArticle = () => {
       let categoryIdList = []
       let localIdList = []
       let countryIdList = []
+      const thumbnailUrl = await uploadImage(thumbnailImg, `thumbnails/${Date.now()}`)
       if (checkInput() && user) {
         selectedCategoryList.map((cat) => {
           for (let i = 0; i < catLi.data().list.length; i++){
@@ -106,7 +106,7 @@ const NewArticle = () => {
         })
         const postHashMap = {
           title: title,
-          thumbnail: thumbnail,
+          thumbnail: thumbnailUrl,
           createdAt: new Date(),
           author: author,
           uid: user.uid,
@@ -122,7 +122,7 @@ const NewArticle = () => {
         }
         const thumbnailHashMap = {
           title: title,
-          thumbnail: thumbnail,
+          thumbnail: thumbnailUrl,
           createdAt: new Date(),
           author: author,
           uid: user.uid,
@@ -167,8 +167,7 @@ const NewArticle = () => {
           img = await compressImage(e.target.files[0])
         else
           img = e.target.files[0]
-        const thumbnailUrl = await uploadImage(img, `thumbnails/${Date.now()}`)
-        setThumbnail(thumbnailUrl)
+        setThumbnailImg(img)
       }
     }
 
@@ -177,7 +176,7 @@ const NewArticle = () => {
   //필수항목 작성 확인
   const checkInput = () => {
     if (title === "") alert("제목은 필수항목입니다.")
-    else if (thumbnail==="") alert("썸네일은 필수항목입니다.")
+    else if (thumbnailImg==="") alert("썸네일은 필수항목입니다.")
     else if (selectedCategoryList.length===0) alert("적어도 하나의 카테고리를 선택해야합니다.")
     else if (tag=== "") alert("태그는 필수항목입니다.")
     else if (author==="") alert("작성자는 필수항목입니다.")
@@ -231,7 +230,7 @@ const NewArticle = () => {
         <h4>썸네일 이미지</h4>
         <p className={style.warning}>*필수 *이미지의 크기가 2MB보다 클 경우 자동으로 압축됩니다.</p>
         <p>이미지 선택 : <input type="file" name="selectedImg[]" onChange={onImgChange} accept="image/*"/></p>
-        <img className={style.thumbnail} src={thumbnail}></img>
+        {/* <img className={style.thumbnail} src={thumbnailImg}></img> */}
       </div>
       <div className={style.container}>
         <h4>카테고리 선택</h4>
