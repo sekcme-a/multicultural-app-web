@@ -149,7 +149,7 @@ const NewArticle = () => {
           })
         }
         batch.set(db.collection("posts").doc(docId), postHashMap)
-        batch.set(db.collection("count").doc(docId), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
+        batch.set(db.collection("lvc").doc(docId), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
         await batch.commit();
         alert("성공적으로 업로드되었습니다!")
         router.push(`/rhksflwk/home`)
