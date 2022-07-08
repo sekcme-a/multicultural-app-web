@@ -70,11 +70,11 @@ function MyApp({ Component, pageProps }) {
   const handleTouchStart = (x)=>{setTouchStartX(x)}
   const handleTouchEnd = (x) => { setTouchEndX(x) }
   useEffect(() => {
-    if (touchStartX - touchEndX > 120) {
+    if (touchStartX - touchEndX > 85) {
       setIsSwipeToRight(true)
     }
     console.log(touchEndX-touchStartX)
-    if (touchEndX - touchStartX > 120){
+    if (touchEndX - touchStartX > 85){
       setIsSwipeToLeft(true)
     }
   }, [touchEndX])

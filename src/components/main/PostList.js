@@ -91,7 +91,7 @@ const PostList = (props) => {
     props.handleTouchEnd(e.changedTouches[0].clientX)
   }
   return (
-    <div className={styles.main_container} ref={lazyRoot} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    <div className={props.mode==="local"||props.mode==="country" ? `${styles.main_container} ${styles.add_margin}`:styles.main_container} ref={lazyRoot} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {props.category === "posts" && <h1 className={styles.title}>실시간 뉴스</h1>}
       {list?.map((doc, index) => {
         return (

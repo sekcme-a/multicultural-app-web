@@ -7,6 +7,9 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+.add_margin{
+  margin-top: 28px;
+}
 .title{
   margin-bottom: 6px;
   font-weight: bold;

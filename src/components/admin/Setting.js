@@ -121,7 +121,7 @@ const Setting = (props) => {
             const tempList = list.filter(cat => cat !== deleteCategory)
             const tempIdList = idList.filter(id => id !== idList[i])
             db.collection(props.loc).doc(idList[i]).delete()
-            db.collection(props.loc).doc("list").set({"list": tempList, "idList": tempIdList})
+            db.collection(props.loc).doc("list").set({ "list": tempList, "idList": tempIdList })
             alert("성공적으로 적용되었습니다.")
             reload()
           }

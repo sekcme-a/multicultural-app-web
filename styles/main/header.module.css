@@ -90,6 +90,46 @@ div.selected{
   background-color: red !important;
 }
 
+.sub_header_container{
+  margin-top: 88px;
+  padding: 5px 10px;
+  position: fixed;
+  display: flex;
+  font-size: 14px;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow-x: scroll;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  box-shadow: 0 2px 2px -2px rgb(205, 205, 205);
+  border-bottom: .5px solid rgb(174, 174, 174);
+  border-top: .5px solid rgb(211, 211, 211);
+  background-color: rgb(255, 249, 249);
+  color:rgb(53, 53, 53);
+  z-index: 99999999;
+}
+.sub_menu_items{
+  width: fit-content;
+}
+.sub_menu_items p{
+  margin: 0 10px;
+  height: 100%;
+  display: block;
+  /* width: 100%; */
+}
+p.sub_selected{
+  color: red;
+}
+.sub_header_container::-webkit-scrollbar{
+  display: none;
+}
+
+
+
+
+
 @media (max-width: 360px) {
   .logo_search_container{
     padding: 0 8px;

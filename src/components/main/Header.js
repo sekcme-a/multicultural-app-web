@@ -5,13 +5,13 @@ import logo from "public/logo.png"
 import Link from "next/link"
 import SearchIcon from '@mui/icons-material/Search';
 import { firestore as db } from "firebase/firebase"
-import Inko from "inko" 
 import { useRouter } from "next/router"
 
 const Header = (props) => {
   const [isSearchClick, setIsSearchClick] = useState(false)
   const [categoryList, setCategoryList] = useState([""])
-  let inko = new Inko();
+  const [localList, setLocalList] = useState([""])
+  const [countryList, setCountryList] = useState([""])
   // const [selectedCategory, setSelectedCategory] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
@@ -29,14 +29,34 @@ const Header = (props) => {
         temp.push({ name:doc.data().list[i], id: doc.data().idList[i]})
       }
       setCategoryList(temp)
-      setIsLoading(false)
     })
+    let temp2=[]
+    db.collection("local").doc("list").get().then((doc) => {
+      for (let i = 0; i < doc.data().list.length; i++){
+        temp2.push({ name:doc.data().list[i], id: doc.data().idList[i]})
+      }
+      setLocalList(temp2)
+    })
+    let temp3=[]
+    db.collection("country").doc("list").get().then((doc) => {
+      for (let i = 0; i < doc.data().list.length; i++){
+        temp3.push({ name:doc.data().list[i], id: doc.data().idList[i]})
+      }
+      setCountryList(temp3)
+    })
+    setIsLoading(false)
   }, [])
 
+
+  //좌우 슬라이드 시 메뉴 변경
   useEffect(() => {
     if (props.isSwipeToRight) {
       // router.push("/category/dw491Twx28h8jbZg38lO")
       if (router.pathname === "/")
+        router.push(`/local/${localList[0].id}`)
+      else if(router.pathname.includes("local"))
+        router.push(`/country/${countryList[0].id}`)
+      else if(router.pathname.includes("country"))
         router.push(`/category/${categoryList[0].id}`)
       else {
         for (let i = 0; i < categoryList.length - 1; i++) {
@@ -50,9 +70,12 @@ const Header = (props) => {
   }, [props.isSwipeToRight])
   useEffect(() => {
     if (props.isSwipeToLeft) {
-      if (router.query.slug === categoryList[0].id) {
-        router.push("/")
-      }
+      if (router.query.slug === categoryList[0].id) 
+        router.push(`/country/${countryList[0].id}`)
+      else if(router.pathname.includes("country"))
+        router.push(`/local/${localList[0].id}`)
+      else if(router.pathname.includes("local"))
+        router.push('/')
       else {
         for (let i = categoryList.length - 1; i >= 0; i--){
           console.log(categoryList[i].id)
@@ -75,27 +98,44 @@ const Header = (props) => {
     )
   }
   return (
-    <div className={styles.header}>
-      <div className={styles.logo_search_container}>
-        <Link href="/" passHref>
-          <a><Image src={logo} width={150} height={27} layout="fixed" priority/></a>
-        </Link>
-        <div className={styles.search_container} onClick={onSearchContainerClick} onBlur={onSearchContainerBlur}>
-          <SearchIcon sx={{fontSize: 15}} />
-          <input type="text" className={isSearchClick ? `${styles.search_input} ${styles.search_clicked}`: styles.search_input} placeholder="뉴스 검색" ></input>
-        </div>
-      </div>
-      <ul className={styles.menu_container}>
-        <li className={styles.menu_items}>
-          <Link href={'/'} passHref>
-            <a>
-              <p className={router.pathname==='/' ? styles.selected : undefined}>메인</p>
-              <div className={router.pathname==='/' ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
-            </a>
+    <>
+      <div className={styles.header}>
+        <div className={styles.logo_search_container}>
+          <Link href="/" passHref>
+            <a><Image src={logo} width={150} height={27} layout="fixed" priority/></a>
           </Link>
-        </li>
-        {categoryList.map((category,index) => {
-          return (
+          <div className={styles.search_container} onClick={onSearchContainerClick} onBlur={onSearchContainerBlur}>
+            <SearchIcon sx={{fontSize: 15}} />
+            <input type="text" className={isSearchClick ? `${styles.search_input} ${styles.search_clicked}`: styles.search_input} placeholder="뉴스 검색" ></input>
+          </div>
+        </div>
+        <ul className={styles.menu_container}>
+          <li className={styles.menu_items}>
+            <Link href={'/'} passHref>
+              <a>
+                <p className={router.pathname==='/' ? styles.selected : undefined}>메인</p>
+                <div className={router.pathname==='/' ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
+              </a>
+            </Link>
+          </li>
+          <li className={styles.menu_items}>
+            <Link href={`/local/${localList[0].id}`} passHref>
+              <a>
+                <p className={router.pathname.includes("local")  ? styles.selected : undefined}>지역별</p>
+                <div className={router.pathname.includes("local") ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
+              </a>
+            </Link>
+          </li>
+          <li className={styles.menu_items}>
+            <Link href={`/country/${countryList[0].id}`} passHref>
+              <a>
+                <p className={router.pathname.includes("country") ? styles.selected : undefined}>국가별</p>
+                <div className={router.pathname.includes("country") ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
+              </a>
+            </Link>
+          </li>
+          {categoryList.map((category,index) => {
+            return (
               <li key={index} className={styles.menu_items}>
                 <Link href={`/category/${category.id}`} passHref>
                   <a>
@@ -104,10 +144,41 @@ const Header = (props) => {
                   </a>
                 </Link>
               </li>
-          )
-        })}
-      </ul>
-    </div>
+            )
+          })}
+        </ul>
+      </div>
+      {router.pathname.includes("local")&&
+        <ul className={styles.sub_header_container}>
+          {localList.map((local,index) => {
+            return (
+              <li key={index} className={styles.sub_menu_items}>
+                <Link href={`/local/${local.id}`} passHref>
+                  <a>
+                    <p className={router.query.slug===local.id ? styles.sub_selected : undefined}>{local.name}</p>
+                  </a>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      }
+      {router.pathname.includes("country")&&
+        <ul className={styles.sub_header_container}>
+          {countryList.map((country,index) => {
+            return (
+              <li key={index} className={styles.sub_menu_items}>
+                <Link href={`/country/${country.id}`} passHref>
+                  <a>
+                    <p className={router.query.slug===country.id ? styles.sub_selected : undefined}>{country.name}</p>
+                  </a>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      }
+    </>
   )
 }
 export default Header
