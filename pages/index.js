@@ -15,7 +15,7 @@ export default function Home(props) {
     document.addEventListener('message', ({data}) => {
       setMessage(data)
     })
-  }, [])
+  }, [])                 
 
   useEffect(() => {
     if (user) {
@@ -38,7 +38,7 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainNews />
-      <PostList isBottom={props.isBottom} category="posts"/>
+      <PostList isBottom={props.isBottom} category="posts" handleTouchStart={props.handleTouchStart} handleTouchEnd={props.handleTouchEnd} />
     </div>
   )
 }

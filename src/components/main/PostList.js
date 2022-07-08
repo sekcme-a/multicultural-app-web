@@ -65,7 +65,7 @@ const PostList = (props) => {
             setLastDoc(doc)
           }
         })
-        if(list[list.length-1].docId !== tempIdList[tempIdList.length-1].docId)
+        if(list[list.length-1].docId !== tempIdList[tempIdList.length-1]?.docId)
           setList([...list, ...tempIdList])
       }
       setIsLoading(false)
@@ -84,8 +84,14 @@ const PostList = (props) => {
     else if(date.getMonth()+1>=10 && date.getDate()>=10)
       return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate()
   }
+  const onTouchStart = (e) => {
+    props.handleTouchStart(e.targetTouches[0].clientX)
+  }
+  const onTouchEnd = (e) => {
+    props.handleTouchEnd(e.changedTouches[0].clientX)
+  }
   return (
-    <div className={styles.main_container} ref={lazyRoot}>
+    <div className={styles.main_container} ref={lazyRoot} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {props.category === "posts" && <h1 className={styles.title}>실시간 뉴스</h1>}
       {list?.map((doc, index) => {
         return (

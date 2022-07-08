@@ -11,8 +11,6 @@ import { useRouter } from "next/router"
 const Header = (props) => {
   const [isSearchClick, setIsSearchClick] = useState(false)
   const [categoryList, setCategoryList] = useState([""])
-  const [categoryIdList, setCategoryIdList] = useState([])
-  const [categoryObject, setCategoryObject] = useState({})
   let inko = new Inko();
   // const [selectedCategory, setSelectedCategory] = useState("")
   const [isLoading, setIsLoading] = useState(true)
@@ -34,6 +32,37 @@ const Header = (props) => {
       setIsLoading(false)
     })
   }, [])
+
+  useEffect(() => {
+    if (props.isSwipeToRight) {
+      // router.push("/category/dw491Twx28h8jbZg38lO")
+      if (router.pathname === "/")
+        router.push(`/category/${categoryList[0].id}`)
+      else {
+        for (let i = 0; i < categoryList.length - 1; i++) {
+          if (categoryList[i].id === router.query.slug)
+            router.push(`/category/${categoryList[i + 1].id}`)
+        }
+      }
+      props.handleSwipeToRight(false)
+    }
+    
+  }, [props.isSwipeToRight])
+  useEffect(() => {
+    if (props.isSwipeToLeft) {
+      if (router.query.slug === categoryList[0].id) {
+        router.push("/")
+      }
+      else {
+        for (let i = categoryList.length - 1; i >= 0; i--){
+          console.log(categoryList[i].id)
+          if(categoryList[i].id===router.query.slug)
+            router.push(`/category/${categoryList[i-1].id}`)
+        }
+      }
+    }
+    props.handleSwipeToLeft(false)
+  },[props.isSwipeToLeft])
 
 
   const onItemClick = (category) => {
