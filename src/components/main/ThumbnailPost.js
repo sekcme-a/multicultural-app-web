@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styles from "styles/main/thumbnailPost.module.css"
-import Image from "next/image";
+// import Image from "next/image";
+import Image from "hook/Image"
 import Link from "next/link"
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 

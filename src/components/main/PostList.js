@@ -6,6 +6,7 @@ import ThumbnailPost from "src/components/main/ThumbnailPost"
 const PostList = (props) => {
   const [list, setList] = useState([])
   const [lastDoc, setLastDoc] = useState()
+  const [isLoading, setIsLoading] = useState(true)
   const fetchCountInOneLoad = 6
   const lazyRoot = React.useRef(null)
   useEffect(() => {
@@ -33,6 +34,7 @@ const PostList = (props) => {
           setLastDoc(doc)
       })
       setList(tempIdList)
+      setIsLoading(false)
     },0)
   }
     fetchData()
@@ -40,6 +42,7 @@ const PostList = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true)
       let tempIdList = []
       let count = 0;
       if (props.isBottom && list && lastDoc) {
@@ -65,6 +68,7 @@ const PostList = (props) => {
         if(list[list.length-1].docId !== tempIdList[tempIdList.length-1].docId)
           setList([...list, ...tempIdList])
       }
+      setIsLoading(false)
     }
      fetchData()
   }, [props.isBottom])
@@ -88,6 +92,7 @@ const PostList = (props) => {
           <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} />
         )
       })}
+      {isLoading && <div>loading</div>}
     </div>
   )
 }
