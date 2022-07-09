@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import 'styles/loader.css'
 import { AuthProvider } from "src/hook/auth"
 import AuthStateChanged from 'src/layout/AuthStateChanged'
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useCallback, useRef } from "react"
 import Header from "src/components/main/Header"
 import Footer from "src/components/main/Footer"
 import { useRouter } from "next/router"
@@ -15,18 +15,40 @@ function MyApp({ Component, pageProps }) {
   const [touchEndX,setTouchEndX] = useState()
   const [isSwipeToRight, setIsSwipeToRight] = useState(false)
   const [isSwipeToLeft, setIsSwipeToLeft] = useState(false)
+  const [scrollHeight, setScrollHeight] = useState()
   const router = useRouter()
+  const bodyRef = useRef(null)
+  const [es, setEs] = useState()
 
   const onSelectedCategoryChange = (category) => {
     setSelectedCategory(category)
   }
 
   const onScroll = (e) => {
+      if (router.pathname === "/" || router.pathname.includes("/category") || router.pathname.includes("/local") || router.pathname.includes("/country")) {
+        setScrollHeight(e.target.scrollTop)
+      }
     if (e.target.scrollHeight - e.target.scrollTop > e.target.clientHeight-1 && e.target.scrollHeight - e.target.scrollTop < e.target.clientHeight+1) {
       setIsBottom(true)
     }else if(isBottom)
       setIsBottom(false)
   };
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScrollPos);
+  //   if (router.pathname === "/" || router.pathname.includes("/category") || router.pathname.includes("/local") || router.pathname.includes("/country")) {
+  //     window.scrollTo(0, 300)
+  //   }
+  //       const handleScrollPos = () => {
+  //     //every time the window is scrolled, update the reference. This will not cause a re-render, meaning smooth uninterrupted scrolling.
+  //         setScrollHeight(window.scrollY)
+  //         console.log(scrollHeight)
+  //   };
+  //     return () => {
+  //     //remove event listener on unmount
+  //     window.removeEventListener('scroll', handleScrollPos);
+  //   };
+  // })
+
   const useWindowDimensions = () => {
     const hasWindow = typeof window !== "undefined"
 
@@ -70,11 +92,10 @@ function MyApp({ Component, pageProps }) {
   const handleTouchStart = (x)=>{setTouchStartX(x)}
   const handleTouchEnd = (x) => { setTouchEndX(x) }
   useEffect(() => {
-    if (touchStartX - touchEndX > 85) {
+    if (touchStartX - touchEndX > 95) {
       setIsSwipeToRight(true)
     }
-    console.log(touchEndX-touchStartX)
-    if (touchEndX - touchStartX > 85){
+    if (touchEndX - touchStartX > 95){
       setIsSwipeToLeft(true)
     }
   }, [touchEndX])
@@ -85,10 +106,10 @@ function MyApp({ Component, pageProps }) {
       <AuthStateChanged>
         <Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} isSwipeToRight={isSwipeToRight}
           handleSwipeToRight={handleSwipeToRight} isSwipeToLeft={isSwipeToLeft} handleSwipeToLeft={handleSwipeToLeft} />
-        <div className="body_container" onScroll={onScroll} style={{height: height}}>
-          <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleTouchEnd={handleTouchEnd} />
-        </div>
-        {!router.pathname.includes("rhksflwk") && <Footer />}
+          <div className="body_container" onScroll={onScroll} style={{ height: height }} ref={bodyRef} > 
+            <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
+          </div>
+          {!router.pathname.includes("rhksflwk") && <Footer />}
       </AuthStateChanged>
     </AuthProvider>
   )

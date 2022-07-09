@@ -6,6 +6,9 @@ const nextConfig = {
       "firebasestorage.googleapis.com",
     ],
   },
+  experimental: {
+    scrollRestoration: true,
+  },
 }
 
 module.exports = nextConfig

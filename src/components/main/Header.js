@@ -101,7 +101,7 @@ const Header = (props) => {
     <>
       <div className={styles.header}>
         <div className={styles.logo_search_container}>
-          <Link href="/" passHref>
+          <Link href="/" passHref scroll={false}>
             <a><Image src={logo} width={150} height={27} layout="fixed" priority/></a>
           </Link>
           <div className={styles.search_container} onClick={onSearchContainerClick} onBlur={onSearchContainerBlur}>
@@ -111,7 +111,7 @@ const Header = (props) => {
         </div>
         <ul className={styles.menu_container}>
           <li className={styles.menu_items}>
-            <Link href={'/'} passHref>
+            <Link href={'/'} passHref scroll={false}>
               <a>
                 <p className={router.pathname==='/' ? styles.selected : undefined}>메인</p>
                 <div className={router.pathname==='/' ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
@@ -119,7 +119,7 @@ const Header = (props) => {
             </Link>
           </li>
           <li className={styles.menu_items}>
-            <Link href={`/local/${localList[0].id}`} passHref>
+            <Link href={`/local/${localList[0].id}`} passHref scroll={false}>
               <a>
                 <p className={router.pathname.includes("local")  ? styles.selected : undefined}>지역별</p>
                 <div className={router.pathname.includes("local") ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
@@ -127,7 +127,7 @@ const Header = (props) => {
             </Link>
           </li>
           <li className={styles.menu_items}>
-            <Link href={`/country/${countryList[0].id}`} passHref>
+            <Link href={`/country/${countryList[0].id}`} passHref scroll={false}>
               <a>
                 <p className={router.pathname.includes("country") ? styles.selected : undefined}>국가별</p>
                 <div className={router.pathname.includes("country") ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
@@ -137,7 +137,7 @@ const Header = (props) => {
           {categoryList.map((category,index) => {
             return (
               <li key={index} className={styles.menu_items}>
-                <Link href={`/category/${category.id}`} passHref>
+                <Link href={`/category/${category.id}`} passHref scroll={false}>
                   <a>
                     <p className={router.query.slug===category.id ? styles.selected : undefined}>{category.name}</p>
                     <div className={router.query.slug===category.id ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>

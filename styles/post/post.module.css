@@ -2,6 +2,11 @@
 .main_container{
   margin-top:15px;
 }
+.warning{
+  margin-top: 150px;
+  width: 100%;
+  text-align: center;
+}
 .header_container{
   width: 100%;
   height: 250px;
@@ -42,19 +47,19 @@
   z-index: 3;
 }
 .info_container h2{
-  font-size: 18px;
+  font-size: 20px;
   color: white;
   font-weight: bold;
   line-height: 22px;
   margin-bottom: 3px;
 }
 .info_container h3{
-  font-size: 13px;
+  font-size: 15px;
   color: white;
   margin-bottom: 5px;
 }
 .info_container p{
-  font-size: 10px;
+  font-size: 13px;
   color: white;
 
 }
@@ -87,7 +92,7 @@
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  font-size: 13px;
+  font-size: 15px;
   z-index: 3;
   position: absolute;
   bottom: -10px;
@@ -102,7 +107,48 @@
 .color8{background-color: #4d6d9a;}
 
 .content_container{
-  margin: 20px 10px 10px 10px;
-  font-size: 14px;
+  margin: 20px 20px 0 20px;
+  font-size: 15px;
   line-height: 20px;
+}
+
+
+.skeleton_text_container{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.alert_container{
+  position: fixed;
+  bottom: 50px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  transition: 1s;
+}
+.alert_hide{
+  bottom: 0 !important;
+}
+
+.comment_container{
+  border-top: 1px solid rgb(218, 218, 218);
+  border-bottom: 1px solid rgb(218, 218, 218);
+  padding: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 25px;
+}
+.comment_container h3{
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 20px;
+
+}
+.comment_container h4{
+  margin-right: 20px;
+  font-size: 12px
 }

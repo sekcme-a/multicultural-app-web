@@ -1,15 +1,26 @@
-import React, {useEffect, useState, useRef} from "react"
+import React, { useEffect, useState, useRef } from "react"
+import { useRouter } from "next/router"
 import styles from "styles/main/postList.module.css"
 import { firestore as db } from "firebase/firebase"
 import ThumbnailPost from "src/components/main/ThumbnailPost"
 import CircularProgress from '@mui/material/CircularProgress';
+import { useRouterScroll } from '@moxy/next-router-scroll';
 
 const PostList = (props) => {
   const [list, setList] = useState([])
   const [lastDoc, setLastDoc] = useState()
   const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
   const fetchCountInOneLoad = 6
   const lazyRoot = React.useRef(null)
+  console.log("useRouterScroll: ", useRouterScroll())
+  const {updateScroll = () => {}} = useRouterScroll() || {}
+
+  useEffect(() => {
+    updateScroll()
+  }, [])
+
+
   useEffect(() => {
     const fetchData = async () => {
       let tempIdList = []
@@ -73,6 +84,7 @@ const PostList = (props) => {
     }
      fetchData()
   }, [props.isBottom])
+
   
   const getDate = (d) => {
     const date = new Date(d.toMillis())
