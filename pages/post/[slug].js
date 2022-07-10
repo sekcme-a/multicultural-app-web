@@ -144,14 +144,14 @@ const Post = (props) => {
             </Backdrop>
           </motion.div>
           <div className={styles.info_container}>
-            <motion.h2 initial={{ opacity: 0, x:-15 }} animate={{ opacity: 1, x:0, transition: { duration: 1.5, delay:0.4} }}>{data.title}</motion.h2>
-            <motion.h3 initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.5, delay:0.8 } }}>{data.tag}</motion.h3>
-            <motion.p initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.5, delay:1.2 } }}>{`${data.createdAt} | ${data.author}`}</motion.p>
+            <motion.h2 initial={{ opacity: 0, x:-15 }} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.3} }}>{data.title}</motion.h2>
+            <motion.h3 initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.6 } }}>{data.tag}</motion.h3>
+            <motion.p initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.9 } }}>{`${data.createdAt} | ${data.author}`}</motion.p>
           </div>
         </div>
         <Image src={data.thumbnail} alt={data.title}placeholder="blur" blurDataURL="/public/placeholder.png" layout="fill" objectFit="cover" objectPosition="center"  priority={true}/>
         <motion.div className={showBackdrop ? styles.hide : styles.bookmark_icon_container}
-          initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0, transition: { duration: 2, delay: 2.7 } }}>
+          initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0, transition: { duration: 2, delay: 1.5 } }}>
           <BookmarkBorderIcon className={styles.bookmark_icon} />
         </motion.div>
         <motion.p className={ showBackdrop ? styles.hide : (randomNumber === 0 ? `${styles.category} ${styles.color1}` : randomNumber === 1 ? `${styles.category} ${styles.color2}` :
@@ -159,12 +159,12 @@ const Post = (props) => {
             randomNumber === 4 ? `${styles.category} ${styles.color5}` : randomNumber === 5 ? `${styles.category} ${styles.color6}` :
               randomNumber === 6 ? `${styles.category} ${styles.color7}` : randomNumber === 7 ? `${styles.category} ${styles.color8}` : `${styles.category} ${styles.color6}`)
         }
-          initial={{ opacity: 0 }} animate={{ opacity: 1, x: 0, transition: { duration: 1.5, delay: 1.8} }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1, x: 0, transition: { duration: 1.0, delay: 1.2} }}
         >
           {data.category}
         </motion.p>
       </div>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 2, delay: 2.5 } }}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 1.0, delay: 1.2 } }}
         className={styles.content_container}onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
       </motion.div>

@@ -3,6 +3,7 @@ import { withPublic } from "src/hook/route";
 
 const Login = ({auth}) => {
   const { user, loginWithGoogle, loginWithFacebook, error } = auth;
+  
   return (
     <div>
       {error && <h1>{error}</h1>}

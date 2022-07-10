@@ -126,7 +126,7 @@ const Search = () => {
               {resultList.length !== 0 && resultList.map((data, index) => {
                 return (
                   // <MiniThumbnail data={data} />
-                  <ThumbnailPost data={data.data} />
+                  <ThumbnailPost data={data.data} key={index} />
                 )
               })}
               </>

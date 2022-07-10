@@ -201,4 +201,6 @@ table {
   width: 500px;
 }
 
-
+.ql-clipboard{
+  display: none;
+}
