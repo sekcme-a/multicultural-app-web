@@ -6,7 +6,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding: 12px 12px 0 12px;
+  padding: 15px 12px 10px 12px;
 }
 .title_container p{
   margin-left: 5px;
@@ -15,8 +15,9 @@
   border-bottom: 1px solid rgb(219, 219, 219);
   display: flex;
   flex-wrap: wrap;
-  padding: 10px 12px 10px 13px; 
-  font-size: 14px;
+  padding: 18px 12px 18px 20px; 
+  font-size: 18px;
+  align-items: center;
 }
 .img_container{
   border-radius: 10px;
@@ -27,16 +28,15 @@
   position: relative;
 }
 .text_container{
-  font-size: 14px;
   padding-left: 13px;
 }
 .name{
   /* font-weight: bold; */
 }
 .info{
-  font-size: 11px;
+  font-size: 14px;
   color: rgb(118, 118, 118);
-  margin-top: 3px;
+  margin-top: 6px;
 }
 
 .custom_border{

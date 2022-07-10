@@ -29,7 +29,7 @@ const Footer = () => {
         </li>
       </Link>
       <Link href="/notification/alarm">
-        <li className={router.pathname === "/notification" ? `${styles.item_container} ${styles.selected}` : styles.item_container}>
+        <li className={router.pathname.includes("/notification")? `${styles.item_container} ${styles.selected}` : styles.item_container}>
           <NotificationsNoneIcon className={styles.icon}/>
           <p>알림</p>
         </li>

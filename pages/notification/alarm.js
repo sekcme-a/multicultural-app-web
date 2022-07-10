@@ -11,7 +11,7 @@ const Alarm = () => {
   const [list, setList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
-    if (user.uid) {
+    if (user?.uid) {
       db.collection("users").doc(user.uid).get().then((doc) => {
         setImportance(doc.data().importance)
         if (importance !== 0) {
@@ -35,6 +35,22 @@ const Alarm = () => {
             setIsLoading(false)
           })
         }
+      })
+    } else {
+      let temp = [];
+      db.collection("posts").where("importance", ">=", importance).limit(30).get().then((querySnapShot) => {
+        querySnapShot.forEach((doc) => {
+          temp.push({
+            id: doc.id,
+            data: doc.data(),
+          })
+        })
+        for (let i = 0; i < temp.length; i++){
+          temp[i].data.createdAt = getDate(temp[i].data.createdAt)
+        }
+        console.log(temp)
+        setList(temp)
+        setIsLoading(false)
       })
     }
   }, [])

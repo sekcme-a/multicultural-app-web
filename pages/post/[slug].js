@@ -136,7 +136,7 @@ const Post = (props) => {
     <div className={styles.main_container} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <div className={styles.header_container}>
         <div className={styles.overlay}>
-          <motion.div initial={{ opacity: 0, }} animate={{ opacity: 1, transition: { duration: 1 } }} className={styles.icons}>
+          <motion.div initial={{ opacity: 0}} animate={{ opacity: 1, transition: { duration: 1 } }} className={styles.icons}>
             <ArrowBackIcon className={styles.icon} onClick={onArrowBackIconClick} />
             <ShareIcon className={styles.icon} onClick={onShareIconClick}  />
             <Backdrop open={showBackdrop} onClick={handleCloseBackDrop} sx={{ color: '#fff', zIndex: 1000, }}>
