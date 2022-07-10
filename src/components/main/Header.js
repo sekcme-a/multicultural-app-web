@@ -134,7 +134,7 @@ const Header = (props) => {
               </a>
             </Link>
           </li>
-          {categoryList.map((category,index) => {
+          {categoryList?.map((category,index) => {
             return (
               <li key={index} className={styles.menu_items}>
                 <Link href={`/category/${category.id}`} passHref scroll={false}>
@@ -150,7 +150,7 @@ const Header = (props) => {
       </div>
       {router.pathname.includes("local")&&
         <ul className={styles.sub_header_container}>
-          {localList.map((local,index) => {
+          {localList?.map((local,index) => {
             return (
               <li key={index} className={styles.sub_menu_items}>
                 <Link href={`/local/${local.id}`} passHref>
@@ -165,7 +165,7 @@ const Header = (props) => {
       }
       {router.pathname.includes("country")&&
         <ul className={styles.sub_header_container}>
-          {countryList.map((country,index) => {
+          {countryList?.map((country,index) => {
             return (
               <li key={index} className={styles.sub_menu_items}>
                 <Link href={`/country/${country.id}`} passHref>
