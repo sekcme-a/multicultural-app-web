@@ -9,13 +9,18 @@ import { useInView } from "react-intersection-observer"
 
 const ThumbnailPost = (props) => {
   const [randomNumber, setRandomNumber] = useState()
+  const [id, setId] = useState("")
   useEffect(() => {
     //Random number from 0~8 (int)
     setRandomNumber(Math.floor(Math.random() * 9))
+    console.log(props.data)
   }, [])
-
+  useEffect(() => {
+    if(props.id) setId(props.id)
+    else setId(props.data.docId)
+  },[])
   return (
-    <Link href={`/post/[slug]`} as={`/post/${props.data.docId}`}>
+    <Link href={`/post/[slug]`} as={`/post/${id}`}>
       <div className={styles.main_container}>
         <div className={styles.header_body_container}>
           <div className={styles.overlay}>

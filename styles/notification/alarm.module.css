@@ -1,0 +1,11 @@
+.main_container{
+  padding-bottom: 59px;
+  width:100%;
+  /* height: 95%; */
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* padding-left: 7px;
+  padding-right: 7px; */
+}

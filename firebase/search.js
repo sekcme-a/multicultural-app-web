@@ -6,7 +6,7 @@ export const searchFor = async (collectionName, field, input, maxResultCount) =>
     try {
       await db.collection(collectionName).where(field, 'array-contains', input).limit(maxResultCount).get().then((querySnapShot) => {
         querySnapShot.forEach((doc) => {
-          temp.push({id: doc.id, data: doc.data()})
+          temp.push({ id: doc.id, data: doc.data() })
         })
       })
       resolve(temp)

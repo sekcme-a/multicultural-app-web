@@ -12,25 +12,26 @@ function MyApp({ Component, pageProps }) {
   const [isBottom, setIsBottom] = useState(false)
   const [screenHeight, setScreenHeight] = useState()
   const [touchStartX, setTouchStartX] = useState()
-  const [touchEndX,setTouchEndX] = useState()
+  const [touchEndX, setTouchEndX] = useState()
   const [isSwipeToRight, setIsSwipeToRight] = useState(false)
   const [isSwipeToLeft, setIsSwipeToLeft] = useState(false)
   const [scrollHeight, setScrollHeight] = useState()
   const router = useRouter()
   const bodyRef = useRef(null)
   const [es, setEs] = useState()
+  const [isHideHeaderUrl, setIsHideHeaderUrl] = useState(false)
 
   const onSelectedCategoryChange = (category) => {
     setSelectedCategory(category)
   }
 
   const onScroll = (e) => {
-      if (router.pathname === "/" || router.pathname.includes("/category") || router.pathname.includes("/local") || router.pathname.includes("/country")) {
-        setScrollHeight(e.target.scrollTop)
-      }
-    if (e.target.scrollHeight - e.target.scrollTop > e.target.clientHeight-1 && e.target.scrollHeight - e.target.scrollTop < e.target.clientHeight+1) {
+    if (router.pathname === "/" || router.pathname.includes("/category") || router.pathname.includes("/local") || router.pathname.includes("/country")) {
+      setScrollHeight(e.target.scrollTop)
+    }
+    if (e.target.scrollHeight - e.target.scrollTop > e.target.clientHeight - 1 && e.target.scrollHeight - e.target.scrollTop < e.target.clientHeight + 1) {
       setIsBottom(true)
-    }else if(isBottom)
+    } else if (isBottom)
       setIsBottom(false)
   };
   // useEffect(() => {
@@ -88,29 +89,39 @@ function MyApp({ Component, pageProps }) {
   //     setIsSwipe(true)
   // }
   const handleSwipeToRight = (swipe) => { setIsSwipeToRight(swipe) }
-  const handleSwipeToLeft = (swipe) => {setIsSwipeToLeft(swipe)}
-  const handleTouchStart = (x)=>{setTouchStartX(x)}
+  const handleSwipeToLeft = (swipe) => { setIsSwipeToLeft(swipe) }
+  const handleTouchStart = (x) => { setTouchStartX(x) }
   const handleTouchEnd = (x) => { setTouchEndX(x) }
   useEffect(() => {
     if (touchStartX - touchEndX > 95) {
       setIsSwipeToRight(true)
     }
-    if (touchEndX - touchStartX > 95){
+    if (touchEndX - touchStartX > 95) {
       setIsSwipeToLeft(true)
     }
   }, [touchEndX])
+
+
+  //특정 url들에서 header를 hide하기 위함
+  useEffect(() => {
+    if (router.pathname.includes("/setting") || router.pathname.includes("/login") || router.pathname.includes("/notification")) 
+      setIsHideHeaderUrl(true)
+    else
+      setIsHideHeaderUrl(false)
+  },[router.pathname])
 
   const { height, width } = useWindowDimensions()
   return (
     <AuthProvider>
       <AuthStateChanged>
-        {(!router.pathname.includes("setting") || !router.pathname.includes("/login")) ? <><Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} isSwipeToRight={isSwipeToRight}
+        {isHideHeaderUrl ?
+          <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
+          :
+          <><Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} isSwipeToRight={isSwipeToRight}
           handleSwipeToRight={handleSwipeToRight} isSwipeToLeft={isSwipeToLeft} handleSwipeToLeft={handleSwipeToLeft} />
           <div className="body_container" onScroll={onScroll} style={{ height: height }} ref={bodyRef} > 
             <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
           </div></>
-          :
-            <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
           }
           {!router.pathname.includes("rhksflwk") && <Footer />}
       </AuthStateChanged>

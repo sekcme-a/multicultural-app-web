@@ -8,14 +8,23 @@ export function withPublic(Component) {
     const auth = useAuth();
     const router = useRouter();
     const pathname = router.pathname;
-  
+    // const haveData = await db.collection("users").doc(auth.user.uid).get()
+    const haveData = 0;
     if (auth.user) {
-      db.collection("users").doc(auth.user.uid).set({
-        roles: ["user"], name: auth.user.displayName, photo: auth.user.photoURL,
-        phoneNumber: auth.user.phoneNumber, email: auth.user.email, emailVerified: auth.user.emailVerified
+      db.collection("users").doc(auth.user.uid).get().then((doc) => {
+        if (!doc.exists && auth.user) {
+          db.collection("users").doc(auth.user.uid).set({
+            roles: ["user"], name: auth.user.displayName, photo: auth.user.photoURL,
+            phoneNumber: auth.user.phoneNumber, email: auth.user.email, emailVerified: auth.user.emailVerified,
+            importance: 5, bookmark: [], like: []
+          })
+          router.replace("/setting")
+          return <div></div>
+        } else if (auth.user) {
+          router.replace("/setting")
+          return <div></div>
+        }
       })
-      router.replace("/setting")
-      return <div></div>
     }
     return <Component auth={auth} pathname={pathname} {...props} />
   }
