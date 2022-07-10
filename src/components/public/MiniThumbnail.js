@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import styles from "styles/public/MiniThumbnail.module.css"
+import styles from "styles/public/miniThumbnail.module.css"
 
 const MiniThumbnail = (props) => {
   console.log(props)
