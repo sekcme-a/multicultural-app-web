@@ -104,7 +104,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
       <AuthStateChanged>
-        {!router.pathname.includes("setting") ? <><Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} isSwipeToRight={isSwipeToRight}
+        {(!router.pathname.includes("setting") || !router.pathname.includes("/login")) ? <><Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} isSwipeToRight={isSwipeToRight}
           handleSwipeToRight={handleSwipeToRight} isSwipeToLeft={isSwipeToLeft} handleSwipeToLeft={handleSwipeToLeft} />
           <div className="body_container" onScroll={onScroll} style={{ height: height }} ref={bodyRef} > 
             <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />

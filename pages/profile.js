@@ -1,6 +1,5 @@
 import React from "react"
 import { withProtected } from "src/hook/route";
-import styles from "setting/profile.module.css"
 
 const Profile = ({ auth }) => {
   const { loginWithGoogle, userrole, logout } = auth

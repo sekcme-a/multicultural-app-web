@@ -2,11 +2,12 @@
 import React, {useEffect, useState} from "react"
 import { withProtected, withPublic } from "src/hook/route";
 import styles from "styles/setting/setting.module.css"
+import { firestore as db } from "firebase/firebase";
 
 const Setting = ({auth}) => {
-  const { user, loginWithGoogle, loginWithFacebook, error } = auth;
+  const { user, loginWithGoogle, loginWithFacebook, error, logout } = auth;
   useEffect(() => {
-    console.log(user)
+    // console.log(user.displayName)
   },[])
   return (
     <div className={styles.main_container}>
@@ -17,6 +18,10 @@ const Setting = ({auth}) => {
           <p className={styles.name}></p>
         </div>
       </div>
+
+      <p className={styles.item_container} onClick={logout}>
+        로그아웃
+      </p>
     </div>
   )
 }
