@@ -104,6 +104,19 @@ const NewArticle = () => {
               countryIdList.push(couLi.data().idList[i])
           }
         })
+        let arrayData = []
+        const titleAsWord = title.toLowerCase().split(" ")
+        for (let j = 0; j<titleAsWord.length; j++){
+          for (let i = 1; i < titleAsWord[j].length + 1; i++){
+            arrayData.push(titleAsWord[j].substring(0,i))
+          }
+        }
+        const tagAsWord = tag.toLowerCase().replace(/^\s+|\s+$/gm,'').split("#")
+        for (let j = 0; j<tagAsWord.length; j++){
+          for (let i = 1; i < tagAsWord[j].length + 1; i++){
+            arrayData.push(tagAsWord[j].substring(0,i))
+          }
+        }
         const postHashMap = {
           title: title,
           thumbnail: thumbnailUrl,
@@ -118,7 +131,8 @@ const NewArticle = () => {
           countryId: countryIdList,
           tag: tag,
           importance: parseInt(importance),
-          text: textData
+          text: textData,
+          keyword: arrayData,
         }
         const thumbnailHashMap = {
           title: title,

@@ -16,7 +16,7 @@ const Header = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const onSearchContainerClick = () => {
-    setIsSearchClick(true)
+    router.push('/search')
   }
   const onSearchContainerBlur = () => {
     setIsSearchClick(false)
@@ -104,9 +104,8 @@ const Header = (props) => {
           <Link href="/" passHref scroll={false}>
             <a><Image src={logo} width={150} height={27} layout="fixed" priority/></a>
           </Link>
-          <div className={styles.search_container} onClick={onSearchContainerClick} onBlur={onSearchContainerBlur}>
+          <div className={styles.search_container} onClick={onSearchContainerClick}>
             <SearchIcon sx={{fontSize: 15}} />
-            <input type="text" className={isSearchClick ? `${styles.search_input} ${styles.search_clicked}`: styles.search_input} placeholder="뉴스 검색" ></input>
           </div>
         </div>
         <ul className={styles.menu_container}>

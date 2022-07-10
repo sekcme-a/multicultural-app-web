@@ -15,27 +15,13 @@
 }
 .search_container{
   background-color: white;
-  padding: 3px 0 3px 6px;
   border-radius: 7px;
   color: black;
+  padding: 5px;
   border: 1px solid #ffe6e6;
   display: flex;
   align-items: center;
   font-size: small;
-}
-
-.search_input{
-  margin-left: 3px;
-  border: none;
-  width: 0px;
-  background-color: transparent;
-  transition: .8s ease-out;
-  font-size: 12px;
-  font-family: 'SUIT-Medium', 'Pretendard-Regular','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.search_clicked{
-    border: none;
-  width: 150px;
 }
 
 .menu_container{

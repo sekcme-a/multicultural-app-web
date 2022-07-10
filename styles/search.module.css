@@ -6,6 +6,25 @@
   padding-left: 7px;
   padding-right: 7px;
 }
+.skeleton_container{
+  /* margin: 28px 13px 0 13px; */
+  /* padding: 7px; */
+  width: 100%;
+  display: flex;
+  /* justify-content: s; */
+  flex-wrap: wrap;
+  padding: 20px;
+  padding-top: 35px;
+}
+.skeleton_search_container{
+  width: 100%;
+  display: flex;
+  /* justify-content: s; */
+  flex-wrap: wrap;
+  padding: 20px;
+  padding-top: 7px;
+}
+
 .search_container{
   margin: 13px 13px 0 13px;
   padding: 7px;

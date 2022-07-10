@@ -1,36 +1,27 @@
 import React, { useState, useEffect } from "react"
+import { firestore as db } from "firebase/firebase"
 
-
-const Button = () => {
-  const arr = [
-    { id: 1, name: "1번입니다." },
-    { id: 2, name: "2번입니다." },
-    { id: 3, name: "3번입니다." },
-  ];
-  const [pick, setPick] = useState(arr);
-  const [select, setSelect] = useState([]);
-
-  useEffect(() => {
-    console.log(select)
-  },[select])
-
-  return pick.map((item) => (
-    <div className="button_container" key={item.id}>
-      <p>id:{item.id}</p>
-      <button
-        onClick={() => {
-          !select.includes(item.id)
-            ? setSelect((select) => [...select, item.id])
-            : setSelect(select.filter((asdf) => asdf !== item.id));
-        }}
-        className={
-          select.includes(item) ? "button table_btn_s" : "button table_btn_ns"
-        }
-      >
-        선택
-      </button>
-    </div>
-  ));
-
+const Temp = () => {
+  useEffect(async() => {
+    // const posts = await db.collection("posts").get()
+    // posts.docs.map((doc) => {
+    //   let array = []
+    //   const title = doc.data().title.toLowerCase().split(" ")
+    //   for (let j = 0; j<title.length; j++){
+    //     for (let i = 1; i < title[j].length + 1; i++){
+    //       array.push(title[j].substring(0,i))
+    //     }
+    //   }
+    //   const tag = doc.data().tag.toLowerCase().replace(/^\s+|\s+$/gm,'').split("#")
+    //   for (let j = 0; j<tag.length; j++){
+    //     for (let i = 1; i < tag[j].length + 1; i++){
+    //       array.push(tag[j].substring(0,i))
+    //     }
+    //   }
+    //   db.collection("posts").doc(doc.id).update({ keyword: array })
+    // })
+  },[])
+  return(<div></div>)
 }
-export default Button
+
+export default Temp
