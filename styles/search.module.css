@@ -63,7 +63,7 @@
   border-radius: 5px;
   border: 1px solid black;
 }
-.item_container.category{
+/* .item_container.category{
 background-color: rgb(248, 255, 242);
 }
 .item_container.local{
@@ -71,7 +71,7 @@ background-color: rgb(242, 255, 255);
 }
 .item_container.country{
 background-color: rgb(255, 242, 242);
-}
+} */
 .item_container p{
   font-size: 15px;
 }
