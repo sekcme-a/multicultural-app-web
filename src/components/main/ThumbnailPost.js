@@ -6,10 +6,13 @@ import Link from "next/link"
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer"
+import { preventRouterBackWhenOnPost } from "src/hook/preventRouterBackWhenOnPost";
+import HoverPost from "src/components/post/HoverPost";
 
 const ThumbnailPost = (props) => {
   const [randomNumber, setRandomNumber] = useState()
   const [id, setId] = useState("")
+  const [isOnPost, setIsOnPost] = useState()
   useEffect(() => {
     //Random number from 0~8 (int)
     setRandomNumber(Math.floor(Math.random() * 9))
@@ -17,10 +20,16 @@ const ThumbnailPost = (props) => {
   useEffect(() => {
     if(props.id) setId(props.id)
     else setId(props.data.docId)
-  },[])
+  }, [])
+  preventRouterBackWhenOnPost(isOnPost, { handleIsOnPost(data) { setIsOnPost(data) } })
+
+  const onThumbnailClick = () => {
+    setIsOnPost(true)
+  }
   return (
-    <Link href={`/post/[slug]`} as={`/post/${id}`}>
-      <div className={styles.main_container}>
+    // <Link href={`/post/[slug]`} as={`/post/${id}`}>
+    <>
+      <div className={styles.main_container} onClick={onThumbnailClick}>
         <div className={styles.header_body_container}>
           <div className={styles.overlay}>
             <p className={randomNumber === 0 ? `${styles.category} ${styles.color1}` : randomNumber === 1 ? `${styles.category} ${styles.color2}` : 
@@ -40,7 +49,9 @@ const ThumbnailPost = (props) => {
           <h4>{`${props.data.createdAt} | ${props.data.author}`}</h4>
         </div>
       </div>
-    </Link>
+      {isOnPost && <HoverPost id={id} />}
+    </>
+    // </Link>
   )
 }
 export default ThumbnailPost

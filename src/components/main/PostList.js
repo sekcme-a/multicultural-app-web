@@ -107,7 +107,7 @@ const PostList = (props) => {
       {props.category === "posts" && <h1 className={styles.title}>실시간 뉴스</h1>}
       {list?.map((doc, index) => {
         return (
-          <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} />
+          <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} handleTouchStart = { props.handleTouchStart } handleSwipeToLeft={props.handleSwipeToLeft} handleTouchEnd = { props.handleTouchEnd } isSwipeToLeft={props.isSwipeToLeft}/>
         )
       })}
       {isLoading && <CircularProgress size={17} />}

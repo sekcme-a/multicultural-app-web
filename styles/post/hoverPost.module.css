@@ -1,9 +1,17 @@
 
 .main_container{
-  /* margin-top:15px; */
+  position: absolute;
+  top:0;
+  left:0;
+  background-color: white;
+  z-index: 9999999999999;
+  padding-bottom: 55px;
+  width: 100%;
+   transition: 1s;
 }
 .hide{
-  display: none;
+  top:0;
+  right: 0;
 }
 .warning{
   margin-top: 150px;

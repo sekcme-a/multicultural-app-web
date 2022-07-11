@@ -7,6 +7,7 @@ import Header from "src/components/main/Header"
 import Footer from "src/components/main/Footer"
 import { useRouter } from "next/router"
 import Post from "src/components/Post"
+import {useWindowDimensions} from "src/hook/useWindowDimensions"
 
 function MyApp({ Component, pageProps }) {
   const [selectedCategory, setSelectedCategory] = useState("")
@@ -52,35 +53,7 @@ function MyApp({ Component, pageProps }) {
   //   };
   // })
 
-  const useWindowDimensions = () => {
-    const hasWindow = typeof window !== "undefined"
 
-    function getWindowDimensions() {
-      const width = hasWindow ? window.innerWidth : null
-      const height = hasWindow ? window.innerHeight : null
-      return {
-        width,
-        height,
-      }
-    }
-
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    )
-
-    useEffect(() => {
-      if (hasWindow) {
-        function handleResize() {
-          setWindowDimensions(getWindowDimensions())
-        }
-
-        window.addEventListener("resize", handleResize)
-        return () => window.removeEventListener("resize", handleResize)
-      }
-    }, [hasWindow])
-
-    return windowDimensions
-  }
 
   // const onTouchStart = (e) => {
   //   console.log(e)
