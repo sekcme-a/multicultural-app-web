@@ -78,7 +78,6 @@ const Header = (props) => {
         router.push('/')
       else {
         for (let i = categoryList.length - 1; i >= 0; i--){
-          console.log(categoryList[i].id)
           if(categoryList[i].id===router.query.slug)
             router.push(`/category/${categoryList[i-1].id}`)
         }

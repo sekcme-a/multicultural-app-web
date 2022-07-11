@@ -30,7 +30,6 @@ const Alarm = () => {
             for (let i = 0; i < temp.length; i++){
               temp[i].data.createdAt = getDate(temp[i].data.createdAt)
             }
-            console.log(temp)
             setList(temp)
             setIsLoading(false)
           })
@@ -48,7 +47,6 @@ const Alarm = () => {
         for (let i = 0; i < temp.length; i++){
           temp[i].data.createdAt = getDate(temp[i].data.createdAt)
         }
-        console.log(temp)
         setList(temp)
         setIsLoading(false)
       })

@@ -13,7 +13,6 @@ const ThumbnailPost = (props) => {
   useEffect(() => {
     //Random number from 0~8 (int)
     setRandomNumber(Math.floor(Math.random() * 9))
-    console.log(props.data)
   }, [])
   useEffect(() => {
     if(props.id) setId(props.id)

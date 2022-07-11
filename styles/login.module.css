@@ -72,6 +72,15 @@
   width: 70%;
   margin-top: 10px;
 }
+.button_container span{
+  font-size: 17px;
+  padding-left: 10px;
+}
+
+.button_container2 span{
+  font-size: 17px;
+  padding-left: 10px;
+}
 
 @media (max-width: 400px) {
 .logo_container{

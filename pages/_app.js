@@ -6,6 +6,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react"
 import Header from "src/components/main/Header"
 import Footer from "src/components/main/Footer"
 import { useRouter } from "next/router"
+import Post from "src/components/Post"
 
 function MyApp({ Component, pageProps }) {
   const [selectedCategory, setSelectedCategory] = useState("")
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }) {
   const bodyRef = useRef(null)
   const [es, setEs] = useState()
   const [isHideHeaderUrl, setIsHideHeaderUrl] = useState(false)
+  const [isPostUrl, setIsPostUrl] = useState(false)
 
   const onSelectedCategoryChange = (category) => {
     setSelectedCategory(category)
@@ -104,18 +106,29 @@ function MyApp({ Component, pageProps }) {
 
   //특정 url들에서 header를 hide하기 위함
   useEffect(() => {
+    console.log(router.asPath)
     if (router.pathname.includes("/setting") || router.pathname.includes("/login") || router.pathname.includes("/notification")) 
       setIsHideHeaderUrl(true)
-    else
+    else if (router.pathname.includes("/post")) {
+      setIsHideHeaderUrl(true)
+      setIsPostUrl(true)
+    }
+    else {
       setIsHideHeaderUrl(false)
-  },[router.pathname])
+      setIsPostUrl(false)
+    }
+  }, [router.pathname])
+  
 
   const { height, width } = useWindowDimensions()
   return (
     <AuthProvider>
       <AuthStateChanged>
         {isHideHeaderUrl ?
-          <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
+          <>
+            <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
+            {isPostUrl && <Post />}
+          </>
           :
           <><Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} isSwipeToRight={isSwipeToRight}
           handleSwipeToRight={handleSwipeToRight} isSwipeToLeft={isSwipeToLeft} handleSwipeToLeft={handleSwipeToLeft} />

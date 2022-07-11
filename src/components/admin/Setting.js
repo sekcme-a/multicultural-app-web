@@ -100,8 +100,6 @@ const Setting = (props) => {
           tempIdOrder.push(idList[j])
       }
     }
-    console.log(categoryOrderList.length)
-    console.log(tempIdOrder)
     if (categoryOrderList.length === tempIdOrder.length) {
       try {
         db.collection(props.loc).doc("list").set({"list": categoryOrderList, "idList": tempIdOrder}) 

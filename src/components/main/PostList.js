@@ -13,7 +13,6 @@ const PostList = (props) => {
   const router = useRouter()
   const fetchCountInOneLoad = 6
   const lazyRoot = React.useRef(null)
-  console.log("useRouterScroll: ", useRouterScroll())
   const {updateScroll = () => {}} = useRouterScroll() || {}
 
   useEffect(() => {
