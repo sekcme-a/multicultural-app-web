@@ -13,7 +13,7 @@ export default function Home(props) {
   const { user, userrole, logout, setUserrole } = useAuth();
   const [isPostSelected, setIsPostSelected] = useState()
   const [locationKeys, setLocationKeys] = useState([]);
-  const [isOpenPost, setIsOpenPost] =useState()
+  const [isOnPost, setIsOnPost] =useState()
   const router = useRouter()
 
   useEffect(() => {
@@ -34,33 +34,33 @@ export default function Home(props) {
     //     console.log(router)
     // router.
     //       router.beforePopState(({ as }) => {
-    //         if (as !== router.asPath && !isOpenPost) {
+    //         if (as !== router.asPath && !isOnPost) {
     //           // router.events.emit('routeChangeError');
     //           router.replace(router, router.asPath, { shallow: true });
-    //           setIsOpenPost(true)
+    //           setIsOnPost(true)
     //           return false;
     //         }
     //         else {
-    //           setIsOpenPost(false)
+    //           setIsOnPost(false)
     //           return true;
     //         }
     const routeChangeStart = url => {
-      if (isOpenPost) {
+      if (isOnPost) {
         console.log("here")
-        setIsOpenPost(false)
+        setIsOnPost(false)
         throw new Router.Abort();
         throw err
       } else {
         return true;
       }
-      // if (isOpenPost) {
+      // if (isOnPost) {
       //   // router.events.emit('routeChangeError');
       //   router.replace(router, router.asPath, { shallow: true });
-      //   setIsOpenPost(true)
+      //   setIsOnPost(true)
       //   return true;
       // }
       // else {
-      //   setIsOpenPost(false)
+      //   setIsOnPost(false)
       //   return true;
       // }
     };
@@ -80,13 +80,13 @@ export default function Home(props) {
     // useEffect(() => {
     //   let isWarned = false
     //   const routeChangeStart = (url) => {
-    //     if (Router.asPath !== url && isOpenPost && !isWarned) {
+    //     if (Router.asPath !== url && isOnPost && !isWarned) {
     //       isWarned = true
     //       // if (window.confirm(mess)) {
     //         // Router.push(url)
     //       // } else {
     //         isWarned = false
-    //         setIsOpenPost(false)
+    //         setIsOnPost(false)
     //         Router.events.emit('routeChangeError')
     //         Router.replace(Router.asPath, Router.asPath, { shallow: true });
     //         // eslint-disable-next-line no-throw-literal
@@ -96,7 +96,7 @@ export default function Home(props) {
     //   }
 
     //   const beforeUnload = (e) => {
-    //     if (isOpenPost && !isWarned) {
+    //     if (isOnPost && !isWarned) {
     //       const event = e || window.event
     //       event.returnValue = mess
     //       return mess
@@ -107,7 +107,7 @@ export default function Home(props) {
     //   Router.events.on('routeChangeStart', routeChangeStart)
     //   window.addEventListener('beforeunload', beforeUnload)
     //   Router.beforePopState(({ url }) => {
-    //     if (Router.asPath !== url && isOpenPost && !isWarned) {
+    //     if (Router.asPath !== url && isOnPost && !isWarned) {
     //       isWarned = true
     //       // if (window.confirm(mess)) {
     //       //   return true
@@ -128,7 +128,7 @@ export default function Home(props) {
     //       return true
     //     })
     //   }
-    // }, [mess, isOpenPost])
+    // }, [mess, isOnPost])
   
     const mess =  'Are you sure that you want to leave?'
     const shouldWarn = true
@@ -140,11 +140,14 @@ export default function Home(props) {
         console.log(`router.aspth: ${Router.pathname}`)
         if (Router.asPath !== url && shouldWarn && !isWarned) {
           isWarned = true
-          if (!isOpenPost) {
+          if (!isOnPost) {
             Router.push(url)
           } else if(url===Router.asPath){
-            setIsOpenPost(false)
-            console.log(isOpenPost)
+            setIsOnPost(false)
+            if(window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify("isOnPost=false"))
+            }
+            console.log(isOnPost)
             isWarned = false
             Router.events.emit('routeChangeError')
             Router.replace(Router.asPath, Router.asPath, { shallow: true });
@@ -168,11 +171,13 @@ export default function Home(props) {
       Router.beforePopState(({ url }) => {
         if (Router.asPath !== url && shouldWarn && !isWarned) {
           isWarned = true
-          if (!isOpenPost) {
+          if (!isOnPost) {
             return true
           } else{
-            setIsOpenPost(false)
-            console.log(isOpenPost)
+            setIsOnPost(false)
+            if(window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify("isOnPost=false"))
+            }
             isWarned = false
             window.history.pushState(null, '', url)
             Router.replace(Router.asPath, Router.asPath, { shallow: true });
@@ -189,10 +194,13 @@ export default function Home(props) {
           return true
         })
       }
-    }, [mess, shouldWarn, isOpenPost])
+    }, [mess, shouldWarn, isOnPost])
   
   const onPostClick = () => {
-    setIsOpenPost(true)
+    setIsOnPost(true)
+    if(window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(JSON.stringify("isOnPost=true"))
+    }
   }
   return (
     <div>
@@ -203,7 +211,7 @@ export default function Home(props) {
       </Head>
       <MainNews />
       <div onClick={onPostClick}>testButton=openPost</div>
-      <p>{`Post:${isOpenPost}`}</p>
+      <p>{`Post:${isOnPost}`}</p>
       <PostList isBottom={props.isBottom} category="posts" handleTouchStart={props.handleTouchStart} handleTouchEnd={props.handleTouchEnd} />
     </div>
   )
