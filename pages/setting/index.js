@@ -105,7 +105,7 @@ const Setting = ({auth}) => {
           피드백 보내기
         </p>
       </Link>
-      <Link href="/setting/appinfo">
+      <Link href="/login">
         <p className={styles.item_container} onClick={logout}>
           로그아웃
         </p>

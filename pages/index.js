@@ -203,6 +203,7 @@ export default function Home(props) {
       </Head>
       <MainNews />
       <div onClick={onPostClick}>testButton=openPost</div>
+      <p>{`Post:${isOpenPost}`}</p>
       <PostList isBottom={props.isBottom} category="posts" handleTouchStart={props.handleTouchStart} handleTouchEnd={props.handleTouchEnd} />
     </div>
   )
