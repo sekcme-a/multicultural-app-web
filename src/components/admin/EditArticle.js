@@ -26,7 +26,7 @@ const EditArticle = () => {
   const [docId, setDocId] = useState("")
   const router = useRouter()
 
-  useLeavePageConfirm()
+  // useLeavePageConfirm()
 
   const [textData, setTextData] = useState()
   const [isLoading, setIsLoading] = useState(true)

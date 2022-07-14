@@ -28,7 +28,7 @@ const NewArticle = () => {
   // const [text, setText] = useState();
   let text="";
 
-  useLeavePageConfirm()
+  // useLeavePageConfirm()
 
   const [textData, setTextData] = useState()
   const [isLoading, setIsLoading] = useState(true)
