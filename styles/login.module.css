@@ -40,8 +40,9 @@
 .logo_container{
   border-radius: 10px;
   overflow: hidden;
-  width: 400px;
-  height: 60px;
+  width: 350px !important;
+  height: 50px !important;
+  padding: 10px;
   object-fit: cover !important;
   position: relative;
 }

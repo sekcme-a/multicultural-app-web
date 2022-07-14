@@ -110,7 +110,7 @@ const PostList = (props) => {
           <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} handleTouchStart = { props.handleTouchStart } handleSwipeToLeft={props.handleSwipeToLeft} handleTouchEnd = { props.handleTouchEnd } isSwipeToLeft={props.isSwipeToLeft}/>
         )
       })}
-      {isLoading && <CircularProgress size={17} />}
+      {isLoading && <CircularProgress size={20} />}
     </div>
   )
 }

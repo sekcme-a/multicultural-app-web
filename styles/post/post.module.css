@@ -30,6 +30,7 @@
   /* justify-content: flex-end; */
   flex-wrap: wrap;
   word-break: keep-all;
+  overflow: hidden;
   align-content: space-between;
 }
 .icons{
