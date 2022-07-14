@@ -8,7 +8,6 @@ import { uploadImage } from "firebase/uploadImage"
 import Loader from "components/public/Loader"
 import useAuth from "src/hook/auth";
 import { compressImage } from "src/hook/compressImage"
-import { useLeavePageConfirm } from "src/hook/useLeavePageConfirm"
 const Editor = dynamic(import('components/public/Editor'), {
   ssr: false,
   loading: () => <p>로딩중 ...</p>,
