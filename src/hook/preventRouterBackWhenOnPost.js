@@ -30,7 +30,6 @@ export const preventRouterBackWhenOnPost = (isOnPost, {handleIsOnPost}) => {
           if(window.ReactNativeWebView) {
             window.ReactNativeWebView.postMessage(JSON.stringify("isOnPost=false"))
           }
-          console.log(isOnPost)
           isWarned = false
           Router.events.emit('routeChangeError')
           Router.replace(Router.asPath, Router.asPath, { shallow: true });
@@ -41,6 +40,7 @@ export const preventRouterBackWhenOnPost = (isOnPost, {handleIsOnPost}) => {
     }
 
     const beforeUnload = (e) => {
+      e.preventDefault()
       if (shouldWarn && !isWarned) {
         const event = e || window.event
         event.returnValue = mess
@@ -50,7 +50,7 @@ export const preventRouterBackWhenOnPost = (isOnPost, {handleIsOnPost}) => {
     }
 
     Router.events.on('routeChangeStart', routeChangeStart)
-    window.addEventListener('beforeunload', beforeUnload)
+    window.addEventListener('beforeunload', beforeUnload, {capture: true})
     Router.beforePopState(({ url }) => {
       if (Router.asPath !== url && shouldWarn && !isWarned) {
         isWarned = true
@@ -64,6 +64,7 @@ export const preventRouterBackWhenOnPost = (isOnPost, {handleIsOnPost}) => {
           isWarned = false
           window.history.pushState(null, '', url)
           Router.replace(Router.asPath, Router.asPath, { shallow: true });
+          console.log("hererer")
           return false
         }
       }
@@ -72,7 +73,7 @@ export const preventRouterBackWhenOnPost = (isOnPost, {handleIsOnPost}) => {
 
     return () => {
       Router.events.off('routeChangeStart', routeChangeStart)
-      window.removeEventListener('beforeunload', beforeUnload)
+      window.removeEventListener('beforeunload', beforeUnload , {capture: true})
       Router.beforePopState(() => {
         return true
       })
