@@ -27,7 +27,7 @@ const Image = (props) => {
     }
   }, [props.loading, props.priority]);
 
-  return <NextImage loading={loading} {...props} />;
+  return <NextImage loading={loading} {...props} quality={props.quality}/>;
 };
 
 const isMobileConnection = () => {

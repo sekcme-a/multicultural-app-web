@@ -9,6 +9,7 @@ import { searchFor } from "firebase/search";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import PostList from "src/components/main/PostList";
+import MiniPostList from "src/components/main/MiniPostList";
 
 const Search = () => {
   const [input, setInput] = useState("")
@@ -55,22 +56,8 @@ const Search = () => {
     setIsSearchMode(true)
     setIsLoading(true)
     const result = await searchFor("posts", "keyword", input, 30)
-    for (let i = 0; i < result.length; i++){
-      result[i].data.createdAt = getDate(result[i].data.createdAt)
-    }
     setResultList(result)
     setIsLoading(false)
-  }
-  const getDate = (d) => {
-    const date = new Date(d.toMillis())
-    if(date.getMonth()+1<10 && date.getDate()<10)
-      return date.getFullYear() + ".0" + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1<10 && date.getDate()>=10)
-      return date.getFullYear() + ".0" + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1>=10 && d.getDate()<10)
-      return date.getFullYear() + "." + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1>=10 && date.getDate()>=10)
-      return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
   }
   if (isLoading&&isSearchMode===false) {
     return (
@@ -133,6 +120,7 @@ const Search = () => {
                 )
               })} */}
                 {/* <PostList list={resultList} mode="custom" category="custom"/> */}
+                <MiniPostList data={resultList} />
               </>
             }
           </>
