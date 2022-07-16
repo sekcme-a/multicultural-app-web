@@ -15,6 +15,7 @@ const Footer = () => {
 
   const onBackClick = () => {
     popHistory()
+    console.log(isOnPost)
     if (isOnPost) {
       setShowId(history[history.length-1])
     }

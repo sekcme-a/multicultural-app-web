@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react"
 import Image from "hook/Image"
 import styles from "styles/main/miniThumbnail.module.css"
+import useNavi from "src/hook/customNavigation"
 
 const MiniThumbnail = (props) => {
+  const { pushHistory } = useNavi()
+  const onThumbnailClick = () => {
+    pushHistory(props.data.id)
+  }
   return (
-    <div className={styles.main_container}>
+    <div className={styles.main_container} onClick={onThumbnailClick}>
       <div className={styles.content_container}>
         <h2>{`[${props.data.category}]`}</h2>
         <h3>{props.data.title}</h3>

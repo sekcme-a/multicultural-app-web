@@ -87,6 +87,7 @@ const HoverPost = (props) => {
 
   const onBack = () => {
     popHistory()
+    console.log(isOnPost)
     if (isOnPost) {
       setShowId(history[history.length-1])
     }

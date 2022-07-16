@@ -86,17 +86,17 @@ const Post = (props) => {
     },3000)
   }
   const onTouchStart = (e) => {
-    props.handleTouchStart(e.targetTouches[0].clientX)
+    // props.handleTouchStart(e.targetTouches[0].clientX)
   }
   const onTouchEnd = (e) => {
-    props.handleTouchEnd(e.changedTouches[0].clientX)
+    // props.handleTouchEnd(e.changedTouches[0].clientX)
   }
-  useEffect(() => {
-    if (props.isSwipeToLeft) {
-      router.back()
-      props.handleSwipeToLeft(false)
-    }
-  }, [props.isSwipeToLeft])
+  // useEffect(() => {
+  //   if (props.isSwipeToLeft) {
+  //     router.back()
+  //     props.handleSwipeToLeft(false)
+  //   }
+  // }, [props.isSwipeToLeft])
   
   const onMoreCommentClick = () => {
     router.push(`/comments/${slug}`)

@@ -12,7 +12,7 @@ import useNavi from "src/hook/customNavigation";
 const ThumbnailPost = (props) => {
   const [randomNumber, setRandomNumber] = useState()
   const [id, setId] = useState("")
-  const [isOpenThisPost, setIsOpenThisPost] = useState()
+  // const [isOpenThisPost, setIsOpenThisPost] = useState()
   const { history, pushHistory, isOnPost} = useNavi()
   useEffect(() => {
     //Random number from 0~8 (int)
@@ -24,7 +24,7 @@ const ThumbnailPost = (props) => {
   }, [])
 
   const onThumbnailClick = () => {
-    setIsOpenThisPost(true)
+    // setIsOpenThisPost(true)
     pushHistory(id)
   }
   return (
@@ -40,7 +40,7 @@ const ThumbnailPost = (props) => {
             </p>
             <BookmarkBorderIcon className={styles.icon} />
           </div>
-          <Image src={props.data.thumbnail} quality={65} alt={props.data.title} placeholder="blur" blurDataURL="/public/placeholder.png" layout="fill" objectFit="cover" objectPosition="center" priority={true} />
+          <Image src={props.data.thumbnail} quality={20} alt={props.data.title} placeholder="blur" blurDataURL="/public/placeholder.png" layout="fill" objectFit="cover" objectPosition="center" priority={true} />
         </div>
         <div className={styles.footer_container}>
           <h2>{props.data.title}</h2>

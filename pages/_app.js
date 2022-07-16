@@ -101,7 +101,7 @@ function MyApp({ Component, pageProps }) {
         <NaviProvider>
           {isHideHeaderUrl ?
             <>
-              <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
+              <Component {...pageProps} isBottom={isBottom} />
             </>
             :
             <><Header handleChange={onSelectedCategoryChange}/>

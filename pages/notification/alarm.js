@@ -3,7 +3,7 @@ import styles from "styles/notification/alarm.module.css"
 import useAuth from 'src/hook/auth'
 import { firestore as db } from "firebase/firebase"
 import NoticationHeader from "src/components/notification/NoticationHeader"
-import ThumbnailPost from "src/components/main/ThumbnailPost"
+import MiniPostList from "src/components/main/MiniPostList"
 
 const Alarm = () => {
   const { user, userrole, logout, setUserrole } = useAuth();
@@ -24,12 +24,13 @@ const Alarm = () => {
             querySnapShot.forEach((doc) => {
               temp.push({
                 id: doc.id,
-                data: doc.data(),
+                title: doc.data().title,
+                thumbnail: doc.data().thumbnail,
+                tag: doc.data().tag,
+                category: doc.data().category,
+                author: doc.data().author,
               })
             })
-            for (let i = 0; i < temp.length; i++){
-              temp[i].data.createdAt = getDate(temp[i].data.createdAt)
-            }
             setList(temp)
             setIsLoading(false)
           })
@@ -41,39 +42,23 @@ const Alarm = () => {
         querySnapShot.forEach((doc) => {
           temp.push({
             id: doc.id,
-            data: doc.data(),
+            title: doc.data().title,
+            thumbnail: doc.data().thumbnail,
+            tag: doc.data().tag,
+            category: doc.data().category,
+            author: doc.data().author,
           })
         })
-        for (let i = 0; i < temp.length; i++){
-          temp[i].data.createdAt = getDate(temp[i].data.createdAt)
-        }
         setList(temp)
         setIsLoading(false)
       })
     }
   }, [])
-  const getDate = (d) => {
-    const date = new Date(d.toMillis())
-    if(date.getMonth()+1<10 && date.getDate()<10)
-      return date.getFullYear() + ".0" + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1<10 && date.getDate()>=10)
-      return date.getFullYear() + ".0" + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1>=10 && d.getDate()<10)
-      return date.getFullYear() + "." + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1>=10 && date.getDate()>=10)
-      return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-  }
 
   return (
     <div className={styles.main_container}>
       <NoticationHeader loc="alarm" />
-      {
-        !isLoading && list.map((data, index) => {
-          return(
-            <ThumbnailPost data={data.data} key={index} id={data.id} />
-          )
-        })
-      }
+      <MiniPostList data={list} />
     </div>
   )
 }
