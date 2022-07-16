@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react"
 import { firestore as db } from "firebase/firebase"
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import styles from "styles/post/hoverPost.module.css"
 import Comments from "components/post/Comments"
 import OtherNews from "components/post/OtherNews"
@@ -36,6 +36,22 @@ const HoverPost = (props) => {
     //Random number from 0~8 (int)
     setRandomNumber(Math.floor(Math.random() * 9))
   }, [])
+
+  useEffect(() => {
+    const handler = (url) => {
+      if (isOnPost) {
+        onBack()
+        window.history.pushState(null, '', url)
+        throw "Route Canceled";
+      }
+    };
+
+    Router.events.on("routeChangeStart", handler);
+
+    return () => {
+      Router.events.off("routeChangeStart", handler);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
