@@ -8,6 +8,7 @@ import ThumbnailPost from "src/components/main/ThumbnailPost"
 import { searchFor } from "firebase/search";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import PostList from "src/components/main/PostList";
 
 const Search = () => {
   const [input, setInput] = useState("")
@@ -123,14 +124,15 @@ const Search = () => {
               :
               <>
               <h3 className={styles.title}>{`${resultList.length}개의 검색결과`}</h3>
-              {resultList.length !== 0 && resultList.map((data, index) => {
+              {/* {resultList.length !== 0 && resultList.map((data, index) => {
                 return (
                   // <MiniThumbnail data={data} />
                   <>
                   <ThumbnailPost data={data.data} key={index} id={data.id} />
                   </>
                 )
-              })}
+              })} */}
+                {/* <PostList list={resultList} mode="custom" category="custom"/> */}
               </>
             }
           </>

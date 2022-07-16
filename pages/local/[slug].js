@@ -8,7 +8,7 @@ const Local = (props) => {
   const { slug } = router.query
   
   return (                       
-    <PostList isBottom={props.isBottom} category={slug} mode="local" handleTouchStart={props.handleTouchStart} handleTouchEnd={props.handleTouchEnd}></PostList>
+    <PostList isBottom={props.isBottom} category={slug} mode="local" ></PostList>
   )            
 }
 export default Local

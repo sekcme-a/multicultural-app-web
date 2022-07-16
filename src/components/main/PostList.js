@@ -5,6 +5,16 @@ import { firestore as db } from "firebase/firebase"
 import ThumbnailPost from "src/components/main/ThumbnailPost"
 import CircularProgress from '@mui/material/CircularProgress';
 import { useRouterScroll } from '@moxy/next-router-scroll';
+import useNavi from "src/hook/customNavigation"
+import HoverPost from "src/components/post/HoverPost"
+
+
+
+/*
+<PostList isBottom={props.isBottom} category="검색할 컬렉션명" mode="local이나 country" />
+isBottom 필수
+
+*/
 
 const PostList = (props) => {
   const [list, setList] = useState([])
@@ -13,7 +23,8 @@ const PostList = (props) => {
   const router = useRouter()
   const fetchCountInOneLoad = 6
   const lazyRoot = React.useRef(null)
-  const {updateScroll = () => {}} = useRouterScroll() || {}
+  const { updateScroll = () => { } } = useRouterScroll() || {}
+  const {setTouchStartXY, setTouchEndXY, isOnPost, history} = useNavi()
 
   useEffect(() => {
     updateScroll()
@@ -43,12 +54,12 @@ const PostList = (props) => {
         count++
         if (count === fetchCountInOneLoad)
           setLastDoc(doc)
-      })
-      setList(tempIdList)
-      setIsLoading(false)
-    },0)
-  }
-    fetchData()
+        })
+        setList(tempIdList)
+        setIsLoading(false)
+      },0)
+    }
+      fetchData()
   }, [props.category])
 
   useEffect(() => {
@@ -97,19 +108,20 @@ const PostList = (props) => {
       return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
   }
   const onTouchStart = (e) => {
-    props.handleTouchStart(e.targetTouches[0].clientX)
+    setTouchStartXY(e.targetTouches[0].clientX, e.targetTouches[0].clientY)
   }
   const onTouchEnd = (e) => {
-    props.handleTouchEnd(e.changedTouches[0].clientX)
+    setTouchEndXY(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
   }
   return (
     <div className={props.mode==="local"||props.mode==="country" ? `${styles.main_container} ${styles.add_margin}`:styles.main_container} ref={lazyRoot} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {props.category === "posts" && <h1 className={styles.title}>실시간 뉴스</h1>}
       {list?.map((doc, index) => {
         return (
-          <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} handleTouchStart = { props.handleTouchStart } handleSwipeToLeft={props.handleSwipeToLeft} handleTouchEnd = { props.handleTouchEnd } isSwipeToLeft={props.isSwipeToLeft}/>
+          <ThumbnailPost data={doc} key={index} lazyRoot={lazyRoot} />
         )
       })}
+      {isOnPost && <HoverPost id={history[history.length-1]} />}
       {isLoading && <CircularProgress size={20} />}
     </div>
   )

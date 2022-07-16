@@ -15,6 +15,7 @@ import Backdrop from '@mui/material/Backdrop';
 import ShareLink from "components/public/ShareLink"
 import Alert from '@mui/material/Alert';
 import { useWindowDimensions } from "src/hook/useWindowDimensions";
+import useNavi from "src/hook/customNavigation";
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>로딩중 ...</p>,
@@ -29,6 +30,7 @@ const HoverPost = (props) => {
   const [showBackdrop, setShowBackdrop] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const router = useRouter();
+  const { history, popHistory, isOnPost, pushHistory, showId, setShowId, isSwipeToLeft, setIsSwipeToLeft } = useNavi()
   const {height, width} = useWindowDimensions()
   useEffect(() => {
     //Random number from 0~8 (int)
@@ -37,7 +39,8 @@ const HoverPost = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const doc = await db.collection("posts").doc(props.id).get()
+      setIsLoading(true)
+      const doc = await db.collection("posts").doc(showId).get()
       if (doc.data()) {
         setHasData(true)
         setData({
@@ -55,8 +58,13 @@ const HoverPost = (props) => {
         setHasData(false)
       }
     }
-    fetchData()
-  }, [])
+    if(showId!=="")
+      fetchData()
+  }, [showId])
+
+  useEffect(() => {
+    setShowId(props.id)
+  },[])
 
   const getDate = (d) => {
     const date = new Date(d.toMillis())
@@ -70,8 +78,19 @@ const HoverPost = (props) => {
       return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
   }
 
-  const onArrowBackIconClick = () => {
-    router.back()
+  useEffect(() => {
+    if (isSwipeToLeft) {
+      onBack()
+      setIsSwipeToLeft(false)
+    }
+  },[isSwipeToLeft])
+
+  const onBack = () => {
+    popHistory()
+    if (isOnPost) {
+      setShowId(history[history.length-1])
+    }
+    else router.back()
   }
   const onShareIconClick = () => {
     setShowBackdrop(true)
@@ -87,7 +106,16 @@ const HoverPost = (props) => {
   }
   
   const onMoreCommentClick = () => {
-    router.push(`/comments/${props.id}`)
+    // router.push(`/comments/${props.id}`)
+    //잠시실험
+    if (history.length === 1) {
+      pushHistory("iliALmZzb9ALyjh3lli3")
+      setShowId("iliALmZzb9ALyjh3lli3")
+    }
+    else if (history.length === 2) {
+      pushHistory("THd97DSAkAZNFDLIZXDN")
+      setShowId("THd97DSAkAZNFDLIZXDN")
+    }
   }
 
   if (isLoading) {
@@ -137,40 +165,43 @@ const HoverPost = (props) => {
   }
   return (
     <div className={styles.main_container} style={{ minHeight: height }}>
-      <div className={styles.header_container}>
-        <div className={styles.overlay}>
-          <motion.div initial={{ opacity: 0}} animate={{ opacity: 1, transition: { duration: 1 } }} className={styles.icons}>
-            <ArrowBackIcon className={styles.icon} onClick={onArrowBackIconClick} />
-            <ShareIcon className={styles.icon} onClick={onShareIconClick}  />
-            <Backdrop open={showBackdrop} onClick={handleCloseBackDrop} sx={{ color: '#fff', zIndex: 1000, }}>
-              <ShareLink url={`https://multicultural-news.netlify.app/post/${props.id}`} handleCopy={handleCopy} />
-            </Backdrop>
-          </motion.div>
-          <div className={styles.info_container}>
-            <motion.h2 initial={{ opacity: 0, x:-15 }} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.3} }}>{data.title}</motion.h2>
-            <motion.h3 initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.6 } }}>{data.tag}</motion.h3>
-            <motion.p initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.9 } }}>{`${data.createdAt} | ${data.author}`}</motion.p>
+      <div>
+        <div className={styles.header_container}>
+          <div className={styles.overlay}>
+            <motion.div initial={{ opacity: 0}} animate={{ opacity: 1, transition: { duration: 1 } }} className={styles.icons}>
+              <ArrowBackIcon className={styles.icon} onClick={onBack} />
+              <ShareIcon className={styles.icon} onClick={onShareIconClick}  />
+              <Backdrop open={showBackdrop} onClick={handleCloseBackDrop} sx={{ color: '#fff', zIndex: 1000, }}>
+                <ShareLink url={`https://multicultural-news.netlify.app/post/${history[history.length-1]}`} handleCopy={handleCopy} />
+              </Backdrop>
+            </motion.div>
+            <div className={styles.info_container}>
+              <motion.h2 initial={{ opacity: 0, x:-15 }} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.3} }}>{data.title}</motion.h2>
+              <motion.h3 initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.6 } }}>{data.tag}</motion.h3>
+              <motion.p initial={{ opacity: 0, x:-15}} animate={{ opacity: 1, x:0, transition: { duration: 1.0, delay:0.9 } }}>{`${data.createdAt} | ${data.author}`}</motion.p>
+            </div>
           </div>
+          <Image src={data.thumbnail} alt={data.title}placeholder="blur" blurDataURL="/public/placeholder.png" layout="fill" objectFit="cover" objectPosition="center"  priority={true}/>
+          <motion.div className={showBackdrop ? styles.hide : styles.bookmark_icon_container}
+            initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0, transition: { duration: 2, delay: 1.5 } }}>
+            <BookmarkBorderIcon className={styles.bookmark_icon} />
+          </motion.div>
+          <motion.p className={ showBackdrop ? styles.hide : (randomNumber === 0 ? `${styles.category} ${styles.color1}` : randomNumber === 1 ? `${styles.category} ${styles.color2}` :
+            randomNumber === 2 ? `${styles.category} ${styles.color3}` : randomNumber === 3 ? `${styles.category} ${styles.color4}` :
+              randomNumber === 4 ? `${styles.category} ${styles.color5}` : randomNumber === 5 ? `${styles.category} ${styles.color6}` :
+                randomNumber === 6 ? `${styles.category} ${styles.color7}` : randomNumber === 7 ? `${styles.category} ${styles.color8}` : `${styles.category} ${styles.color6}`)
+          }
+            initial={{ opacity: 0 }} animate={{ opacity: 1, x: 0, transition: { duration: 1.0, delay: 1.2} }}
+          >
+            {data.category}
+          </motion.p>
         </div>
-        <Image src={data.thumbnail} alt={data.title}placeholder="blur" blurDataURL="/public/placeholder.png" layout="fill" objectFit="cover" objectPosition="center"  priority={true}/>
-        <motion.div className={showBackdrop ? styles.hide : styles.bookmark_icon_container}
-          initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0, transition: { duration: 2, delay: 1.5 } }}>
-          <BookmarkBorderIcon className={styles.bookmark_icon} />
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 1.0, delay: 1.2 } }}
+          className={styles.content_container}>
+          <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
         </motion.div>
-        <motion.p className={ showBackdrop ? styles.hide : (randomNumber === 0 ? `${styles.category} ${styles.color1}` : randomNumber === 1 ? `${styles.category} ${styles.color2}` :
-          randomNumber === 2 ? `${styles.category} ${styles.color3}` : randomNumber === 3 ? `${styles.category} ${styles.color4}` :
-            randomNumber === 4 ? `${styles.category} ${styles.color5}` : randomNumber === 5 ? `${styles.category} ${styles.color6}` :
-              randomNumber === 6 ? `${styles.category} ${styles.color7}` : randomNumber === 7 ? `${styles.category} ${styles.color8}` : `${styles.category} ${styles.color6}`)
-        }
-          initial={{ opacity: 0 }} animate={{ opacity: 1, x: 0, transition: { duration: 1.0, delay: 1.2} }}
-        >
-          {data.category}
-        </motion.p>
+        <div className={styles.transparent_container} />
       </div>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 1.0, delay: 1.2 } }}
-        className={styles.content_container}>
-        <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
-      </motion.div>
       <div className={styles.comment_container}>
         <h3>댓 글</h3>
         <h4 onClick={onMoreCommentClick}>+ 더보기</h4>

@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import 'styles/loader.css'
 import { AuthProvider } from "src/hook/auth"
+import { NaviProvider } from 'src/hook/customNavigation'
 import AuthStateChanged from 'src/layout/AuthStateChanged'
 import React, { useEffect, useState, useCallback, useRef } from "react"
 import Header from "src/components/main/Header"
@@ -80,7 +81,7 @@ function MyApp({ Component, pageProps }) {
   //특정 url들에서 header를 hide하기 위함
   useEffect(() => {
     console.log(router.asPath)
-    if (router.pathname.includes("/setting") || router.pathname.includes("/login") || router.pathname.includes("/notification")) 
+    if (router.pathname.includes("/setting") || router.pathname.includes("/login") || router.pathname.includes("/notification") ||router.pathname.includes("/search")) 
       setIsHideHeaderUrl(true)
     else if (router.pathname.includes("/post")) {
       setIsHideHeaderUrl(true)
@@ -97,19 +98,19 @@ function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
       <AuthStateChanged>
-        {isHideHeaderUrl ?
-          <>
-            <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
-            {isPostUrl && <Post />}
-          </>
-          :
-          <><Header handleChange={onSelectedCategoryChange} selectedCategory={selectedCategory} isSwipeToRight={isSwipeToRight}
-          handleSwipeToRight={handleSwipeToRight} isSwipeToLeft={isSwipeToLeft} handleSwipeToLeft={handleSwipeToLeft} />
-          <div className="body_container" onScroll={onScroll} style={{ height: height }} ref={bodyRef} > 
-            <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
-          </div></>
+        <NaviProvider>
+          {isHideHeaderUrl ?
+            <>
+              <Component {...pageProps} isBottom={isBottom} handleTouchStart={handleTouchStart} handleSwipeToLeft={handleSwipeToLeft} handleTouchEnd={handleTouchEnd} isSwipeToLeft={isSwipeToLeft} />
+            </>
+            :
+            <><Header handleChange={onSelectedCategoryChange}/>
+            <div className="body_container" onScroll={onScroll} style={{ height: height }} ref={bodyRef} > 
+              <Component {...pageProps} isBottom={isBottom} />
+            </div></>
           }
           {!router.pathname.includes("rhksflwk") && <Footer />}
+        </NaviProvider>
       </AuthStateChanged>
     </AuthProvider>
   )

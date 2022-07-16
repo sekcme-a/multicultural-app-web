@@ -6,13 +6,14 @@ import Link from "next/link"
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer"
-import { preventRouterBackWhenOnPost } from "src/hook/preventRouterBackWhenOnPost";
 import HoverPost from "src/components/post/HoverPost";
+import useNavi from "src/hook/customNavigation";
 
 const ThumbnailPost = (props) => {
   const [randomNumber, setRandomNumber] = useState()
   const [id, setId] = useState("")
-  const [isOnPost, setIsOnPost] = useState()
+  const [isOpenThisPost, setIsOpenThisPost] = useState()
+  const { history, pushHistory, isOnPost} = useNavi()
   useEffect(() => {
     //Random number from 0~8 (int)
     setRandomNumber(Math.floor(Math.random() * 9))
@@ -21,14 +22,12 @@ const ThumbnailPost = (props) => {
     if(props.id) setId(props.id)
     else setId(props.data.docId)
   }, [])
-  preventRouterBackWhenOnPost(isOnPost, { handleIsOnPost(data) { setIsOnPost(data) } })
 
   const onThumbnailClick = () => {
-    setIsOnPost(true)
+    setIsOpenThisPost(true)
+    pushHistory(id)
   }
   return (
-    // <Link href={`/post/[slug]`} as={`/post/${id}`}>
-    <>
       <div className={styles.main_container} onClick={onThumbnailClick}>
         <div className={styles.header_body_container}>
           <div className={styles.overlay}>
@@ -49,9 +48,6 @@ const ThumbnailPost = (props) => {
           <h4>{`${props.data.createdAt} | ${props.data.author}`}</h4>
         </div>
       </div>
-      {isOnPost && <HoverPost id={id} />}
-    </>
-    // </Link>
   )
 }
 export default ThumbnailPost

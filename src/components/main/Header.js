@@ -6,6 +6,7 @@ import Link from "next/link"
 import SearchIcon from '@mui/icons-material/Search';
 import { firestore as db } from "firebase/firebase"
 import { useRouter } from "next/router"
+import useNavi from "src/hook/customNavigation"
 
 const Header = (props) => {
   const [isSearchClick, setIsSearchClick] = useState(false)
@@ -15,6 +16,7 @@ const Header = (props) => {
   // const [selectedCategory, setSelectedCategory] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
+  const { isSwipeToLeft, isSwipeToRight, setIsSwipeToLeft, setIsSwipeToRight, isOnPost } = useNavi()
   const onSearchContainerClick = () => {
     router.push('/search')
   }
@@ -50,8 +52,7 @@ const Header = (props) => {
 
   //좌우 슬라이드 시 메뉴 변경
   useEffect(() => {
-    if (props.isSwipeToRight) {
-      // router.push("/category/dw491Twx28h8jbZg38lO")
+    if (isSwipeToRight && !isOnPost) {
       if (router.pathname === "/")
         router.push(`/local/${localList[0].id}`)
       else if(router.pathname.includes("local"))
@@ -64,12 +65,12 @@ const Header = (props) => {
             router.push(`/category/${categoryList[i + 1].id}`)
         }
       }
-      props.handleSwipeToRight(false)
+      setIsSwipeToRight(false)
     }
     
-  }, [props.isSwipeToRight])
+  }, [isSwipeToRight])
   useEffect(() => {
-    if (props.isSwipeToLeft) {
+    if (isSwipeToLeft && !isOnPost) {
       if (router.query.slug === categoryList[0].id) 
         router.push(`/country/${countryList[0].id}`)
       else if(router.pathname.includes("country"))
@@ -83,13 +84,11 @@ const Header = (props) => {
         }
       }
     }
-    props.handleSwipeToLeft(false)
-  },[props.isSwipeToLeft])
+    setIsSwipeToLeft(false)
+  },[isSwipeToLeft])
 
 
-  const onItemClick = (category) => {
-    props.handleChange(category)
-  }
+
 
   if (isLoading) {
     return (

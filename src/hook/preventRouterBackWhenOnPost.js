@@ -13,14 +13,11 @@ preventRouterBackWhenOnPost(isOnPost, {handleIsOnPost(data){ setIsOnPost(data) }
 export const preventRouterBackWhenOnPost = (isOnPost, {handleIsOnPost}) => {
     const mess =  'Are you sure that you want to leave?'
   const shouldWarn = true
-  console.log("sadf")
 
   // Post
   useEffect(() => {
     let isWarned = false
     const routeChangeStart = (url) => {
-      console.log(`url: ${url}`)
-      console.log(`router.aspth: ${Router.pathname}`)
       if (Router.asPath !== url && shouldWarn && !isWarned) {
         isWarned = true
         if (!isOnPost) {
@@ -64,7 +61,6 @@ export const preventRouterBackWhenOnPost = (isOnPost, {handleIsOnPost}) => {
           isWarned = false
           window.history.pushState(null, '', url)
           Router.replace(Router.asPath, Router.asPath, { shallow: true });
-          console.log("hererer")
           return false
         }
       }
