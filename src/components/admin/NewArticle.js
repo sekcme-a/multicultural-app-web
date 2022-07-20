@@ -184,7 +184,6 @@ const NewArticle = () => {
         setThumbnailImg(img)
       }
     }
-
   }
 
   //필수항목 작성 확인

@@ -139,19 +139,6 @@
   flex-wrap: wrap;
 }
 
-.alert_container{
-  position: fixed;
-  bottom: 50px;
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  transition: 1s;
-  z-index: 30;
-}
-.alert_hide{
-  bottom: 0 !important;
-}
-
 .comment_container{
   border-top: 1px solid rgb(218, 218, 218);
   border-bottom: 1px solid rgb(218, 218, 218);

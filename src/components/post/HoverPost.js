@@ -13,9 +13,9 @@ import Skeleton from '@mui/material/Skeleton';
 import { motion, useAnimation } from "framer-motion";
 import Backdrop from '@mui/material/Backdrop';
 import ShareLink from "components/public/ShareLink"
-import Alert from '@mui/material/Alert';
 import { useWindowDimensions } from "src/hook/useWindowDimensions";
 import useNavi from "src/hook/customNavigation";
+import Alert from "src/components/public/Alert"
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>로딩중 ...</p>,
@@ -119,7 +119,7 @@ const HoverPost = (props) => {
     setIsCopied(true)
     setTimeout(() => {
       setIsCopied(false)
-    },3000)
+    },2000)
   }
   
   const onMoreCommentClick = () => {
@@ -225,9 +225,7 @@ const HoverPost = (props) => {
         <Comments num={3} />
       </div>
       <OtherNews />
-      <div className={isCopied ? styles.alert_container : `${styles.alert_container} ${styles.alert_hide}`}>
-        <Alert severity="success" >Url이 복사되었습니다!</Alert>
-      </div>
+      <Alert mode="success" isShow={isCopied} text="Url이 복사되었습니다!" />
     </div>
   )
 }
