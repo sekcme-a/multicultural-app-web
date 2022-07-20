@@ -12,6 +12,7 @@ import { compressImage } from "src/hook/compressImage"
 import { uploadImage } from "firebase/uploadImage"
 import CircularProgress from '@mui/material/CircularProgress'
 import CountrySelect from "src/components/setting/profile/CountrySelect"
+import GenderSelect from "src/components/setting/profile/GenderSelect"
 import Alert from "src/components/public/Alert"
 
 const Profile = () => {
@@ -30,6 +31,10 @@ const Profile = () => {
   const handleCountry = (country) => { setCountry(country) }
   const [phoneNumber, setPhoneNumber] = useState("")
   const onPhoneNumberChange = (e) => { setPhoneNumber(e.target.value); if (error === "phoneNumber") setError("none") }
+  const [realName, setRealName] = useState("")
+  const onRealNameChange = (e)=>{setRealName(e.target.value)}
+  const [gender, setGender] = useState()
+  const onGenderChange = (gender) => { setGender(gender) }
   
   const [alertText, setAlertText] = useState("")
   const [alertMode, setAlertMode] = useState("none")
@@ -44,6 +49,8 @@ const Profile = () => {
         setPhoneNumber(userData.data().phoneNumber)
         setDate(userData.data().date)
         setCountry(userData.data().country)
+        setRealName(userData.data().realName)
+        setGender(userData.data().gender)
         setIsLoading(false)
       }
     }
@@ -70,7 +77,9 @@ const Profile = () => {
         date: date,
         email: email,
         country: country,
-        photo: profileUrl
+        photo: profileUrl,
+        realName: realName,
+        gender: gender
       }
       try {
          db.collection("users").doc(user.uid).update(profileHashMap)
@@ -188,7 +197,7 @@ const checkValidDate = (value) => {
             layout="fill" objectFit="cover" objectPosition="center" priority={true} />
         }
       </div>
-      <label for="input_file" className={styles.img_button} >사진 편집</label><input onChange={onImgChange} type="file" id="input_file" accept="image/*" className={styles.hide_input} />
+      <label htmlFor="input_file" className={styles.img_button} >사진 편집</label><input onChange={onImgChange} type="file" id="input_file" accept="image/*" className={styles.hide_input} />
       <div className={styles.input_container}>
         <TextField
           fullWidth
@@ -201,7 +210,16 @@ const checkValidDate = (value) => {
           error={error === "userName"}
           onChange={onUserNameChange}
         />
-        <p style={{marginBottom:"10px"}}>아래의 개인정보는 비공개 정보입니다.</p>
+        <p style={{marginBottom:"10px"}}>아래의 개인정보는 모두 비공개 정보입니다.</p>
+        <TextField
+          fullWidth
+          id="outlined-helperText"
+          label="실명"
+          value={realName}
+          size="small"
+          margin="normal"
+          onChange={onRealNameChange}
+        />
         <TextField
           fullWidth
           id="outlined-helperText"
@@ -214,6 +232,7 @@ const checkValidDate = (value) => {
           error={error === "phoneNumber"}
           onChange={onPhoneNumberChange}
         />
+        <GenderSelect gender={gender} onGenderChange={onGenderChange} />
         <TextField
           fullWidth
           id="outlined-helperText"

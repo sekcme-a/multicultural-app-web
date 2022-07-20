@@ -78,14 +78,21 @@ const CountrySelect = (props) => {
     props.handleCountry(event.target.outerText);
   };
   return (
-    <div style={{width:"100%", marginTop:"10px"}}>
+    <div style={{ width: "100%", marginTop: "10px" }}>
       <Autocomplete
         id="country-select"
         // sx={{ height:"50px" }}
         options={countryList}
         autoHighlight
         getOptionLabel={(option) => option.label}
-        onChange={onChange}
+        value={props.country}
+        onChange={(event, newValue) => {
+          props.handleCountry(newValue);
+        }}
+        // inputValue={props.country}
+        // onInputChange={(event, newInputValue) => {
+        //   props.handleCountry(newInputValue);
+        // }}
         renderOption={(props, option) => (
           <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
             <img
