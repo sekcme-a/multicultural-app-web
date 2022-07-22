@@ -52,7 +52,7 @@ const MiniPostList = (props) => {
         )
       })}
       {isOnPost && <HoverPost id={history[history.length-1]} />}
-      <div className={styles.transparent_container} />
+      {props.noTransparent===undefined && <div className={styles.transparent_container} />}
     </div>
   )
 }

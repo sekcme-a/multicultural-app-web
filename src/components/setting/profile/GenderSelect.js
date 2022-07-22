@@ -13,7 +13,7 @@ const GenderSelect = (props) => {
   return (
     <div style={{width:"100%", marginTop:"10px"}}>
       <FormControl>
-        <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+        <FormLabel id="demo-row-radio-buttons-group-label">성별</FormLabel>
         <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"

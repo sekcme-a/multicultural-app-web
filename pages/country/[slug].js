@@ -7,8 +7,10 @@ const Category = (props) => {
   const router = useRouter();
   const { slug } = router.query
 
-  return (                       
-    <PostList isBottom={props.isBottom} category={slug} mode="country"></PostList>
+  return (      
+    <div style={{backgroundColor: "rgb(242, 242, 242)"}}>
+      <PostList isBottom={props.isBottom} category={slug} mode="country"></PostList>
+    </div>
   )            
 }
 export default Category

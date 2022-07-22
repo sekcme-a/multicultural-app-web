@@ -7,8 +7,10 @@ const Local = (props) => {
   const router = useRouter();
   const { slug } = router.query
   
-  return (                       
-    <PostList isBottom={props.isBottom} category={slug} mode="local" ></PostList>
+  return (                  
+    <div style={{backgroundColor: "rgb(242, 242, 242)"}} > 
+      <PostList isBottom={props.isBottom} category={slug} mode="local" />
+    </div>
   )            
 }
 export default Local

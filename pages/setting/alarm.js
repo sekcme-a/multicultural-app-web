@@ -44,10 +44,11 @@ const Alarm = () => {
   const onIsAlarmOnChange = (e) => {
     if (!isTimeOut) {
       setIsAlarmOn(e.target.checked)
+      db.collection("users").doc(user.uid).update({importance: 0})
       setIsTimeOut(true)
       setTimeout(() => {
         setIsTimeOut(false)
-      },200)
+      },2000)
     }
   }
 

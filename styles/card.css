@@ -1,0 +1,12 @@
+.MuiCardHeader-title{
+  font-size: 19px !important;
+  font-weight: bold !important;
+  font-family: 'SUIT-Medium', 'Pretendard-Regular','Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  line-height: 1.122 !important;
+}
+.MuiCardHeader-subheader{
+  font-size: 15px !important;
+  font-weight: bold !important;
+  font-family: 'SUIT-Medium', 'Pretendard-Regular','Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  /* line-height: 1.122 !important; */
+}

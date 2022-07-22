@@ -13,6 +13,7 @@ import useAuth from 'src/hook/auth';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import Alert from "src/components/public/Alert"
 
 
 export default function ControlledOpenSpeedDial(props) {
@@ -20,6 +21,8 @@ export default function ControlledOpenSpeedDial(props) {
   const { bookmarkList, isBookmarked, deleteBookmark ,pushBookmark } = useBookmarkLike()
   const { user } = useAuth()
   const [actions, setActions] = useState([])
+  const [alarmMode, setAlarmMode] = useState()
+  const [alarmText, setAlarmText] = useState("")
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -65,17 +68,29 @@ export default function ControlledOpenSpeedDial(props) {
     } else if (name === "pdf") {
       props.downloadPdf()
     } else if (name === "bookmark") {
-      console.log(isBookmarked(props.id))
-      if (isBookmarked(props.id))
+      if (isBookmarked(props.id)){
         deleteBookmark(user.uid, props.id)
-      else
+        props.handleAlarmText("북마크가 삭제되었습니다.")
+        props.handleIsShow(true)
+        setTimeout(() => {
+          props.handleIsShow(false)
+        },2000)
+      }
+      else{
         pushBookmark(user.uid, props.id)
+        props.handleAlarmText("북마크가 추가되었습니다.")
+        props.handleIsShow(true)
+        setTimeout(() => {
+          props.handleIsShow(false)
+        },2000)
+      }
     }
     setOpen(false)
   }
 
   return (
     // <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1, zIndex: 999999999999 }}>
+    <>
       <SpeedDial
         ariaLabel="SpeedDial controlled open example"
         sx={{ position: 'fixed', bottom: 70, right: 10}}
@@ -92,8 +107,10 @@ export default function ControlledOpenSpeedDial(props) {
               tooltipTitle={action.name}
               onClick={()=>handleClick(action.name)}
             />
-        ))}
-      </SpeedDial>
+      ))}
+    </SpeedDial>
+    {/* <Alert mode={alarmMode} isShow={alarmMode!=="hide"} text="Url이 복사되었습니다!" /> */}
+    </>
     // </Box>
   );
 }

@@ -10,6 +10,7 @@ export default function useBookmarkLike() {
 export function BookmarkLikeProvider(props) {
   const [bookmarkList, setBookmarkList] = useState([])
   const [likeList, setLikeList] = useState([])
+  const [triggerReload, setTriggerReload] = useState(true)
 
   const pushBookmark = (uid, id) => {
     const temp = bookmarkList
@@ -17,6 +18,7 @@ export function BookmarkLikeProvider(props) {
     setBookmarkList(temp)
     try {
       db.collection("users").doc(uid).update({bookmark: temp})
+      setTriggerReload(!triggerReload)
       return true
     } catch (e) {
       return false
@@ -32,11 +34,20 @@ export function BookmarkLikeProvider(props) {
     // console.log(temp2)
     setBookmarkList(temp2)
     try {
-      db.collection("users").doc(uid).update({bookmark: temp2})
+      db.collection("users").doc(uid).update({ bookmark: temp2 })
+      setTriggerReload(!triggerReload)
       return true
     } catch (e) {
       return false
     }
+  }
+
+  const getBookmarkList = (uid) => {
+    if (uid !== undefined) {
+      db.collection("users").doc(uid).get().then((doc) => {
+        setBookmarkList(doc.data().bookmark)
+      })
+    } 
   }
 
   const isBookmarked = (id) => {
@@ -47,10 +58,12 @@ export function BookmarkLikeProvider(props) {
   const value = {
     bookmarkList,
     likeList,
+    triggerReload,
     pushBookmark,
     deleteBookmark,
     setBookmarkList,
     isBookmarked,
+    getBookmarkList
   }
 
   return <bookmarkLikeContext.Provider value={value} {...props} />

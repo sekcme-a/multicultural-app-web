@@ -39,7 +39,7 @@ export default function Home(props) {
     }
   }
   return (
-    <div>
+    <div style={{backgroundColor: "rgb(242, 242, 242)"}}>
       <Head>
         <title>한국다문화뉴스</title>
         <meta name="description" content="Korea Multicultural News" />

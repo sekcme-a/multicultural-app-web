@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import 'styles/loader.css'
+import 'styles/card.css'
 import { AuthProvider } from "src/hook/auth"
 import { BookmarkLikeProvider } from 'src/hook/bookmarkLike'
 import { NaviProvider } from 'src/hook/customNavigation'
