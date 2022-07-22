@@ -38,7 +38,9 @@ const HoverPost = (props) => {
   const [isShow, setIsShow] = useState(false)
   const handleIsShow = (bool) => { setIsShow(bool) }
   const [alarmText, setAlarmText] = useState("")
-  const handleAlarmText = (text) => {setAlarmText(text)}
+  const handleAlarmText = (text) => { setAlarmText(text) }
+  const [alarmMode, setAlarmMode] = useState("success")
+  const handleAlarmMode = (mode) => {setAlarmMode(mode)}
   const router = useRouter();
   const { history, popHistory, isOnPost, pushHistory, showId, setShowId, isSwipeToLeft, setIsSwipeToLeft } = useNavi()
   const { user } = useAuth()
@@ -133,6 +135,7 @@ const HoverPost = (props) => {
   const handleCopy = () => {
     setIsShow(true)
     setAlarmText("Url이 복사되었습니다!")
+    setAlarmMode("success")
     setTimeout(() => {
       setIsShow(false)
     },2000)
@@ -154,23 +157,6 @@ const HoverPost = (props) => {
   const downloadPdf = async() => {
     const element = printRef.current;
     const canvas = await html2canvas(element);
-    // const base64 = canvas.toDataURL('image/png');
-    // const base64data = base64.replace("data:image/png;base64","data:application/pdf;base64")
-    // console.log(base64data)
-    // const linkSource = base64data;
-    // const downloadLink = document.createElement("a");
-    // const fileName = "abc.pdf";
-    // downloadLink.href = linkSource;
-    // downloadLink.download = fileName;
-    // downloadLink.click();
-    // var pdf = new jsPDF("p", "mm", "a4");
-    //         const imgProps= pdf.getImageProperties(base64);
-    //     const pdfWidth = pdf.internal.pageSize.getWidth();
-    //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    // // var width = doc.internal.pageSize.getWidth();
-    // // var height = doc.internal.pageSize.getHeight();
-    // pdf.addImage(base64, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-    // pdf.save(data.title)
   			var doc = new jsPDF('p', 'mm', 'a4'); 
 			var imgData = canvas.toDataURL('image/png');
 			var imgWidth = 210;
@@ -189,10 +175,19 @@ const HoverPost = (props) => {
 			doc.save(`${data.title}.pdf`); 
   }
   const onBookmarkClick = () => {
-    if (!isTimeOut) {
+    if (user === null) {
+      setAlarmText("로그인 후 사용해주세요.")
+      setAlarmMode("warning")
+      setIsShow(true)
+      setTimeout(() => {
+        setIsShow(false)
+      },2000)
+    }
+    else if (!isTimeOut) {
       if (isBookmarked(showId)) {
         deleteBookmark(user.uid, showId)
         handleAlarmText("북마크가 삭제되었습니다.")
+        setAlarmMode("success")
         handleIsShow(true)
         setTimeout(() => {
           handleIsShow(false)
@@ -201,6 +196,7 @@ const HoverPost = (props) => {
       else {
         pushBookmark(user.uid, showId)
         handleAlarmText("북마크가 추가되었습니다.")
+        setAlarmMode("success")
         handleIsShow(true)
         setTimeout(() => {
           handleIsShow(false)
@@ -306,8 +302,8 @@ const HoverPost = (props) => {
       </div>
       <OtherNews />
     </div>
-      <SpeedDial id={showId} handleShowBackdrop={handleShowBackdrop} downloadPdf={downloadPdf} handleIsShow={handleIsShow} handleAlarmText={handleAlarmText} />
-      <Alert mode="success" isShow={isShow} text={alarmText} />
+      <SpeedDial id={showId} handleShowBackdrop={handleShowBackdrop} downloadPdf={downloadPdf} handleAlarmMode={handleAlarmMode} handleIsShow={handleIsShow} handleAlarmText={handleAlarmText} />
+      <Alert mode={alarmMode} isShow={isShow} text={alarmText} />
     </>
   )
 }

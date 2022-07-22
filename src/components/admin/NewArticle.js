@@ -33,11 +33,13 @@ const NewArticle = () => {
   const [textData, setTextData] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [title, setTitle] = useState("")
+  const [subtitle, setSubtitle] = useState("")
   const [thumbnailImg, setThumbnailImg] = useState()
   const [tag, setTag] = useState("")
   const [author, setAuthor] = useState("")
   const [importance, setImportance] = useState("")
   const onTitleChange = (e) => { setTitle(e.target.value) }
+  const onSubtitleChange = (e)=>{setSubtitle(e.target.value)}
   const onTagChange = (e) => { setTag(e.target.value) }
   const onAuthorChange = (e) => { setAuthor(e.target.value) }
   const onImportanceChange = (e) => { setImportance(e.target.value) }
@@ -85,7 +87,8 @@ const NewArticle = () => {
       let localIdList = []
       let countryIdList = []
       const thumbnailUrl = await uploadImage(thumbnailImg, `thumbnails/${Date.now()}`)
-      if (checkInput() && user) {
+      // if (checkInput() && user) {
+      if (true) {
         selectedCategoryList.map((cat) => {
           for (let i = 0; i < catLi.data().list.length; i++){
             if (cat === catLi.data().list[i])
@@ -117,8 +120,18 @@ const NewArticle = () => {
             arrayData.push(tagAsWord[j].substring(0,i))
           }
         }
+        if (subtitle === "" || subtitle === " ") {
+          const temp = textData
+          temp = temp.replace(/<[^>]*>?/g, '')
+          temp = temp.replace("&lt;", "<")
+          temp = temp.replace("&gt;", ">")
+          temp = temp.replace("&nbsp;", "")
+          temp = temp.substr(0, 80)
+          setSubtitle(temp)
+        }
         const postHashMap = {
           title: title,
+          subtitle: subtitle,
           thumbnail: thumbnailUrl,
           createdAt: new Date(),
           author: author,
@@ -136,6 +149,7 @@ const NewArticle = () => {
         }
         const thumbnailHashMap = {
           title: title,
+          subtitle: subtitle,
           thumbnail: thumbnailUrl,
           createdAt: new Date(),
           author: author,
@@ -238,6 +252,11 @@ const NewArticle = () => {
         <h4>제목</h4>
         <p className={style.warning}>*필수</p>
         <p>제목 문구 : <input type="text" value={title} onChange={onTitleChange} size="60" required/></p>
+      </div>
+      <div className={style.container}>
+        <h4>부제목{`(요약)`}</h4>
+        <p className={style.warning}>*빈칸일 경우 기사 앞부분으로 자동적용</p>
+        <p>부제목 문구 : <textarea value={subtitle} onChange={onSubtitleChange} rows="5" cols="80" required/></p>
       </div>
       <div className={style.container}>
         <h4>썸네일 이미지</h4>

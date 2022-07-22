@@ -4,6 +4,7 @@ import styles from "styles/main/thumbnailPost.module.css"
 import Image from "hook/Image"
 import Link from "next/link"
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer"
 import HoverPost from "src/components/post/HoverPost";
@@ -25,19 +26,29 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Alert from "src/components/public/Alert"
+import Backdrop from '@mui/material/Backdrop';
+import ShareLink from "components/public/ShareLink"
+import { useRouter } from "next/router"
 
 const ThumbnailPost = (props) => {
   const [randomNumber, setRandomNumber] = useState()
   const [id, setId] = useState("")
   // const [isOpenThisPost, setIsOpenThisPost] = useState()
   const { history, pushHistory, isOnPost} = useNavi()
-  const { bookmarkList, isBookmarked, deleteBookmark, pushBookmark } = useBookmarkLike()
+  const { bookmarkList, isBookmarked, deleteBookmark, pushBookmark, isLiked, deleteLike, pushLike } = useBookmarkLike()
+  const [isTimeOut, setIsTimeOut] = useState(false)
+  const [isShow, setIsShow] = useState(false)
+  const [alarmText, setAlarmText] = useState("")
+  const [showBackdrop, setShowBackdrop] = useState(false)
+  const [alarmMode, setAlarmMode] = useState("success")
+  const router = useRouter()
   
   const { user } = useAuth()
-  useEffect(() => {
-    //Random number from 0~8 (int)
-    setRandomNumber(Math.floor(Math.random() * 9))
-  }, [])
+  // useEffect(() => {
+  //   //Random number from 0~8 (int)
+  //   setRandomNumber(Math.floor(Math.random() * 9))
+  // }, [])
   useEffect(() => {
     if(props.id) setId(props.id)
     else setId(props.data.docId)
@@ -47,63 +58,134 @@ const ThumbnailPost = (props) => {
     // setIsOpenThisPost(true)
     pushHistory(id)
   }
+  const onBookmarkClick = () => {
+    if (user === null) {
+      setAlarmText("로그인 후 사용해주세요.")
+      setAlarmMode("warning")
+      setIsShow(true)
+      setTimeout(() => {
+        setIsShow(false)
+      },2000)
+    }
+    else if (!isTimeOut) {
+      if (isBookmarked(id)) {
+        deleteBookmark(user.uid, id)
+        setAlarmMode("success")
+        setAlarmText("북마크가 삭제되었습니다.")
+        setIsShow(true)
+        setTimeout(() => {
+          setIsShow(false)
+        }, 2000)
+      }
+      else {
+        pushBookmark(user.uid, id)
+        setAlarmText("북마크가 추가되었습니다.")
+        setAlarmMode("success")
+        setIsShow(true)
+        setTimeout(() => {
+          setIsShow(false)
+        }, 2000)
+      }
+      setIsTimeOut(true)
+      setTimeout(()=>{setIsTimeOut(false)},2000)
+    }
+  }
+  const onLikeClick = () => {
+    if (user === null) {
+      setAlarmText("로그인 후 사용해주세요.")
+      setAlarmMode("warning")
+      setIsShow(true)
+      setTimeout(() => {
+        setIsShow(false)
+      },2000)
+    }
+    else if (!isTimeOut) {
+      if (isLiked(id)) {
+        deleteLike(user.uid, id)
+        setAlarmText("좋아요를 취소합니다.")
+        setAlarmMode("success")
+        setIsShow(true)
+        setTimeout(() => {
+          setIsShow(false)
+        }, 2000)
+      }
+      else {
+        pushLike(user.uid, id)
+        setAlarmText("이 기사를 좋아합니다.")
+        setAlarmMode("success")
+        setIsShow(true)
+        setTimeout(() => {
+          setIsShow(false)
+        }, 2000)
+      }
+      setIsTimeOut(true)
+      setTimeout(()=>{setIsTimeOut(false)},2000)
+    }
+  }
+
+  const onShareClick = () => {
+    setShowBackdrop(true)
+  }
+  const handleCloseBackDrop = () => {
+    setShowBackdrop(false)
+  }
+  const handleCopy = () => {
+    setIsShow(true)
+    setAlarmText("Url이 복사되었습니다!")
+    setTimeout(() => {
+      setIsShow(false)
+    },2000)
+  }
 
   return (
-      // <div className={styles.main_container} onClick={onThumbnailClick}>
-      //   <div className={styles.header_body_container}>
-      //     <div className={styles.overlay}>
-      //       <p className={randomNumber === 0 ? `${styles.category} ${styles.color1}` : randomNumber === 1 ? `${styles.category} ${styles.color2}` : 
-      //         randomNumber === 2 ? `${styles.category} ${styles.color3}` : randomNumber === 3 ? `${styles.category} ${styles.color4}` :
-      //         randomNumber === 4 ? `${styles.category} ${styles.color5}` : randomNumber === 5 ? `${styles.category} ${styles.color6}` :
-      //         randomNumber === 6 ? `${styles.category} ${styles.color7}` : randomNumber === 7 ? `${styles.category} ${styles.color8}` : `${styles.category} ${styles.color6}`
-      //       }>
-      //         {props.data.category}
-      //     </p>
-      //       {
-      //         isBookmarked(id) ?
-      //           <BookmarkBorderIcon className={styles.icon} style={{ color: "rgb(255, 134, 154)" }} />
-      //         :
-      //           <BookmarkBorderIcon className={styles.icon}/>
-      //         }
-      //     </div>
-      //     <Image src={props.data.thumbnail} quality={20} alt={props.data.title} placeholder="blur" blurDataURL="/public/placeholder.png" layout="fill" objectFit="cover" objectPosition="center" priority={true} />
-      //   </div>
-      //   <div className={styles.footer_container}>
-      //     <h2>{props.data.title}</h2>
-      //     <h3>{props.data.tag}</h3>
-      //     <h4>{`${props.data.createdAt} | ${props.data.author}`}</h4>
-      //   </div>
-      // </div>
-    <div className={styles.main_container} onClick={onThumbnailClick}>
-      <Card sx={{ maxWidth: 400, marginTop: "20px" }}>
-      {/* <Card sx={{ maxWidth: 400, marginTop: "20px", border: "1px solid rgb(192, 192, 192)" }}> */}
+    <div className={styles.main_container} >
+      <Card sx={{ width: "100%", maxWidth: 500, marginTop: "20px", marginLeft:'10px', marginRight:"10px" }}>
         <CardHeader
           title={props.data.title}
           subheader={`${props.data.createdAt} | ${props.data.author}`}
-          
+          onClick={onThumbnailClick}
         />
         <CardMedia
           component="img"
           height="194"
           image={props.data.thumbnail}
           alt="Paella dish"
+          onClick={onThumbnailClick}
         />
-        <CardContent>
+        <CardContent onClick={onThumbnailClick} style={{ padding: "8px" }}>
+          <Typography variant="body2" color="#3f729b">
+            {props.data.tag}
+          </Typography>
           <Typography variant="body2" color="text.secondary">
-            This impressive paella is a perfect party dish and a fun meal to cook
-            together with your guests. Add 1 cup of frozen peas along with the mussels,
-            if you like.
+            {`${props.data.subtitle}...`}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
+          <IconButton aria-label="bookmark" onClick={onBookmarkClick}>
+            {
+            isBookmarked(id) ?
+              <BookmarkBorderIcon style={{ color: "rgb(255, 134, 154)" }} />
+            :
+              <BookmarkBorderIcon />
+            }
           </IconButton>
-          <IconButton aria-label="share">
+          <IconButton aria-label="like" onClick={onLikeClick}>
+            {
+            isLiked(id) ?
+              <ThumbUpOffAltIcon style={{ color: "rgb(255, 134, 154)" }} />
+            :
+              <ThumbUpOffAltIcon />
+            }
+          </IconButton>
+          <IconButton aria-label="share" onClick={onShareClick}>
             <ShareIcon />
           </IconButton>
         </CardActions>
       </Card>
+      <Alert mode={alarmMode} isShow={isShow} text={alarmText} />
+      <Backdrop open={showBackdrop} onClick={handleCloseBackDrop} sx={{ color: '#fff', zIndex: 1000, }}>
+        <ShareLink url={`https://multicultural-news.netlify.app/post/${id}`} handleCopy={handleCopy} />
+      </Backdrop>
     </div>
   )
 }

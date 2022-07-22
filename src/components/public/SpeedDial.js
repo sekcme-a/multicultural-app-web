@@ -14,15 +14,15 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Alert from "src/components/public/Alert"
+import { useRouter } from 'next/router';
 
 
 export default function ControlledOpenSpeedDial(props) {
   const [open, setOpen] = useState(false);
-  const { bookmarkList, isBookmarked, deleteBookmark ,pushBookmark } = useBookmarkLike()
+  const { bookmarkList, isBookmarked, deleteBookmark ,pushBookmark, likeList, isLiked, deleteLike, pushLike } = useBookmarkLike()
   const { user } = useAuth()
   const [actions, setActions] = useState([])
-  const [alarmMode, setAlarmMode] = useState()
-  const [alarmText, setAlarmText] = useState("")
+  const router = useRouter()
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -53,22 +53,30 @@ export default function ControlledOpenSpeedDial(props) {
       {icon: <PictureAsPdfIcon />, name: 'pdf'},
       { icon: <ShareIcon />, name: 'share' },
     ]
-    if(!isBookmarked(props.id) && true)
+    if(!isBookmarked(props.id) && !isLiked(props.id))
       setActions(noBookmarkNoLike)
-    else if(isBookmarked(props.id)&& true)
+    else if(isBookmarked(props.id)&& !isLiked(props.id))
       setActions(yesBookmarkNoLike)
-    else if(!isBookmarked(props.id)&&true)
+    else if(!isBookmarked(props.id)&& isLiked(props.id))
       setActions(noBookmarkYesLike)
     else
       setActions(yesBookmarkYesLike)
-  },[bookmarkList.length])
+  },[bookmarkList.length, likeList.length])
   const handleClick = (name) => {
     if (name==="share") {
       props.handleShowBackdrop(true)
     } else if (name === "pdf") {
       props.downloadPdf()
     } else if (name === "bookmark") {
-      if (isBookmarked(props.id)){
+      if (user === null) {
+        props.handleAlarmText("로그인 후 사용해주세요.")
+        props.handleAlarmMode("warning")
+        props.handleIsShow(true)
+        setTimeout(() => {
+          props.handleIsShow(false)
+        },2000)
+      }
+      else if (isBookmarked(props.id)){
         deleteBookmark(user.uid, props.id)
         props.handleAlarmText("북마크가 삭제되었습니다.")
         props.handleIsShow(true)
@@ -79,6 +87,31 @@ export default function ControlledOpenSpeedDial(props) {
       else{
         pushBookmark(user.uid, props.id)
         props.handleAlarmText("북마크가 추가되었습니다.")
+        props.handleIsShow(true)
+        setTimeout(() => {
+          props.handleIsShow(false)
+        },2000)
+      }
+    } else if (name === "like") {
+      if (user === null) {
+        props.handleAlarmText("로그인 후 사용해주세요.")
+        props.handleAlarmMode("warning")
+        props.handleIsShow(true)
+        setTimeout(() => {
+          props.handleIsShow(false)
+        },2000)
+      }
+      else if (isLiked(props.id)){
+        deleteLike(user.uid, props.id)
+        props.handleAlarmText("좋아요를 취소합니다.")
+        props.handleIsShow(true)
+        setTimeout(() => {
+          props.handleIsShow(false)
+        },2000)
+      }
+      else{
+        pushLike(user.uid, props.id)
+        props.handleAlarmText("이 기사를 좋아합니다.")
         props.handleIsShow(true)
         setTimeout(() => {
           props.handleIsShow(false)

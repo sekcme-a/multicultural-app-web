@@ -12,7 +12,7 @@ import useBookmarkLike from 'src/hook/bookmarkLike'
 export default function Home(props) {
   const [message, setMessage] = useState('')
   const { user, userrole, logout, setUserrole } = useAuth();
-  const { setBookmarkList } = useBookmarkLike();
+  const { setBookmarkList, setLikeList } = useBookmarkLike();
   const [isPostSelected, setIsPostSelected] = useState()
   const [locationKeys, setLocationKeys] = useState([]);
   const [isOnPost, setIsOnPost] = useState()
@@ -27,7 +27,11 @@ export default function Home(props) {
       firestore.collection("users").doc(user.uid).get().then((doc) => {
         setUserrole(doc.data()?.roles)
         setBookmarkList(doc.data()?.bookmark)
+        setLikeList(doc.data()?.like)
       })
+    } else {
+      setBookmarkList([])
+      setLikeList([])
     }
   }, [user])
 

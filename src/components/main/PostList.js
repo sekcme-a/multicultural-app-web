@@ -48,6 +48,7 @@ const PostList = (props) => {
             tag: doc.data().tag,
             thumbnail: doc.data().thumbnail,
             title: doc.data().title,
+            subtitle: doc.data().subtitle,
             docId: doc.id
           }
         ])
@@ -78,6 +79,7 @@ const PostList = (props) => {
             createdAt: getDate(doc.data().createdAt),
             tag: doc.data().tag,
             thumbnail: doc.data().thumbnail,
+            subtitle: doc.data().subtitle,
             title: doc.data().title,
             docId: doc.id
           }

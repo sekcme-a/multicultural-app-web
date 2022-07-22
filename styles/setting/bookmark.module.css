@@ -3,7 +3,8 @@
   flex-wrap:wrap;
   justify-content: center;
   width: 100%;
-  height: fit-content
+  height: fit-content;
+  margin-bottom: 50px;
 }
 .title_container{
   font-size: 22px;

@@ -55,6 +55,49 @@ export function BookmarkLikeProvider(props) {
     return bookmarkList.includes(id)
   }
 
+  const pushLike = (uid, id) => {
+    const temp = likeList
+    temp.push(id)
+    setLikeList(temp)
+    try {
+      db.collection("users").doc(uid).update({like: temp})
+      setTriggerReload(!triggerReload)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
+  const deleteLike = (uid,id) => {
+    const isId = (value) => {
+      return value!==id
+    }
+    const temp = likeList
+    const temp2 = temp.filter(isId)
+    // console.log(temp2)
+    setLikeList(temp2)
+    try {
+      db.collection("users").doc(uid).update({ like: temp2 })
+      setTriggerReload(!triggerReload)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
+  const getLikeList = async (uid) => {
+    if (uid !== undefined) {
+      db.collection("users").doc(uid).get().then((doc) => {
+        setLikeList(doc.data().like)
+      })
+    } 
+  }
+
+  const isLiked = (id) => {
+    // console.log(bookmarkList)
+    return likeList.includes(id)
+  }
+
   const value = {
     bookmarkList,
     likeList,
@@ -63,7 +106,12 @@ export function BookmarkLikeProvider(props) {
     deleteBookmark,
     setBookmarkList,
     isBookmarked,
-    getBookmarkList
+    getBookmarkList,
+    pushLike,
+    deleteLike,
+    setLikeList,
+    isLiked,
+    getLikeList,
   }
 
   return <bookmarkLikeContext.Provider value={value} {...props} />

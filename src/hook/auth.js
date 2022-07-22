@@ -11,20 +11,19 @@ export default function useAuth() {
 export function AuthProvider(props) {
   const [user, setUser] = useState(null);
   const [userrole, setUserrole] = useState();
-  const [error, setError] = useState("");
-
+	const [error, setError] = useState("");
   const router = useRouter()
   const pathname = router.pathname;
 
   const loginWithGoogle = async () => {
     const { error, user } = await AuthService.loginWithGoogle();
-    setUser(user ?? null)
+		setUser(user ?? null)
 		setError(error ?? "")
   }
 
   const loginWithFacebook = async () => {
     const { error, user } = await AuthService.loginWithFacebook();
-    setUser(user ?? null)
+		setUser(user ?? null)
 		setError(error ?? "")
   }
 

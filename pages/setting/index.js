@@ -10,12 +10,14 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import Link from "next/link";
+import useBookmarkLike from "src/hook/bookmarkLike";
 const Setting = ({auth}) => {
   const { user, logout } = auth;
   const [name, setName] = useState()
   const [photo, setPhoto] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
+  const { getBookmarkList, getLikeList } = useBookmarkLike()
   useEffect(() => {
     const fetchData = async () => {
       if (user.uid) {
@@ -28,6 +30,12 @@ const Setting = ({auth}) => {
     }
     fetchData()
   }, [])
+  useEffect(() => {
+    if (user !== null) {
+    getBookmarkList(user.uid)
+    getLikeList(user.uid)
+    }
+  },[user])
   const onTitleClick = () => {
     router.back()
   }
@@ -73,7 +81,7 @@ const Setting = ({auth}) => {
           </div>
         </div>
       </Link>
-      <Link href="/setting/heart">
+      <Link href="/setting/like">
         <div className={styles.item_container}>
           <div className={styles.icon_container}>
             <ThumbUpOutlinedIcon />
