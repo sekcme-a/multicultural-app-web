@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  z-index: 1000;
+  z-index: 9;
 }
 .item_container{
   width: 44%;

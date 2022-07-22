@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react"
+import React, {useCallback, useEffect, useState, useRef} from "react"
 import { firestore as db } from "firebase/firebase"
 import Router, { useRouter } from "next/router";
 import styles from "styles/post/hoverPost.module.css"
@@ -16,13 +16,19 @@ import ShareLink from "components/public/ShareLink"
 import { useWindowDimensions } from "src/hook/useWindowDimensions";
 import useNavi from "src/hook/customNavigation";
 import Alert from "src/components/public/Alert"
+import SpeedDial from "src/components/public/SpeedDial"
+import html2canvas from 'html2canvas';
+import jsPDF from "jspdf";
+// import { triggerBase64Download } from 'common-base64-downloader-react';
+
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>로딩중 ...</p>,
 })
-
+const { triggerBase64Download } = dynamic(import("common-base64-downloader-react"),{ssr:false})
 
 const HoverPost = (props) => {
+  const printRef = useRef()
   const [hasData, setHasData] = useState(false)
   const [data, setData] = useState({})
   const [randomNumber, setRandomNumber] = useState()
@@ -112,6 +118,9 @@ const HoverPost = (props) => {
   const onShareIconClick = () => {
     setShowBackdrop(true)
   }
+  const handleShowBackdrop = (bool) => {
+    setShowBackdrop(bool)
+  }
   const handleCloseBackDrop = () => {
     setShowBackdrop(false)
   }
@@ -133,6 +142,44 @@ const HoverPost = (props) => {
       pushHistory("THd97DSAkAZNFDLIZXDN")
       setShowId("THd97DSAkAZNFDLIZXDN")
     }
+  }
+
+  const downloadPdf = async() => {
+    const element = printRef.current;
+    const canvas = await html2canvas(element);
+    // const base64 = canvas.toDataURL('image/png');
+    // const base64data = base64.replace("data:image/png;base64","data:application/pdf;base64")
+    // console.log(base64data)
+    // const linkSource = base64data;
+    // const downloadLink = document.createElement("a");
+    // const fileName = "abc.pdf";
+    // downloadLink.href = linkSource;
+    // downloadLink.download = fileName;
+    // downloadLink.click();
+    // var pdf = new jsPDF("p", "mm", "a4");
+    //         const imgProps= pdf.getImageProperties(base64);
+    //     const pdfWidth = pdf.internal.pageSize.getWidth();
+    //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    // // var width = doc.internal.pageSize.getWidth();
+    // // var height = doc.internal.pageSize.getHeight();
+    // pdf.addImage(base64, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+    // pdf.save(data.title)
+  			var doc = new jsPDF('p', 'mm', 'a4'); 
+			var imgData = canvas.toDataURL('image/png');
+			var imgWidth = 210;
+			var pageHeight = 295;
+			var imgHeight = canvas.height * imgWidth / canvas.width;
+			var heightLeft = imgHeight;
+			var position = 0;
+			doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight); 
+			heightLeft -= pageHeight;
+			while (heightLeft >= 0) {
+				position = heightLeft - imgHeight;
+				doc.addPage();
+				doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+				heightLeft -= pageHeight;
+			  }
+			doc.save(`${data.title}.pdf`); 
   }
 
   if (isLoading) {
@@ -181,7 +228,8 @@ const HoverPost = (props) => {
     return <div className={styles.warning}>존재하지 않거나 삭제된 게시물입니다.</div>
   }
   return (
-    <div className={styles.main_container} style={{ minHeight: height }}>
+    <>
+    <div className={styles.main_container} style={{ minHeight: height }} ref={printRef}>
       <div>
         <div className={styles.header_container}>
           <div className={styles.overlay}>
@@ -225,8 +273,10 @@ const HoverPost = (props) => {
         <Comments num={3} />
       </div>
       <OtherNews />
-      <Alert mode="success" isShow={isCopied} text="Url이 복사되었습니다!" />
     </div>
+      <SpeedDial id={showId} handleShowBackdrop={handleShowBackdrop} downloadPdf={downloadPdf} />
+      <Alert mode="success" isShow={isCopied} text="Url이 복사되었습니다!" />
+    </>
   )
 }
 export default HoverPost

@@ -7,10 +7,12 @@ import MainNews from "src/components/main/MainNews"
 import PostList from "src/components/main/PostList"
 import SingletonRouter, { useRouter } from 'next/router'
 import Router from 'next/router'
+import useBookmarkLike from 'src/hook/bookmarkLike'
 
 export default function Home(props) {
   const [message, setMessage] = useState('')
   const { user, userrole, logout, setUserrole } = useAuth();
+  const { setBookmarkList } = useBookmarkLike();
   const [isPostSelected, setIsPostSelected] = useState()
   const [locationKeys, setLocationKeys] = useState([]);
   const [isOnPost, setIsOnPost] = useState()
@@ -24,6 +26,7 @@ export default function Home(props) {
     if (user) {
       firestore.collection("users").doc(user.uid).get().then((doc) => {
         setUserrole(doc.data()?.roles)
+        setBookmarkList(doc.data()?.bookmark)
       })
     }
   }, [user])

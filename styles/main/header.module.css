@@ -3,7 +3,7 @@
   width: 100%;
   position: fixed;
   background-color: white;
-  z-index: 9999;
+  z-index: 9;
 }
 
 .logo_search_container{
@@ -94,7 +94,7 @@ div.selected{
   border-top: .5px solid rgb(211, 211, 211);
   background-color: rgb(255, 249, 249);
   color:rgb(53, 53, 53);
-  z-index: 99999999;
+  z-index: 9;
 }
 .sub_menu_items{
   width: fit-content;

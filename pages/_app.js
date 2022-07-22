@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import 'styles/loader.css'
 import { AuthProvider } from "src/hook/auth"
+import { BookmarkLikeProvider } from 'src/hook/bookmarkLike'
 import { NaviProvider } from 'src/hook/customNavigation'
 import AuthStateChanged from 'src/layout/AuthStateChanged'
 import React, { useEffect, useState, useCallback, useRef } from "react"
@@ -99,17 +100,19 @@ function MyApp({ Component, pageProps }) {
     <AuthProvider>
       <AuthStateChanged>
         <NaviProvider>
-          {isHideHeaderUrl ?
-            <>
-              <Component {...pageProps} isBottom={isBottom} />
-            </>
-            :
-            <><Header handleChange={onSelectedCategoryChange}/>
-            <div className="body_container" onScroll={onScroll} style={{ height: height }} ref={bodyRef} > 
-              <Component {...pageProps} isBottom={isBottom} />
-            </div></>
-          }
-          {!router.pathname.includes("rhksflwk") && <Footer />}
+          <BookmarkLikeProvider>
+            {isHideHeaderUrl ?
+              <>
+                <Component {...pageProps} isBottom={isBottom} />
+              </>
+              :
+              <><Header handleChange={onSelectedCategoryChange}/>
+              <div className="body_container" onScroll={onScroll} style={{ height: height }} ref={bodyRef} > 
+                <Component {...pageProps} isBottom={isBottom} />
+              </div></>
+            }
+            {!router.pathname.includes("rhksflwk") && <Footer />}
+          </BookmarkLikeProvider>
         </NaviProvider>
       </AuthStateChanged>
     </AuthProvider>
