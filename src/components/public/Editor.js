@@ -102,7 +102,7 @@ const Editor = (props) => {
 
   Editor.modules = {
     toolbar: [
-      [{ header: '1' }, { header: '2' }, { header: [3, 4, 5, 6] }, { font: [] }],
+      [{ font: [] }],
       [{ size: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }],

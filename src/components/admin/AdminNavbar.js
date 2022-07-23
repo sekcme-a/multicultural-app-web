@@ -10,6 +10,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { adminMenuItems } from "data/adminMenuItems"
 import TagIcon from '@mui/icons-material/Tag';
+import CampaignIcon from '@mui/icons-material/Campaign';
 
 const AdminNavbar = (props) => {
   const [clickedMain, setClickedMain] = useState("")
@@ -34,6 +35,8 @@ const AdminNavbar = (props) => {
       return <ModeIcon className={style.icon} />
     if(icon==="TagIcon")
       return <TagIcon className={style.icon} />
+    if(icon==="CampaignIcon")
+      return <CampaignIcon className={style.icon} />
     if (icon === "AdminPanelSettingsIcon")
       return <AdminPanelSettingsIcon className={style.icon}/>
   }

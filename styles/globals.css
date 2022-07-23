@@ -204,3 +204,15 @@ table {
 .ql-clipboard{
   display: none;
 }
+
+
+.quill{
+  width: 100%;
+}
+.quill img{
+  width: 100%;
+}
+.quill iframe{
+  width: 95%;
+  max-width: 300px;
+}

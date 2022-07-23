@@ -4,6 +4,7 @@ import useAuth from 'src/hook/auth'
 import { firestore as db } from "firebase/firebase"
 import NoticationHeader from "src/components/notification/NoticationHeader"
 import MiniPostList from "src/components/main/MiniPostList"
+import Skeleton from '@mui/material/Skeleton';  
 
 const Alarm = () => {
   const { user, userrole, logout, setUserrole } = useAuth();
@@ -54,6 +55,20 @@ const Alarm = () => {
       })
     }
   }, [])
+
+
+  if (isLoading)
+    return(
+      <div>
+        <NoticationHeader loc="alarm" />
+        <Skeleton animation="wave" variant="text" width="100%-10px" height={70} style={{ margin: "0 10px 0 10px" }} />
+        <Skeleton animation="wave" variant="text" width="100%-10px" height={70} style={{ margin: "0 10px 0 10px" }}  />
+        <Skeleton animation="wave" variant="text" width="100%-10px" height={70} style={{ margin: "0 10px 0 10px" }}  />
+        <Skeleton animation="wave" variant="text" width="100%-10px" height={70} style={{ margin: "0 10px 0 10px" }}  />
+        <Skeleton animation="wave" variant="text" width="100%-10px" height={70} style={{ margin: "0 10px 0 10px" }}  />
+        <Skeleton animation="wave" variant="text" width="100%-10px" height={70} style={{ margin: "0 10px 0 10px" }}  />
+      </div>
+    )
 
   return (
     <div className={styles.main_container}>

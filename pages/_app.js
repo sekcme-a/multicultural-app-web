@@ -82,7 +82,6 @@ function MyApp({ Component, pageProps }) {
 
   //특정 url들에서 header를 hide하기 위함
   useEffect(() => {
-    console.log(router.asPath)
     if (router.pathname.includes("/setting") || router.pathname.includes("/login") || router.pathname.includes("/notification") ||router.pathname.includes("/search")) 
       setIsHideHeaderUrl(true)
     else if (router.pathname.includes("/post")) {
