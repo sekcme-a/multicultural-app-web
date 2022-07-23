@@ -23,9 +23,9 @@ const Login = ({auth}) => {
         <div className={styles.icon_container} onClick={onBackButtonClick}><ArrowBackIosIcon style={{fontSize: "15px"}}/></div>
           <p onClick={onBackButtonClick}>뒤로가기</p>
       </div>
-      <div className={styles.content_container}>
-        <motion.h1 className={styles.main_text} initial={{ opacity: 0, y:10}} animate={{ opacity: 1, transition: { duration: 1 },y:0 }}>Lorem ipsum dolort</motion.h1>
-        <motion.h2 className={styles.main_text} initial={{ opacity: 0, y:10}} animate={{ opacity: 1, transition: { duration: 1,  },y:0 }}>consectetur adipiscing elit</motion.h2>
+      <div className={styles.content_container}>  
+        <motion.h1 className={styles.main_text} initial={{ opacity: 0, y:10}} animate={{ opacity: 1, transition: { duration: 1 },y:0 }}>다양한 문화와</motion.h1>
+        <motion.h2 className={styles.main_text} initial={{ opacity: 0, y:10}} animate={{ opacity: 1, transition: { duration: 1,  },y:0 }}>가치관을 담는 양방향 소통지</motion.h2>
         <motion.div className={styles.logo_container} initial={{ opacity: 0, y:10}} animate={{ opacity: 1, transition: { duration: 1, },y:0 }}>
           <Image src={logo} alt={"한국다문화뉴스 로고"} layout="fill" objectFit="cover" objectPosition="center"/>
         </motion.div>

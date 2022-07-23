@@ -14,9 +14,10 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   loading: () => <p>로딩중 ...</p>,
 })
 
-const Announcement = () => {
+const NewAnnouncement = () => {
   const { user } = useAuth();
   const [docId, setDocId] = useState("")
+  const onDocIdChange = (e) => {setDocId(e.target.value)}
   const router = useRouter()
   const [title, setTitle] = useState("")
   const onTitleChange =(e)=>{setTitle(e.target.value)}
@@ -25,19 +26,6 @@ const Announcement = () => {
   const [textData,setTextData] = useState("")
   const onTextChange = (html) => {setTextData(html)}
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedDocId = await db.collection("likesAndComments").doc()
-      setDocId(fetchedDocId.id)
-      setIsLoading(false)
-    }
-    try {
-      fetchData()
-    } catch (e) {
-      alert(`데이터를 불러오지 못했습니다 : ${e.message}`)
-    }
-  }, [])
 
   const onSubmitClick = () => {
     const announcementHashMap = {
@@ -56,11 +44,32 @@ const Announcement = () => {
     }
   }
 
+  const onDeleteClick = () => {
+    try {
+      db.collection("announcement").doc(docId).delete()
+      alert("공지가 삭제되었습니다.")
+    } catch (e) {
+      alert(`삭제 실패 : ${e.message}`)
+    }
+  }
+
+  const onSearchClick = async() => {
+    const doc = await db.collection("announcement").doc(docId).get()
+    if (doc.exists) {
+      setTitle(doc.data().title)
+      setAuthor(doc.data().author)
+      setTextData(doc.data().text)
+    } else alert("존재하지 않는 기사 Id 입니다.")
+  }
+
   return (
     <div className={style.mainContainer}>
       <div className={style.container}>
         <h4>기사 ID</h4>
-        <p>기사 ID : <input type="text" value={docId} size="60" required disabled/></p>
+        <p className={style.warning}>기사 ID는 기사의 URL을 통해 확인할 수 있습니다.</p>
+        <p>기사 ID : <input type="text" value={docId} onChange={onDocIdChange} size="60" required />
+          <text className={style.search} onClick={onSearchClick}>조회</text>
+        </p>
       </div>
       <div className={style.container}>
         <h4>제목</h4>
@@ -74,16 +83,19 @@ const Announcement = () => {
       </div>
 
       <div className={`${style.container} ${style.quillContainer}`}>
-        <Editor docId={docId} handleChange={onTextChange} />
+        <Editor docId={docId} handleChange={onTextChange} data={textData} />
       </div>
       <div className={`${style.container} ${style.previewQuillContainer}`}>
         <QuillNoSSRWrapper value={textData||""} readOnly={true} className={style.quill} theme="bubble" />
       </div>
       <div className={style.submitButton} onClick={onSubmitClick}>
-        공지사항 추가
+        공지 편집
+      </div>
+      <div className={style.deleteButton} onClick={onDeleteClick}>
+        공지 삭제
       </div>
     </div>
   )
 }
 
-export default Announcement
+export default NewAnnouncement

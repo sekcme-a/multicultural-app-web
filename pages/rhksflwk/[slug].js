@@ -11,8 +11,9 @@ import NewArticle from "components/admin/NewArticle"
 import EditArticle from "components/admin/EditArticle"
 import Setting from "src/components/admin/Setting"
 import Recommand from "src/components/admin/Recommand"
-import Announcement from "src/components/admin/Announcement"
-
+import NewAnnouncement from "src/components/admin/NewAnnouncement"
+import EditAnnouncement from "src/components/admin/EditAnnouncement"
+import AppInfo from "src/components/admin/AppInfo"
 const Admin = () => {
   const router = useRouter();
   const { slug } = router.query;
@@ -75,8 +76,10 @@ const Admin = () => {
           {slug === "category" &&  <Setting loc="category" />}
           {slug === "local" &&  <Setting loc="local" />}
           {slug === "country" &&  <Setting loc="country" />}
+          {slug === "appInfo" &&  <AppInfo />}
           {slug === "recommand" && <Recommand />}
-          {slug === "announcement" && <Announcement />}
+          {slug === "newAnnouncement" && <NewAnnouncement />}
+          {slug === "editAnnouncement" && <EditAnnouncement />}
         </div>
       </div>
     </div>

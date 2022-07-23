@@ -94,7 +94,7 @@ const Setting = ({auth}) => {
       </Link>
       <div className={styles.custom_border} />
       <Link href="/setting/appinfo">
-        <p className={styles.item_container} onClick={logout}>
+        <p className={styles.item_container}>
           앱 정보
         </p>
       </Link>
