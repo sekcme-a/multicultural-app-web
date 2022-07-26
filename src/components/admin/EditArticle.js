@@ -89,7 +89,7 @@ const EditArticle = () => {
       let categoryIdList = []
       let localIdList = []
       let countryIdList = []
-        if (subtitle === "" || subtitle === " ") {
+        if (subtitle === "" || subtitle === " " || subtitle===undefined) {
           console.log(textData)
           temp = temp.replace(/<[^>]*>?/g, '')
           temp = temp.replace("&lt;", "<")
