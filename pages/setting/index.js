@@ -103,16 +103,6 @@ const Setting = ({auth}) => {
           도움말
         </p>
       </Link>
-      <Link href="/setting/tip">
-        <p className={styles.item_container}>
-          뉴스 제보
-        </p>
-      </Link>
-      <Link href="/setting/feedback">
-        <p className={styles.item_container}>
-          피드백 보내기
-        </p>
-      </Link>
       <Link href="/login">
         <p className={styles.item_container} onClick={logout}>
           로그아웃

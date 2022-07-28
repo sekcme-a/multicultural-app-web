@@ -5,23 +5,21 @@ import { firestore as db } from "firebase/firebase"
 import NoticationHeader from "src/components/notification/NoticationHeader"
 import MiniPostList from "src/components/main/MiniPostList"
 import Skeleton from '@mui/material/Skeleton';  
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 const Alarm = () => {
   const { user, userrole, logout, setUserrole } = useAuth();
-  const [importance, setImportance] = useState(5)
+  const [importance, setImportance] = useState()
   const [list, setList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     if (user?.uid) {
       db.collection("users").doc(user.uid).get().then((doc) => {
         setImportance(doc.data().importance)
-        if (importance !== 0) {
+        if (doc.data().importance !== 0) {
           const now = new Date()
           let temp = [];
-          // const oneMonthAgo = new Date(now.setMonth(now.getMonth()-1))
-          // console.log(now.getTime()>oneMonthAgo.getTime())
-          // db.collection("posts").where("importance",">=",importance).where("createdAt",">=",oneMonthAgo)
-          db.collection("posts").where("importance", ">=", importance).limit(30).get().then((querySnapShot) => {
+          db.collection("posts").where("importance", ">=", doc.data().importance).limit(30).get().then((querySnapShot) => {
             querySnapShot.forEach((doc) => {
               temp.push({
                 id: doc.id,
@@ -35,11 +33,13 @@ const Alarm = () => {
             setList(temp)
             setIsLoading(false)
           })
-        }
+        } else
+          setIsLoading(false)
       })
     } else {
+      setImportance(5) 
       let temp = [];
-      db.collection("posts").where("importance", ">=", importance).limit(30).get().then((querySnapShot) => {
+      db.collection("posts").where("importance", ">=", 5).limit(30).get().then((querySnapShot) => {
         querySnapShot.forEach((doc) => {
           temp.push({
             id: doc.id,
@@ -47,7 +47,7 @@ const Alarm = () => {
             thumbnail: doc.data().thumbnail,
             tag: doc.data().tag,
             category: doc.data().category,
-            author: doc.data().author,
+            author: doc.data().author, 
           })
         })
         setList(temp)
@@ -73,7 +73,14 @@ const Alarm = () => {
   return (
     <div className={styles.main_container}>
       <NoticationHeader loc="alarm" />
-      <MiniPostList data={list} />
+      {list.length===0 ?
+        <div className={styles.alarm_off_container}>
+          <NotificationsNoneIcon style={{ fontSize: "60px", color: "gray" }} />
+          <p>알람을 켜서 뉴스 속보, 최신 기사들을 확인하세요!</p>
+        </div>
+        :
+        <MiniPostList data={list} />
+      }
     </div>
   )
 }

@@ -14,6 +14,8 @@ import Recommand from "src/components/admin/Recommand"
 import NewAnnouncement from "src/components/admin/NewAnnouncement"
 import EditAnnouncement from "src/components/admin/EditAnnouncement"
 import AppInfo from "src/components/admin/AppInfo"
+import Help from "src/components/admin/Help"
+
 const Admin = () => {
   const router = useRouter();
   const { slug } = router.query;
@@ -80,6 +82,7 @@ const Admin = () => {
           {slug === "recommand" && <Recommand />}
           {slug === "newAnnouncement" && <NewAnnouncement />}
           {slug === "editAnnouncement" && <EditAnnouncement />}
+          {slug === "help" && <Help />}
         </div>
       </div>
     </div>
