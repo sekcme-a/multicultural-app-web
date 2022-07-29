@@ -49,6 +49,9 @@ const HoverPost = (props) => {
   useEffect(() => {
     //Random number from 0~8 (int)
     setRandomNumber(Math.floor(Math.random() * 9))
+        if(window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(JSON.stringify("isOnPost=true"))
+    }
   }, [])
 
   //조회수 추가

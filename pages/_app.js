@@ -42,15 +42,6 @@ function MyApp({ Component, pageProps }) {
       setIsBottom(false)
   };
 
-  useEffect(() => {
-    document.addEventListener('message', ({data}) => {
-      setToken(data)
-      alert(data)
-    })
-    // return (
-    //   window.removeEventListener('message',)
-    // )
-  }, [])
 
   // const onTouchStart = (e) => {
   //   console.log(e)

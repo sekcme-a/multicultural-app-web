@@ -12,7 +12,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import Link from "next/link";
 import useBookmarkLike from "src/hook/bookmarkLike";
 const Setting = ({auth}) => {
-  const { user, logout } = auth;
+  const { user, logout,setToken, token } = auth;
   const [name, setName] = useState()
   const [photo, setPhoto] = useState()
   const [isLoading, setIsLoading] = useState(true)
@@ -39,6 +39,28 @@ const Setting = ({auth}) => {
   const onTitleClick = () => {
     router.back()
   }
+  useEffect(() => {
+    if (user !== null) {
+      db.collection("users").doc(user.uid).get().then((doc) => {
+        if (doc.data().asdf === undefined) {
+          if(window.ReactNativeWebView) {
+            window.ReactNativeWebView.postMessage(JSON.stringify("sendToken"))
+          }
+        }
+      })
+    }
+  }, [])
+  
+  useEffect(() => {
+    document.addEventListener('message', ({data}) => {
+      setToken(data)
+      const temp = token.replace("ExponentPushToken[", "")
+      const pushToken = token.replace("]","")
+      db.collection("users").doc(user.uid).update({token: pushToken})
+      alert(data)
+    })
+  }, [])
+
   if(isLoading)
     return <></>
   return (

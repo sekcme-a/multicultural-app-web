@@ -22,18 +22,18 @@ export function AuthProvider(props) {
     const { error, user } = await AuthService.loginWithGoogle();
 		setUser(user ?? null)
 		setError(error ?? "")
-		if (user !== null) {
-			db.collection("users").doc(user.uid).update({token: token})
-		}
+		// if (user !== null) {
+		// 	db.collection("users").doc(user.uid).update({token: token})
+		// }
   }
 
 	const loginWithFacebook = async () => {
     const { error, user } = await AuthService.loginWithFacebook();
 		setUser(user ?? null)
 		setError(error ?? "")
-		if (user !== null) {
-			db.collection("users").doc(user.uid).update({token: token})
-		}
+		// if (user !== null) {
+		// 	db.collection("users").doc(user.uid).update({token: token})
+		// }
   }
 
   const logout = async () => {
