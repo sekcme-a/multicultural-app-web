@@ -46,6 +46,12 @@ export default function Home(props) {
     // )
   }, [])
 
+  useEffect(() => {
+    if (token !== "" && user!==null) {
+      db.collection("users").doc(user.uid).update({token: data})
+    }
+  })
+
 
   const onPostClick = () => {
     setIsOnPost(true)
@@ -61,6 +67,7 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainNews />
+      <h4>{token}</h4>
       <PostList isBottom={props.isBottom} category="posts" />
     </div>
   )
