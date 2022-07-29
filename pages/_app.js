@@ -26,6 +26,7 @@ function MyApp({ Component, pageProps }) {
   const [es, setEs] = useState()
   const [isHideHeaderUrl, setIsHideHeaderUrl] = useState(false)
   const [isPostUrl, setIsPostUrl] = useState(false)
+  const [token, setToken] = useState("")
 
   const onSelectedCategoryChange = (category) => {
     setSelectedCategory(category)
@@ -41,7 +42,15 @@ function MyApp({ Component, pageProps }) {
       setIsBottom(false)
   };
 
-
+  useEffect(() => {
+    window.addEventListener('message', ({data}) => {
+      setToken(data)
+      alert(data)
+    })
+    // return (
+    //   window.removeEventListener('message',)
+    // )
+  }, [])
 
   // const onTouchStart = (e) => {
   //   console.log(e)
@@ -88,7 +97,7 @@ function MyApp({ Component, pageProps }) {
           <BookmarkLikeProvider>
             {isHideHeaderUrl ?
               <>
-                <Component {...pageProps} isBottom={isBottom} />
+                <Component {...pageProps} isBottom={isBottom} token={token} />
               </>
               :
               <><Header handleChange={onSelectedCategoryChange}/>

@@ -37,6 +37,7 @@ export default function Home(props) {
   useEffect(() => {
     window.addEventListener('message', ({data}) => {
       setToken(data)
+      alert(data)
       if (user !== null) {
         db.collection("users").doc(user.uid).update({token: data})
       }
@@ -68,6 +69,7 @@ export default function Home(props) {
       </Head>
       <MainNews />
       <h4>{token}</h4>
+      <h4>{props.token}</h4>
       <PostList isBottom={props.isBottom} category="posts" />
     </div>
   )
