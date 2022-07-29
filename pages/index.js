@@ -52,7 +52,7 @@ export default function Home(props) {
     if (token !== "" && user!==null) {
       db.collection("users").doc(user.uid).update({token: data})
     }
-  })
+  },[])
 
 
   const onPostClick = () => {

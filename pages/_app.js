@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   useEffect(() => {
-    window.addEventListener('message', ({data}) => {
+    document.addEventListener('message', ({data}) => {
       setToken(data)
       alert(data)
     })
