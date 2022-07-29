@@ -54,8 +54,8 @@ const Setting = ({auth}) => {
   useEffect(() => {
     document.addEventListener('message', ({data}) => {
       setToken(data)
-      const temp = token.replace("ExponentPushToken[", "")
-      const pushToken = token.replace("]","")
+      const temp = data.replace("ExponentPushToken[", "")
+      const pushToken = temp.replace("]","")
       db.collection("users").doc(user.uid).update({token: pushToken})
       alert(data)
     })
