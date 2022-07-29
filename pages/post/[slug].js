@@ -3,7 +3,6 @@ import { firestore as db } from "firebase/firebase"
 import { useRouter } from "next/router";
 import styles from "styles/post/post.module.css"
 import Comments from "components/post/Comments"
-import OtherNews from "components/post/OtherNews"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ShareIcon from '@mui/icons-material/Share';
@@ -169,7 +168,6 @@ const Post = (props) => {
         <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
       </motion.div>
       <Comments id={slug} />
-      <OtherNews />
       <div className={isCopied ? styles.alert_container : `${styles.alert_container} ${styles.alert_hide}`}>
         <Alert severity="success" >Url이 복사되었습니다!</Alert>
       </div>
