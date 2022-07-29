@@ -8,6 +8,7 @@ import PostList from "src/components/main/PostList"
 import SingletonRouter, { useRouter } from 'next/router'
 import Router from 'next/router'
 import useBookmarkLike from 'src/hook/bookmarkLike'
+import { firestore as db } from 'firebase/firebase'
 
 export default function Home(props) {
   const { user, userrole, logout, setUserrole, token, setToken } = useAuth();
@@ -35,7 +36,7 @@ export default function Home(props) {
   }, [user])
 
   useEffect(() => {
-    window.addEventListener('message', ({data}) => {
+    document.addEventListener('message', ({data}) => {
       setToken(data)
       alert(data)
       if (user !== null) {
