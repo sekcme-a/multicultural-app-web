@@ -3,7 +3,6 @@ import { firestore as db } from "firebase/firebase"
 import Router, { useRouter } from "next/router";
 import styles from "styles/post/hoverPost.module.css"
 import Comments from "components/post/Comments"
-import OtherNews from "components/post/OtherNews"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ShareIcon from '@mui/icons-material/Share';
@@ -55,9 +54,9 @@ const HoverPost = (props) => {
   //조회수 추가
   useEffect(() => {
     try {
-      db.collection("lvc").doc(showId).get().then((doc) => {
+      db.collection("posts").doc(showId).collection("lvc").doc("count").get().then((doc) => {
         if(doc.exists)
-          db.collection('lvc').doc(showId).update({viewsCount: doc.data().viewsCount+1})
+          db.collection("posts").doc(showId).collection('lvc').doc("count").update({viewsCount: doc.data().viewsCount+1})
       })
     } catch (e) {
       
@@ -296,7 +295,6 @@ const HoverPost = (props) => {
         <div className={styles.transparent_container} />
       </div>
       <Comments id={showId} />
-      <OtherNews />
     </div>
       <SpeedDial id={showId} handleShowBackdrop={handleShowBackdrop} downloadPdf={downloadPdf} handleAlarmMode={handleAlarmMode} handleIsShow={handleIsShow} handleAlarmText={handleAlarmText} />
       <Alert mode={alarmMode} isShow={isShow} text={alarmText} />

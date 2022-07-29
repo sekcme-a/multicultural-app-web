@@ -105,9 +105,9 @@ const ThumbnailPost = (props) => {
         setAlarmText("좋아요를 취소합니다.")
         setAlarmMode("success")
         try {
-          db.collection("lvc").doc(id).get().then((doc) => {
+          db.collection("posts").doc(id).collection('lvc').doc("count").get().then((doc) => {
             if (doc.exists)
-              db.collection("lvc").doc(id).update({likesCount: doc.data().likesCount-1})
+              db.collection("posts").doc(id).collection('lvc').doc("count").update({likesCount: doc.data().likesCount-1})
           })
         } catch (e) {
           console.log(e)
@@ -123,9 +123,9 @@ const ThumbnailPost = (props) => {
         setAlarmMode("success")
         setIsShow(true)
         try {
-          db.collection("lvc").doc(id).get().then((doc) => {
+          db.collection("posts").doc(id).collection('lvc').doc("count").get().then((doc) => {
             if (doc.exists)
-              db.collection("lvc").doc(id).update({likesCount: doc.data().likesCount+1})
+              db.collection("posts").doc(id).collection('lvc').doc("count").update({likesCount: doc.data().likesCount+1})
           })
         } catch (e) {
           console.log(e)

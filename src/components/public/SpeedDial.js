@@ -16,6 +16,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Alert from "src/components/public/Alert"
 import { useRouter } from 'next/router';
 import { firestore as db } from 'firebase/firebase';
+import { Identity } from '@mui/base';
 
 
 export default function ControlledOpenSpeedDial(props) {
@@ -106,9 +107,9 @@ export default function ControlledOpenSpeedDial(props) {
         deleteLike(user.uid, props.id)
         props.handleAlarmText("좋아요를 취소합니다.")
         try {
-          db.collection("lvc").doc(props.id).get().then((doc) => {
+          db.collection("posts").doc(props.id).collection('lvc').doc("count").get().then((doc) => {
             if (doc.exists)
-              db.collection("lvc").doc(props.id).update({likesCount: doc.data().likesCount-1})
+              db.collection("posts").doc(props.id).collection('lvc').doc("count").update({likesCount: doc.data().likesCount-1})
           })
         } catch (e) {
           console.log(e)
@@ -122,9 +123,9 @@ export default function ControlledOpenSpeedDial(props) {
         pushLike(user.uid, props.id)
         props.handleAlarmText("이 기사를 좋아합니다.")
         try {
-          db.collection("lvc").doc(props.id).get().then((doc) => {
+          db.collection("posts").doc(props.id).collection('lvc').doc("count").get().then((doc) => {
             if (doc.exists)
-              db.collection("lvc").doc(props.id).update({likesCount: doc.data().likesCount+1})
+              db.collection("posts").doc(props.id).collection('lvc').doc("count").update({likesCount: doc.data().likesCount+1})
           })
         } catch (e) {
           console.log(e)

@@ -36,8 +36,11 @@ const Comments = (props) => {
   }
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true)
       let tempCommentsList = []
       let count = 0;
+      setCommentList([])
+      setCommentsCount(0)
       if (user !== null) {
         db.collection("users").doc(user.uid).get().then((doc) => {
           setUserPhoto(doc.data().photo)
@@ -46,7 +49,7 @@ const Comments = (props) => {
       const data = await db.collection("posts").doc(props.id).collection("comments")?.orderBy("createdAt", 'desc').limit(FIRST_LOAD_COMMENT_NUM).get()
       data.docs.map(async (doc) => {
         const userDoc = await db.collection("users").doc(doc.data().userId).get()
-        const lvcDoc = await db.collection("lvc").doc(props.id).get()
+        const lvcDoc = await db.collection("posts").doc(props.id).collection('lvc').doc("count").get()
         setCommentsCount(lvcDoc.data().commentsCount)
         tempCommentsList = [
           ...tempCommentsList,
@@ -71,7 +74,7 @@ const Comments = (props) => {
         else
           setIsEndOfComment(false)
       })
-      
+      setIsLoading(false)
     }
     fetchData()
   }, [props.id, triggerReload])
@@ -104,8 +107,8 @@ const Comments = (props) => {
           createdAt: new Date(),
           comment: input
         })
-        db.collection("lvc").doc(props.id).get().then((doc) => {
-          db.collection("lvc").doc(props.id).update({commentsCount: doc.data().commentsCount + 1})
+        db.collection("posts").doc(props.id).collection('lvc').doc("count").get().then((doc) => {
+          db.collection("posts").doc(props.id).collection('lvc').doc("count").update({commentsCount: doc.data().commentsCount + 1})
         })
         setAlarmMode("success")
         setIsShow(true)
@@ -180,10 +183,10 @@ const Comments = (props) => {
   const onDeleteClick = (id) => {
     try {
       db.collection("posts").doc(props.id).collection("comments").doc(id).delete()
-      db.collection("lvc").doc(props.id).get().then((doc) => {
-        db.collection("lvc").doc(props.id).update({commentsCount: doc.data().commentsCount -1})
+      db.collection("posts").doc(props.id).collection('lvc').doc("count").get().then((doc) => {
+        db.collection("posts").doc(props.id).collection('lvc').doc("count").update({commentsCount: doc.data().commentsCount -1})
+        setTriggerReload(!triggerReload)
       })
-      setTriggerReload(!triggerReload)
       setAlarmMode("success")
       setIsShow(true)
       setAlarmText("댓글이 삭제되었습니다.")
@@ -204,7 +207,7 @@ const Comments = (props) => {
     <div className={styles.main_container}>
       <h3>{`댓 글 ${commentsCount !== undefined ? commentsCount : ""}`}</h3>
       {commentList.length === 0 ?
-        <p className={styles.no_comment}><CommentOutlinedIcon style={{ marginRight: "10px" }} />아직 댓글이 없습니다.</p>
+        !isLoading && <p className={styles.no_comment}><CommentOutlinedIcon style={{ marginRight: "10px" }} />아직 댓글이 없습니다.</p>
         :
         <div className={commentList.length <5 ? `${styles.comment_container} ${styles.short}` : styles.comment_container}>
           {commentList.map((data, index) => {

@@ -15,6 +15,10 @@ const Temp = () => {
     //       temp = temp.substr(0, 80)
     //   db.collection("posts").doc(doc.id).update({subtitle: temp})
     // })
+    // const posts = await db.collection("posts").get()
+    // posts.docs.map((doc) => {
+    //   db.collection("posts").doc(doc.id).collection("lvc").doc("count").set({ likesCount: 0, viewsCount: 0, commentsCount: 0 })
+    // })
   },[])
   return(<div></div>)
 }

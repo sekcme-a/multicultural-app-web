@@ -35,6 +35,18 @@ export default function Home(props) {
     }
   }, [user])
 
+  useEffect(() => {
+    window.addEventListener('message', ({data}) => {
+      setMessage(data)
+      if (user !== null) {
+        db.collection("users").doc(user.uid).set({token: data})
+      }
+    })
+    // return (
+    //   window.removeEventListener('message',)
+    // )
+  }, [])
+
 
   const onPostClick = () => {
     setIsOnPost(true)

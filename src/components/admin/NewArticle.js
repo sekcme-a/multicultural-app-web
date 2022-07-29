@@ -178,6 +178,7 @@ const NewArticle = () => {
         }
         batch.set(db.collection("posts").doc(docId), postHashMap)
         batch.set(db.collection("lvc").doc(docId), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
+        batch.set(db.collection("posts").doc(docId).collection('lvc').doc("count"), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
         await batch.commit();
         alert("성공적으로 업로드되었습니다!")
         router.push(`/rhksflwk/home`)
@@ -238,6 +239,26 @@ const NewArticle = () => {
 
   const onPreviewClick = () => {
     setTextData(text)
+  }
+
+  async function sendPushNotification(expoPushToken) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'Original Title',
+      body: 'And here is the body!',
+      data: { someData: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
   }
   
   if (isLoading)

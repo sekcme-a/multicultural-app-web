@@ -40,21 +40,6 @@ function MyApp({ Component, pageProps }) {
     } else if (isBottom)
       setIsBottom(false)
   };
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScrollPos);
-  //   if (router.pathname === "/" || router.pathname.includes("/category") || router.pathname.includes("/local") || router.pathname.includes("/country")) {
-  //     window.scrollTo(0, 300)
-  //   }
-  //       const handleScrollPos = () => {
-  //     //every time the window is scrolled, update the reference. This will not cause a re-render, meaning smooth uninterrupted scrolling.
-  //         setScrollHeight(window.scrollY)
-  //         console.log(scrollHeight)
-  //   };
-  //     return () => {
-  //     //remove event listener on unmount
-  //     window.removeEventListener('scroll', handleScrollPos);
-  //   };
-  // })
 
 
 
