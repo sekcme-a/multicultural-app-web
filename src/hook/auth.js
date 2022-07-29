@@ -1,5 +1,5 @@
 import { AuthService } from "src/service/AuthService";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 
 const authContext = createContext();
@@ -13,18 +13,22 @@ export function AuthProvider(props) {
   const [userrole, setUserrole] = useState();
 	const [error, setError] = useState("");
   const router = useRouter()
-  const pathname = router.pathname;
+	const pathname = router.pathname;
 
-  const loginWithGoogle = async () => {
+
+	const loginWithGoogle = async () => {
     const { error, user } = await AuthService.loginWithGoogle();
 		setUser(user ?? null)
 		setError(error ?? "")
+		setIsVir(true)
+		setTemp(true)
   }
 
-  const loginWithFacebook = async () => {
+	const loginWithFacebook = async () => {
     const { error, user } = await AuthService.loginWithFacebook();
 		setUser(user ?? null)
 		setError(error ?? "")
+		setIsVir(true)
   }
 
   const logout = async () => {

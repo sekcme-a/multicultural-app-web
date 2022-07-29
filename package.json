@@ -32,7 +32,8 @@
     "react-social-login-buttons": "^3.6.0",
     "react-use": "^17.4.0",
     "sharp": "^0.30.7",
-    "swiper": "^8.2.6"
+    "swiper": "^8.2.6",
+    "time-counting": "^2.0.2"
   },
   "devDependencies": {
     "eslint": "8.18.0",

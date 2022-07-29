@@ -30,7 +30,7 @@ import Alert from "src/components/public/Alert"
 import Backdrop from '@mui/material/Backdrop';
 import ShareLink from "components/public/ShareLink"
 import { useRouter } from "next/router"
-
+import { firestore as db } from "firebase/firebase";
 const ThumbnailPost = (props) => {
   const [randomNumber, setRandomNumber] = useState()
   const [id, setId] = useState("")
@@ -104,6 +104,14 @@ const ThumbnailPost = (props) => {
         deleteLike(user.uid, id)
         setAlarmText("좋아요를 취소합니다.")
         setAlarmMode("success")
+        try {
+          db.collection("lvc").doc(id).get().then((doc) => {
+            if (doc.exists)
+              db.collection("lvc").doc(id).update({likesCount: doc.data().likesCount-1})
+          })
+        } catch (e) {
+          console.log(e)
+        }
         setIsShow(true)
         setTimeout(() => {
           setIsShow(false)
@@ -114,6 +122,14 @@ const ThumbnailPost = (props) => {
         setAlarmText("이 기사를 좋아합니다.")
         setAlarmMode("success")
         setIsShow(true)
+        try {
+          db.collection("lvc").doc(id).get().then((doc) => {
+            if (doc.exists)
+              db.collection("lvc").doc(id).update({likesCount: doc.data().likesCount+1})
+          })
+        } catch (e) {
+          console.log(e)
+        }
         setTimeout(() => {
           setIsShow(false)
         }, 2000)

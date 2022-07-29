@@ -168,11 +168,7 @@ const Post = (props) => {
         className={styles.content_container}onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
       </motion.div>
-      <div className={styles.comment_container}>
-        <h3>댓 글</h3>
-        <h4 onClick={onMoreCommentClick}>+ 더보기</h4>
-        <Comments num={3} />
-      </div>
+      <Comments id={slug} />
       <OtherNews />
       <div className={isCopied ? styles.alert_container : `${styles.alert_container} ${styles.alert_hide}`}>
         <Alert severity="success" >Url이 복사되었습니다!</Alert>

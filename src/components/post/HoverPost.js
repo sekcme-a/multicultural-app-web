@@ -52,6 +52,18 @@ const HoverPost = (props) => {
     setRandomNumber(Math.floor(Math.random() * 9))
   }, [])
 
+  //조회수 추가
+  useEffect(() => {
+    try {
+      db.collection("lvc").doc(showId).get().then((doc) => {
+        if(doc.exists)
+          db.collection('lvc').doc(showId).update({viewsCount: doc.data().viewsCount+1})
+      })
+    } catch (e) {
+      
+    }
+  },[showId])
+
   useEffect(() => {
     const handler = (url) => {
       if (isOnPost) {
@@ -141,18 +153,6 @@ const HoverPost = (props) => {
     },2000)
   }
   
-  const onMoreCommentClick = () => {
-    // router.push(`/comments/${props.id}`)
-    //잠시실험
-    if (history.length === 1) {
-      pushHistory("iliALmZzb9ALyjh3lli3")
-      setShowId("iliALmZzb9ALyjh3lli3")
-    }
-    else if (history.length === 2) {
-      pushHistory("THd97DSAkAZNFDLIZXDN")
-      setShowId("THd97DSAkAZNFDLIZXDN")
-    }
-  }
 
   const downloadPdf = async() => {
     const element = printRef.current;
@@ -295,11 +295,7 @@ const HoverPost = (props) => {
         </motion.div>
         <div className={styles.transparent_container} />
       </div>
-      <div className={styles.comment_container}>
-        <h3>댓 글</h3>
-        <h4 onClick={onMoreCommentClick}>+ 더보기</h4>
-        <Comments num={3} />
-      </div>
+      <Comments id={showId} />
       <OtherNews />
     </div>
       <SpeedDial id={showId} handleShowBackdrop={handleShowBackdrop} downloadPdf={downloadPdf} handleAlarmMode={handleAlarmMode} handleIsShow={handleIsShow} handleAlarmText={handleAlarmText} />

@@ -62,8 +62,22 @@ const Profile = () => {
   }
 
   const onSubmit = () => {
-    if(userName==="")
+    const blank_pattern = /^\s+|\s+$/g;
+    const special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    if (userName === "")
       setError("userName")
+    else if (userName.length > 25)
+      setError("userNameToLong")
+    else if (userName.replace(blank_pattern, "") === "")
+      setError("userNameOnlyBlank")
+    else if (special_pattern.test(userName) === true)
+      setError("userNameHasSpecial")
+    else if (realName.length > 60)
+      setError("realNameToLong")
+    else if(realName.replace(blank_pattern, "")==="")
+      setError("realNameOnlyBlank")
+    else if(special_pattern.test(realName)===true)
+      setError("realNameHasSpecial")
     else if (/^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}/.test(phoneNumber) === false || phoneNumber.length>13 && phoneNumber!=="")
       setError("phoneNumber")
     else if (!checkValidDate(date) && date!=="")
@@ -84,6 +98,7 @@ const Profile = () => {
       try {
          db.collection("users").doc(user.uid).update(profileHashMap)
         setAlertText("프로필이 변경되었습니다.")
+        setError("")
         setAlertMode("success")
         setTimeout(() => {
           setAlertMode("none")
@@ -204,10 +219,13 @@ const checkValidDate = (value) => {
           id="outlined-helperText"
           label="닉네임"
           value={userName}
-          helperText={error==="userName" ? "필수항목입니다.":"닉네임은 모두에게 공개됩니다."}
+          helperText={error === "userName" ? "필수항목입니다." :
+            error === "userNameToLong" ? "닉네임이 너무 깁니다." :
+              error === "userNameOnlyBlank" ? "닉네임은 공백이 될 수 없습니다." :
+            error ==="userNameHasSpecial" ? "닉네임에는 특수문자가 포함될 수 없습니다." : "닉네임은 모두에게 공개됩니다."}
+          error={error==="userName" || error==="userNameToLong" || error==="userNameOnlyBlank" || error==="userNameHasSpecial"}
           size="small"
           margin="normal"
-          error={error === "userName"}
           onChange={onUserNameChange}
         />
         <p style={{marginBottom:"10px"}}>아래의 개인정보는 모두 비공개 정보입니다.</p>
@@ -216,6 +234,10 @@ const checkValidDate = (value) => {
           id="outlined-helperText"
           label="실명"
           value={realName}
+          helperText={ error === "realNameToLong" ? "실명이 너무 깁니다." :
+              error === "realNameOnlyBlank" ? "실명은 공백이 될 수 없습니다." :
+            error ==="realNameHasSpecial" && "실명에는 특수문자가 포함될 수 없습니다."}
+          error={error==="realNameToLong" || error==="realNameOnlyBlank" || error==="realNameHasSpecial"}
           size="small"
           margin="normal"
           onChange={onRealNameChange}
