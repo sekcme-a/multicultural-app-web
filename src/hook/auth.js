@@ -1,6 +1,7 @@
 import { AuthService } from "src/service/AuthService";
 import { createContext, useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
+import { firestore as db } from "firebase/firebase";
 
 const authContext = createContext();
 
@@ -12,6 +13,7 @@ export function AuthProvider(props) {
   const [user, setUser] = useState(null);
   const [userrole, setUserrole] = useState();
 	const [error, setError] = useState("");
+	const [token, setToken] = useState("")
   const router = useRouter()
 	const pathname = router.pathname;
 
@@ -20,15 +22,18 @@ export function AuthProvider(props) {
     const { error, user } = await AuthService.loginWithGoogle();
 		setUser(user ?? null)
 		setError(error ?? "")
-		setIsVir(true)
-		setTemp(true)
+		if (user !== null) {
+			db.collection("users").doc(user.uid).update({token: token})
+		}
   }
 
 	const loginWithFacebook = async () => {
     const { error, user } = await AuthService.loginWithFacebook();
 		setUser(user ?? null)
 		setError(error ?? "")
-		setIsVir(true)
+		if (user !== null) {
+			db.collection("users").doc(user.uid).update({token: token})
+		}
   }
 
   const logout = async () => {
@@ -100,6 +105,8 @@ export function AuthProvider(props) {
 		user,
 		userrole,
 		error,
+		token,
+		setToken,
     loginWithGoogle,
     loginWithFacebook,
 		logout,

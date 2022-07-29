@@ -10,8 +10,7 @@ import Router from 'next/router'
 import useBookmarkLike from 'src/hook/bookmarkLike'
 
 export default function Home(props) {
-  const [message, setMessage] = useState('')
-  const { user, userrole, logout, setUserrole } = useAuth();
+  const { user, userrole, logout, setUserrole, token, setToken } = useAuth();
   const { setBookmarkList, setLikeList } = useBookmarkLike();
   const [isPostSelected, setIsPostSelected] = useState()
   const [locationKeys, setLocationKeys] = useState([]);
@@ -37,9 +36,9 @@ export default function Home(props) {
 
   useEffect(() => {
     window.addEventListener('message', ({data}) => {
-      setMessage(data)
+      setToken(data)
       if (user !== null) {
-        db.collection("users").doc(user.uid).set({token: data})
+        db.collection("users").doc(user.uid).update({token: data})
       }
     })
     // return (
