@@ -24,6 +24,7 @@ const Help = () => {
       if (doc.exists) {
         let text = doc.data().text
         const temp2 = text.split("[[[")
+        const linkList = doc.data().link?.split("\n")
         temp2.map((text) => {
           const temp3List = text.split("]]]")
           if (temp3List[0] !== "" && temp3List[1] !== undefined) {
@@ -34,6 +35,16 @@ const Help = () => {
               temp4string = temp4string.replace(">>>", "</strong>")
             while(temp4string.includes("\n"))
               temp4string = temp4string.replace("\n", "<br />")
+            if (linkList) {
+              linkList.map((link) => {
+                const temp5List = link.split("==")
+                while (temp4string.includes(temp5List[0])) {
+                  console.log(temp5List)
+                  temp4string = temp4string.replace(temp5List[0], `<a href="dataInfo">${temp5List[1]}</a>`)
+                  console.log(temp4string)
+                }
+              })
+            }
             if (temp4string[0] === "<" && temp4string[1] === "b" && temp4string[2] === "r" && temp4string[3] === " "
               && temp4string[4] === "/" && temp4string[5] === ">") {
               temp4string = temp4string.replace("<br />","")
@@ -60,6 +71,10 @@ const Help = () => {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const onLinkClick = (url) => {
+    console.log(url)
+  }
 
   if (isLoading)
     return (<></>)

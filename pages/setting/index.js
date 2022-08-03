@@ -42,7 +42,7 @@ const Setting = ({auth}) => {
   useEffect(() => {
     if (user !== null) {
       db.collection("users").doc(user.uid).get().then((doc) => {
-        if (doc.data().asdf === undefined) {
+        if (doc.data().token === undefined) {
           if(window.ReactNativeWebView) {
             window.ReactNativeWebView.postMessage(JSON.stringify("sendToken"))
           }
@@ -54,10 +54,7 @@ const Setting = ({auth}) => {
   useEffect(() => {
     document.addEventListener('message', ({data}) => {
       setToken(data)
-      const temp = data.replace("ExponentPushToken[", "")
-      const pushToken = temp.replace("]","")
-      db.collection("users").doc(user.uid).update({token: pushToken})
-      alert(data)
+      db.collection("users").doc(user.uid).update({token: data})
     })
   }, [])
 

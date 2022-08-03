@@ -46,7 +46,7 @@ const MiniPostList = (props) => {
   return (
     <div className={styles.main_container} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {props.category === "posts" && <h1 className={styles.title}>실시간 뉴스</h1>}
-      {props.data?.map((doc, index) => {
+      {!isOnPost && props.data?.map((doc, index) => {
         return (
           <MiniThumbnail data={doc} key={index} lazyRoot={lazyRoot} />
         )

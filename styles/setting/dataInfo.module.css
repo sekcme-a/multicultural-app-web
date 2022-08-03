@@ -21,20 +21,8 @@
 .title_container p {
   margin-left: 10px;
 }
-
-.title{
-  font-weight: bold;
-  font-size: 17px;
-}
-.text{
+.content_container{
+  margin: 20px 20px 0 20px;
   font-size: 15px;
-  line-height: 22px;
-}
-.text strong{
-  font-weight: bold;
-}
-
-.main_container a{
-  color: blue !important;
-  text-decoration: underline;
+  line-height: 20px;
 }

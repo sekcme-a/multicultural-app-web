@@ -14,7 +14,7 @@ const AppInfo = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const doc =  await db.collection("setting").doc("appInfo").get()
+      const doc =  await db.collection("setting").doc("dataInfo").get()
       if (doc.exists) {
         setTextData(doc.data().text)
       }
@@ -24,8 +24,8 @@ const AppInfo = () => {
   
   const onSubmitClick = () => {
     try {
-      db.collection("setting").doc("appInfo").set({ text: textData })
-      alert('앱정보가 변경되었습니다.')
+      db.collection("setting").doc("dataInfo").set({ text: textData })
+      alert('개인정보처리방침이 변경되었습니다.')
     } catch (e) {
       alert(`업로드 실패 : ${e.message}`)
     }
@@ -36,7 +36,7 @@ const AppInfo = () => {
         <Editor docId={"appInfo"} handleChange={onTextChange} data={textData} />
       </div>
       <div className={style.submitButton} onClick={onSubmitClick}>
-        앱정보 변경
+        개인정보처리방침 변경
       </div>
     </div>
   )

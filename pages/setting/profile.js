@@ -14,10 +14,10 @@ import CircularProgress from '@mui/material/CircularProgress'
 import CountrySelect from "src/components/setting/profile/CountrySelect"
 import GenderSelect from "src/components/setting/profile/GenderSelect"
 import Alert from "src/components/public/Alert"
-
+import Backdrop from '@mui/material/Backdrop';
 const Profile = () => {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const [userName, setUserName] = useState("")
   const onUserNameChange = (e) => { setUserName(e.target.value); if(error==="userName") setError("none")}
   const [email, setEmail] = useState("")
@@ -35,6 +35,8 @@ const Profile = () => {
   const onRealNameChange = (e)=>{setRealName(e.target.value)}
   const [gender, setGender] = useState()
   const onGenderChange = (gender) => { setGender(gender) }
+
+  const [showBackdrop, setShowBackdrop] = useState(false)
   
   const [alertText, setAlertText] = useState("")
   const [alertMode, setAlertMode] = useState("none")
@@ -174,6 +176,24 @@ const checkValidDate = (value) => {
       return true
   }
 
+  const onLogoutForeverClick = () => {
+    setShowBackdrop(true)
+  }
+  const handleCloseBackDrop = () => {
+    setShowBackdrop(false)
+  }
+
+  const onYesClick = async() => {
+    await db.collection("users").doc(user.uid).delete()
+    logout()
+    router.push("/login")
+  }
+
+  const onNoClick = () => {
+    console.log(user.uid)
+    setShowBackdrop(false)
+  }
+
   if (isLoading)
     return (
       // <Skeleton animation="wave" variant="rectangular" width="100%" height={250} />
@@ -282,8 +302,16 @@ const checkValidDate = (value) => {
         <Button variant="contained" component="label" onClick={onSubmit}>
           저장
         </Button>
+        <p className={styles.red_logout} onClick={onLogoutForeverClick}>회원 탈퇴</p>
       </div>
-      <Alert mode={alertMode} text={alertText} isShow={alertMode!=="none"} />
+      <Alert mode={alertMode} text={alertText} isShow={alertMode !== "none"} />
+      <Backdrop open={showBackdrop} onClick={handleCloseBackDrop} sx={{ color: '#fff', zIndex: 1000, }}>
+        <div className={styles.alert_container}>
+          <h4>회원 탈퇴시 북마크, 좋아요 등 모든 회원 정보가 삭제되며 다시 불러올 수 없습니다. 삭제하시겠습니까?</h4>
+          <p onClick={onYesClick}>예</p>
+          <p onClick={onNoClick}>아니요</p>
+        </div>
+      </Backdrop>
     </div>
   )
 }
