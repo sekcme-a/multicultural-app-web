@@ -48,6 +48,7 @@ export default function Home(props) {
         <title>한국다문화뉴스</title>
         <meta name="description" content="Korea Multicultural News" />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="google-site-verification" content="bLFivCjbVcRRhfLlSY8tACo_lPHtIgUdWIMCNKuCH0g" />
       </Head>
       <MainNews />
       <h4>{token}</h4>
