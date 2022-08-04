@@ -34,25 +34,25 @@ export default function ControlledOpenSpeedDial(props) {
     const noBookmarkNoLike = [
     { icon: <ThumbUpOutlinedIcon />, name: 'like' },
     { icon: <BookmarkBorderIcon />, name: 'bookmark' },
-    {icon: <PictureAsPdfIcon />, name: 'pdf'},
+    // {icon: <PictureAsPdfIcon />, name: 'pdf'},
     { icon: <ShareIcon />, name: 'share' },
     ];
     const yesBookmarkNoLike = [
       { icon: <ThumbUpOutlinedIcon />, name: 'like' },
       { icon: <BookmarkIcon style={{color: "rgb(255, 134, 154)"}} />, name: 'bookmark' },
-      {icon: <PictureAsPdfIcon />, name: 'pdf'},
+      // {icon: <PictureAsPdfIcon />, name: 'pdf'},
       { icon: <ShareIcon />, name: 'share' },
     ]
     const noBookmarkYesLike = [
       { icon: <ThumbUpIcon style={{color: "rgb(255, 134, 154)"}} />, name: 'like' },
       { icon: <BookmarkBorderIcon />, name: 'bookmark' },
-      {icon: <PictureAsPdfIcon />, name: 'pdf'},
+      // {icon: <PictureAsPdfIcon />, name: 'pdf'},
       { icon: <ShareIcon />, name: 'share' },
     ]
     const yesBookmarkYesLike = [
       { icon: <ThumbUpIcon style={{color: "rgb(255, 134, 154)"}} />, name: 'like' },
       { icon: <BookmarkIcon style={{color: "rgb(255, 134, 154)"}} />, name: 'bookmark' },
-      {icon: <PictureAsPdfIcon />, name: 'pdf'},
+      // {icon: <PictureAsPdfIcon />, name: 'pdf'},
       { icon: <ShareIcon />, name: 'share' },
     ]
     if(!isBookmarked(props.id) && !isLiked(props.id))

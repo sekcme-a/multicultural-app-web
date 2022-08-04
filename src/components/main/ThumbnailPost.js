@@ -87,7 +87,7 @@ const ThumbnailPost = (props) => {
         }, 2000)
       }
       setIsTimeOut(true)
-      setTimeout(()=>{setIsTimeOut(false)},2000)
+      setTimeout(()=>{setIsTimeOut(false)},1000)
     }
   }
   const onLikeClick = () => {
@@ -135,7 +135,7 @@ const ThumbnailPost = (props) => {
         }, 2000)
       }
       setIsTimeOut(true)
-      setTimeout(()=>{setIsTimeOut(false)},2000)
+      setTimeout(()=>{setIsTimeOut(false)},1000)
     }
   }
 
