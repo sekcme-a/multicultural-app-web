@@ -23,6 +23,13 @@ export default function Home(props) {
   }
 
   useEffect(() => {
+    document.addEventListener('message', ({data}) => {
+      setToken(data)
+      db.collection("test").doc("test").update({token: data})
+    })
+  }, [])
+
+  useEffect(() => {
     if (user) {
       firestore.collection("users").doc(user.uid).get().then((doc) => {
         setUserrole(doc.data()?.roles)

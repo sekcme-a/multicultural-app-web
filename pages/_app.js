@@ -10,7 +10,8 @@ import Header from "src/components/main/Header"
 import Footer from "src/components/main/Footer"
 import { useRouter } from "next/router"
 import Post from "src/components/Post"
-import {useWindowDimensions} from "src/hook/useWindowDimensions"
+import { useWindowDimensions } from "src/hook/useWindowDimensions"
+import { firestore as db } from "firebase/firebase"
 
 function MyApp({ Component, pageProps }) {
   const [selectedCategory, setSelectedCategory] = useState("")
