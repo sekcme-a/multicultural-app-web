@@ -16,6 +16,7 @@ import EditAnnouncement from "src/components/admin/EditAnnouncement"
 import AppInfo from "src/components/admin/AppInfo"
 import Help from "src/components/admin/Help"
 import DataInfo from "src/components/admin/DataInfo"
+import Crawling from "src/components/admin/Crawling"
 
 const Admin = () => {
   const router = useRouter();
@@ -85,6 +86,7 @@ const Admin = () => {
           {slug === "editAnnouncement" && <EditAnnouncement />}
           {slug === "help" && <Help />}
           {slug === "dataInfo" && <DataInfo />}
+          {slug === "crawling" && <Crawling />}
         </div>
       </div>
     </div>

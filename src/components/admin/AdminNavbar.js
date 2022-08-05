@@ -11,6 +11,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { adminMenuItems } from "data/adminMenuItems"
 import TagIcon from '@mui/icons-material/Tag';
 import CampaignIcon from '@mui/icons-material/Campaign';
+import PestControlIcon from '@mui/icons-material/PestControl';
 
 const AdminNavbar = (props) => {
   const [clickedMain, setClickedMain] = useState("")
@@ -38,7 +39,9 @@ const AdminNavbar = (props) => {
     if(icon==="CampaignIcon")
       return <CampaignIcon className={style.icon} />
     if (icon === "AdminPanelSettingsIcon")
-      return <AdminPanelSettingsIcon className={style.icon}/>
+      return <AdminPanelSettingsIcon className={style.icon} />
+    if (icon === "PestControlIcon")
+      return <PestControlIcon className={style.icon} />
   }
 
   const router = useRouter()

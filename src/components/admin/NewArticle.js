@@ -45,6 +45,9 @@ const NewArticle = () => {
   const onTagChange = (e) => { setTag(e.target.value) }
   const onAuthorChange = (e) => { setAuthor(e.target.value) }
   const onImportanceChange = (e) => { setImportance(e.target.value) }
+  const [createdAt, setCreatedAt] = useState()
+  const onCreatedAtChange = (e) => { setCreatedAt(e.target.value) }
+  const [createdAtDate, setCreatedAtDate] = useState()
 
   const onTextChange = (html) => {
     setTextData(html)
@@ -77,7 +80,6 @@ const NewArticle = () => {
     } catch (e) {
       alert(`데이터를 불러오지 못했습니다 : ${e.message}`)
     }
-
   }, [])
 
   const onSubmitClick = async() => {
@@ -89,101 +91,102 @@ const NewArticle = () => {
       let localIdList = []
       let countryIdList = []
       const thumbnailUrl = await uploadImage(thumbnailImg, `thumbnails/${Date.now()}`)
-      // if (checkInput() && user) {
-      if (true) {
-        selectedCategoryList.map((cat) => {
-          for (let i = 0; i < catLi.data().list.length; i++){
-            if (cat === catLi.data().list[i])
-              categoryIdList.push(catLi.data().idList[i])
-          }
-        })
-        selectedLocalList.map((loc) => {
-          for (let i = 0; i < locLi.data().list.length; i++){
-            if (loc === locLi.data().list[i])
-              localIdList.push(locLi.data().idList[i])
-          }
-        })
-        selectedCountryList.map((cou) => {
-          for (let i = 0; i < couLi.data().list.length; i++){
-            if (cou === couLi.data().list[i])
-              countryIdList.push(couLi.data().idList[i])
-          }
-        })
-        let arrayData = []
-        const titleAsWord = title.toLowerCase().split(" ")
-        for (let j = 0; j<titleAsWord.length; j++){
-          for (let i = 1; i < titleAsWord[j].length + 1; i++){
-            arrayData.push(titleAsWord[j].substring(0,i))
-          }
-        }
-        const tagAsWord = tag.toLowerCase().replace(/^\s+|\s+$/gm,'').split("#")
-        for (let j = 0; j<tagAsWord.length; j++){
-          for (let i = 1; i < tagAsWord[j].length + 1; i++){
-            arrayData.push(tagAsWord[j].substring(0,i))
-          }
-        }
-        if (subtitle === "" || subtitle === " ") {
-          const temp = textData
-          temp = temp.replace(/<[^>]*>?/g, '')
-          temp = temp.replace("&lt;", "<")
-          temp = temp.replace("&gt;", ">")
-          temp = temp.replace("&nbsp;", "")
-          temp = temp.substr(0, 80)
-          setSubtitle(temp)
-        }
-        const postHashMap = {
-          title: title,
-          subtitle: subtitle,
-          thumbnail: thumbnailUrl,
-          createdAt: new Date(),
-          author: author,
-          uid: user.uid,
-          category: selectedCategoryList.toString(),
-          local: selectedLocalList.toString(),
-          country: selectedCountryList.toString(),
-          categoryId: categoryIdList,
-          localId: localIdList,
-          countryId: countryIdList,
-          tag: tag,
-          importance: parseInt(importance),
-          text: textData,
-          keyword: arrayData,
-        }
-        const thumbnailHashMap = {
-          title: title,
-          subtitle: subtitle,
-          thumbnail: thumbnailUrl,
-          createdAt: new Date(),
-          author: author,
-          uid: user.uid,
-          category: selectedCategoryList.toString(),
-          local: selectedLocalList.toString(),
-          country: selectedCountryList.toString(),
-          categoryId: categoryIdList,
-          localId: localIdList,
-          countryId: countryIdList,
-          tag: tag,
-        }
-        const batch = db.batch();
-        categoryIdList.forEach((category) => {
-          batch.set(db.collection(category).doc(docId), thumbnailHashMap);
-        })
-        if (localIdList.length !== 0) {
-          localIdList.forEach((local) => {
-            batch.set(db.collection(local).doc(docId), thumbnailHashMap)
+      if (checkInput() && user) {
+        if (true) {
+          selectedCategoryList.map((cat) => {
+            for (let i = 0; i < catLi.data().list.length; i++) {
+              if (cat === catLi.data().list[i])
+                categoryIdList.push(catLi.data().idList[i])
+            }
           })
-        }
-        if (countryIdList.length !== 0) {
-          countryIdList.forEach((country) => {
-            batch.set(db.collection(country).doc(docId), thumbnailHashMap)
+          selectedLocalList.map((loc) => {
+            for (let i = 0; i < locLi.data().list.length; i++) {
+              if (loc === locLi.data().list[i])
+                localIdList.push(locLi.data().idList[i])
+            }
           })
+          selectedCountryList.map((cou) => {
+            for (let i = 0; i < couLi.data().list.length; i++) {
+              if (cou === couLi.data().list[i])
+                countryIdList.push(couLi.data().idList[i])
+            }
+          })
+          let arrayData = []
+          const titleAsWord = title.toLowerCase().split(" ")
+          for (let j = 0; j < titleAsWord.length; j++) {
+            for (let i = 1; i < titleAsWord[j].length + 1; i++) {
+              arrayData.push(titleAsWord[j].substring(0, i))
+            }
+          }
+          const tagAsWord = tag.toLowerCase().replace(/^\s+|\s+$/gm, '').split("#")
+          for (let j = 0; j < tagAsWord.length; j++) {
+            for (let i = 1; i < tagAsWord[j].length + 1; i++) {
+              arrayData.push(tagAsWord[j].substring(0, i))
+            }
+          }
+          if (subtitle === "" || subtitle === " ") {
+            const temp = textData
+            temp = temp.replace(/<[^>]*>?/g, '')
+            temp = temp.replace("&lt;", "<")
+            temp = temp.replace("&gt;", ">")
+            temp = temp.replace("&nbsp;", "")
+            temp = temp.substr(0, 80)
+            setSubtitle(temp)
+          }
+          const postHashMap = {
+            title: title,
+            subtitle: subtitle,
+            thumbnail: thumbnailUrl,
+            createdAt: new Date(),
+            author: author,
+            uid: user.uid,
+            category: selectedCategoryList.toString(),
+            local: selectedLocalList.toString(),
+            country: selectedCountryList.toString(),
+            categoryId: categoryIdList,
+            localId: localIdList,
+            countryId: countryIdList,
+            tag: tag,
+            importance: parseInt(importance),
+            text: textData,
+            keyword: arrayData,
+          }
+          const thumbnailHashMap = {
+            title: title,
+            subtitle: subtitle,
+            thumbnail: thumbnailUrl,
+            createdAt: new Date(),
+            author: author,
+            uid: user.uid,
+            category: selectedCategoryList.toString(),
+            local: selectedLocalList.toString(),
+            country: selectedCountryList.toString(),
+            categoryId: categoryIdList,
+            localId: localIdList,
+            countryId: countryIdList,
+            tag: tag,
+          }
+          const batch = db.batch();
+          categoryIdList.forEach((category) => {
+            batch.set(db.collection(category).doc(docId), thumbnailHashMap);
+          })
+          if (localIdList.length !== 0) {
+            localIdList.forEach((local) => {
+              batch.set(db.collection(local).doc(docId), thumbnailHashMap)
+            })
+          }
+          if (countryIdList.length !== 0) {
+            countryIdList.forEach((country) => {
+              batch.set(db.collection(country).doc(docId), thumbnailHashMap)
+            })
+          }
+          batch.set(db.collection("posts").doc(docId), postHashMap)
+          batch.set(db.collection("lvc").doc(docId), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
+          batch.set(db.collection("posts").doc(docId).collection('lvc').doc("count"), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
+          await batch.commit();
+          alert("성공적으로 업로드되었습니다!")
+          router.push(`/rhksflwk/home`)
         }
-        batch.set(db.collection("posts").doc(docId), postHashMap)
-        batch.set(db.collection("lvc").doc(docId), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
-        batch.set(db.collection("posts").doc(docId).collection('lvc').doc("count"), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
-        await batch.commit();
-        alert("성공적으로 업로드되었습니다!")
-        router.push(`/rhksflwk/home`)
       }
     } catch (e) {
       alert(`업로드 실패 : ${e.message}`)
@@ -206,14 +209,31 @@ const NewArticle = () => {
   //필수항목 작성 확인
   const checkInput = () => {
     if (title === "") alert("제목은 필수항목입니다.")
+    else if(checkIsValidCreatedAt()) alert("날짜 형식이 잘못되었습니다.")
     else if (thumbnailImg==="") alert("썸네일은 필수항목입니다.")
     else if (selectedCategoryList.length===0) alert("적어도 하나의 카테고리를 선택해야합니다.")
     else if (tag=== "") alert("태그는 필수항목입니다.")
     else if (author==="") alert("작성자는 필수항목입니다.")
     else if (isNaN(parseInt(importance)) || parseInt(importance)>5||parseInt(importance)<0) alert("중요도는 0~5 사이여야 합니다.")
-    else if (textData===undefined) alert("글은 필수항목입니다.")
+    else if (textData === undefined) alert("글은 필수항목입니다.")
     else return true
     return false;
+  }
+
+  const checkIsValidCreatedAt = () => {
+    if (createdAt === "") {
+      setCreatedAtDate(new Date())
+      return true
+    }
+    try {
+      const tempArray = createdAt.split("/")
+      const date = new Date(parseInt(tempArray[0]), parseInt(tempArray[1])-1, parseInt(tempArray[2]),
+        parseInt(tempArray[3]), parseInt(tempArray[4]), parseInt(tempArray[5]))
+      setCreatedAtDate(date)
+    } catch (e) {
+      console.log(e.message)
+      return false
+    }
   }
 
   //업로드한게 이미지가 맞는지 확인
@@ -356,6 +376,12 @@ const _retrieveReceipts = tickets => {
         <p>부제목 문구 : <textarea value={subtitle} onChange={onSubtitleChange} rows="5" cols="80" required/></p>
       </div>
       <div className={style.container}>
+        <h4>작성 시간</h4>
+        <p className={style.warning}>*빈칸일 경우 자동으로 현재 시각으로 적용</p>
+        <p className={style.warning}>*YYYY/MM/DD/Hour/Min/Sec 형식으로 작성 예- 2001/09/13/14/13/30</p>
+        <p>작성 시간 : <input type="text" value={createdAt} onChange={onCreatedAtChange} size="60" required/></p>
+      </div>
+      <div className={style.container}>
         <h4>썸네일 이미지</h4>
         <p className={style.warning}>*필수 *이미지의 크기가 2MB보다 클 경우 자동으로 압축됩니다.</p>
         <p>이미지 선택 : <input type="file" name="selectedImg[]" onChange={onImgChange} accept="image/*"/></p>
@@ -445,9 +471,9 @@ const _retrieveReceipts = tickets => {
       <div className={style.submitButton} onClick={onSubmitClick}>
         기사 추가
       </div>
-      <div className={style.submitButton} onClick={onTestClick}>
+      {/* <div className={style.submitButton} onClick={onTestClick}>
         테스트
-      </div>
+      </div> */}
     </div>
   )
 }

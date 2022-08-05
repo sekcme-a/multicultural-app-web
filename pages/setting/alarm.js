@@ -137,7 +137,7 @@ const Alarm = () => {
       </div>
       <div className={styles.input_container}>
         <div className={styles.switch_container}>
-          <h4>{isAlarmOn ? "알람 켜짐" : "알람 꺼짐"}</h4>
+          <h4>{isAlarmOn ? "알림 켜짐" : "알림 꺼짐"}</h4>
           <Switch checked={isAlarmOn} onChange={onIsAlarmOnChange} inputProps={{ 'aria-label': 'controlled' }} />
         </div>
         {isAlarmOn ?
@@ -154,10 +154,10 @@ const Alarm = () => {
                 onChange={onImportanceChange}
               />
             </div>
-            <div className={styles.switch_container}>
+            {/* <div className={styles.switch_container}>
               <h4>소리 및 진동</h4>
               <Switch checked={isSoundOn} onChange={onIsSoundOnChange} inputProps={{ 'aria-label': 'controlled' }} />
-            </div>
+            </div> */}
             <div className={styles.switch_container}>
               <h4>속보 받기</h4>
              <Switch checked={isBreakingNewsOn} onChange={onIsBreakingNewsOnChange} inputProps={{ 'aria-label': 'controlled' }} />
