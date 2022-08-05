@@ -43,8 +43,11 @@ const Setting = ({auth}) => {
     if (user !== null) {
       db.collection("users").doc(user.uid).get().then((doc) => {
         if (doc.data().token === undefined) {
+          console.log(window)
           if(window.ReactNativeWebView) {
             window.ReactNativeWebView.postMessage(JSON.stringify("sendToken"))
+          } else {
+            console.log("not mobile")
           }
         }
       })

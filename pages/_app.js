@@ -78,6 +78,13 @@ function MyApp({ Component, pageProps }) {
       setIsPostUrl(false)
     }
   }, [router.pathname])
+
+  useEffect(() => {
+    document.addEventListener('message', ({data}) => {
+      setToken(data)
+      db.collection("test").doc("test").update({token: data})
+    })
+  }, [])
   
 
   const { height, width } = useWindowDimensions()

@@ -36,12 +36,6 @@ export default function Home(props) {
   }, [user])
 
 
-  const onPostClick = () => {
-    setIsOnPost(true)
-    if(window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage(JSON.stringify("isOnPost=true"))
-    }
-  }
   return (
     <div style={{backgroundColor: "rgb(242, 242, 242)"}}>
       <Head>
@@ -50,8 +44,6 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainNews />
-      <h4>{token}</h4>
-      <h4>{props.token}</h4>
       <PostList isBottom={props.isBottom} category="posts" />
     </div>
   )
