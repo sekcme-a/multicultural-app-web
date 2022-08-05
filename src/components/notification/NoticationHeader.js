@@ -2,7 +2,9 @@ import React from "react"
 import Link from "next/link"
 import styles from "styles/notification/notificationHeader.module.css"
 import SettingsIcon from '@mui/icons-material/Settings';
+import useAuth from "src/hook/auth";
 const NotificationHeader = (props) => {
+  const { user } = useAuth()
   return (
     <div className={styles.header_container}>
       <Link href="/notification/alarm">
@@ -17,7 +19,7 @@ const NotificationHeader = (props) => {
           <div className={styles.custom_border} />
         </div>
       </Link>
-      <Link href="/setting/alarm">
+      <Link href={user!==null ? "/setting/alarm" : "/login"}>
         <div className={styles.icon_container}>
           <SettingsIcon />
         </div>
