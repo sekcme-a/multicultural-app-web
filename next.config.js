@@ -5,7 +5,8 @@ const nextConfig = {
     domains: [
       "firebasestorage.googleapis.com",
       "graph.facebook.com",
-      "lh3.googleusercontent.com"
+      "lh3.googleusercontent.com",
+      "www.kmcn.kr"
     ],
   },
 }

@@ -19,21 +19,66 @@ export default async (req, res) => { // 2
       const $title = $(".subject > a").text()
       const $subtitle = $(".h-group.cf > .sub-title").text()
       const $createdAt = $(".view_top_right > .date").text().replace("기사입력 : ", "").replace(":", ".").replace(" ", ".").split(".")
-      const $thumbnailImg = $(".cheditor-caption-wrapper > p > img").attr("src")
       let createdAt = []
       $createdAt.map((date) => {
         createdAt.push(parseInt(date))
       })
+
+      let $thumbnailImg = ""
+      // $(".view_con > .view_con_wrap > img").text()
+      // console.log($thumbnailImg)
+      $(".view_con").find(".view_con_wrap").each((index, element) => {
+        $thumbnailImg = $(element).find("img").attr("src")
+      })
+      if($thumbnailImg===undefined)
+        $thumbnailImg="/public/default_thumbnail.png"
+      // const asdf = $(".view_con_wrap").find("img").first().attr('href')
+      // console.log(asdf)
+
+      
+      const $imageFrom = $(".cheditor-caption > .cheditor-caption-text").text()
+      let imageFrom = $imageFrom
+      while(imageFrom.includes(" "))
+        imageFrom = imageFrom.replace(" ", "")
+      while(imageFrom.includes("\u00A0"))  //&nbsp; 제거하기 위해 유니코드 사용.
+        imageFrom = imageFrom.replace("\u00A0", "")
+      
+      const $author = $(".art_etc").children().first().text()
+      const $tag = $(".tag_list > ul > .view01_tag > li").text()
+      let tag = ""
+      const tempArrayTag = $tag.split("#")
+      tempArrayTag.forEach((item) => {
+        if(item!=="")
+          tag = `${tag} #${item}`
+      })
+      
+      const $content = $(".view_con_wrap > p").text()
+      let content = $content
+      console.log($content)
+      while (content.includes("\n"))
+        content = content.replace("\n", `<p class="ql-align-justify"/>&nbsp;</p>`)
+      // while (content.includes("\u00A0"))
+      //   // content = content.replace("\u00A0", `&lt;p class="ql-align-justify"&gt;&nbsp;&lt;/p&gt;`)
+      //   content = content.replace("\u00A0", `<p class="ql-align-justify"/>&nbsp;</p>`)
+      console.log(content)
+
       return res.json({
+        condition: "success",
         title: $title,
         subtitle: $subtitle,
         createdAt: createdAt,
         thumbnailImg: $thumbnailImg,
+        imageFrom: imageFrom,
+        author: $author,
+        tag: tag,
+        content: content,
+        id: docId,
       })
     } catch (e) { // 5
       res.statusCode = 404
+      console.log(e)
       return res.json({
-        fetchedHTML: "error",
+        condition: "error",
         error: e.message
       })
     }
