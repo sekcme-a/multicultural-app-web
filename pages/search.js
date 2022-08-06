@@ -55,10 +55,50 @@ const Search = () => {
   const onSearchClick = async () => {
     setIsSearchMode(true)
     setIsLoading(true)
-    const result = await searchFor("posts", "keyword", input, 30)
+    let result = []
+    result = await searchFor("posts", "keyword", input, 30)
+    const res = await searchData()
+    for (let i = 0; i < res.list.length; i++){
+      const doc = await db.collection("posts").doc(res.list[i].toString()).get()
+      if (doc.exists) {
+        result.push({
+          id: doc.id,
+          title: doc.data().title,
+          thumbnail: doc.data().thumbnail,
+          tag: doc.data().tag,
+          category: doc.data().category,
+          author: doc.data().author,
+        })
+      }
+    }
+
+    // result.push(res)
     setResultList(result)
     setIsLoading(false)
   }
+
+  const searchData = () => {
+    return new Promise(function (resolve, reject) {
+      setTimeout(() => {
+        try {
+          fetch('/api/search', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({ input: input }),
+          })
+            .then((res) => res.json())
+            .then((userData) => {
+              resolve(userData)
+            })
+        } catch (e) {
+          resolve(e.message)
+        }
+      },300)
+    })
+  }
+
   if (isLoading&&isSearchMode===false) {
     return (
       <div className={styles.skeleton_container}>
