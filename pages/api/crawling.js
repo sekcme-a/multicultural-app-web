@@ -54,7 +54,6 @@ export default async (req, res) => { // 2
       
       const $content = $(".view_con_wrap > p").text()
       let content = $content
-      console.log($content)
       while (content.includes("\n"))
         content = content.replace("\n", `<p class="ql-align-justify"/>&nbsp;</p>`)
       // while (content.includes("\u00A0"))

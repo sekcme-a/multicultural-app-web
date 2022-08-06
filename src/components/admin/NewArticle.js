@@ -48,6 +48,8 @@ const NewArticle = () => {
   const [createdAt, setCreatedAt] = useState()
   const onCreatedAtChange = (e) => { setCreatedAt(e.target.value) }
   const [createdAtDate, setCreatedAtDate] = useState()
+  const [imageFrom, setImageFrom] = useState("")
+  const onImageFromChange = (e)=>{setImageFrom(e.target.value)}
 
   const onTextChange = (html) => {
     setTextData(html)
@@ -150,6 +152,7 @@ const NewArticle = () => {
             importance: parseInt(importance),
             text: textData,
             keyword: arrayData,
+            imageFrom:imageFrom,
           }
           const thumbnailHashMap = {
             title: title,
@@ -386,6 +389,10 @@ const _retrieveReceipts = tickets => {
         <p className={style.warning}>*필수 *이미지의 크기가 2MB보다 클 경우 자동으로 압축됩니다.</p>
         <p>이미지 선택 : <input type="file" name="selectedImg[]" onChange={onImgChange} accept="image/*"/></p>
         {/* <img className={style.thumbnail} src={thumbnailImg}></img> */}
+      </div>
+      <div className={style.container}>
+        <h4>이미지 출처</h4>
+        <p>출처 문구 : <textarea value={imageFrom} onChange={onImageFromChange} rows="5" cols="80"/></p>
       </div>
       <div className={style.container}>
         <h4>카테고리 선택</h4>

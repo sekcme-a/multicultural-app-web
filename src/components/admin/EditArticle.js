@@ -37,6 +37,8 @@ const EditArticle = () => {
   const [tag, setTag] = useState("")
   const [author, setAuthor] = useState("")
   const [importance, setImportance] = useState("")
+  const [imageFrom ,setImageFrom] = useState("")
+  const onImageFromChange = (e) => {setImageFrom(e.target.value)}
   const onTitleChange = (e) => { setTitle(e.target.value) }
   const onSubtitleChange = (e) => {setSubtitle(e.target.value)}
   const onTagChange = (e) => { setTag(e.target.value) }
@@ -98,19 +100,19 @@ const EditArticle = () => {
           temp = temp.substr(0, 80)
         }
       if (checkInput() && user) {
-        selectedCategoryList.map((cat) => {
+        selectedCategoryList?.map((cat) => {
           for (let i = 0; i < catLi.data().list.length; i++){
             if (cat === catLi.data().list[i])
               categoryIdList.push(catLi.data().idList[i])
           }
         })
-        selectedLocalList.map((loc) => {
+        selectedLocalList?.map((loc) => {
           for (let i = 0; i < locLi.data().list.length; i++){
             if (loc === locLi.data().list[i])
               localIdList.push(locLi.data().idList[i])
           }
         })
-        selectedCountryList.map((cou) => {
+        selectedCountryList?.map((cou) => {
           for (let i = 0; i < couLi.data().list.length; i++){
             if (cou === couLi.data().list[i])
               countryIdList.push(couLi.data().idList[i])
@@ -136,9 +138,9 @@ const EditArticle = () => {
           createdAt: new Date(),
           author: author,
           uid: user.uid,
-          category: selectedCategoryList.toString(),
-          local: selectedLocalList.toString(),
-          country: selectedCountryList.toString(),
+          category: selectedCategoryList?.toString(),
+          local: selectedLocalList?.toString(),
+          country: selectedCountryList?.toString(),
           categoryId: categoryIdList,
           localId: localIdList,
           countryId: countryIdList,
@@ -146,6 +148,7 @@ const EditArticle = () => {
           importance: parseInt(importance),
           text: textData,
           keyword: arrayData,
+          imageFrom: imageFrom,
         }
         const thumbnailHashMap = {
           title: title,
@@ -154,42 +157,43 @@ const EditArticle = () => {
           createdAt: new Date(),
           author: author,
           uid: user.uid,
-          category: selectedCategoryList.toString(),
-          local: selectedLocalList.toString(),
-          country: selectedCountryList.toString(),
+          category: selectedCategoryList?.toString(),
+          local: selectedLocalList?.toString(),
+          country: selectedCountryList?.toString(),
           categoryId: categoryIdList,
           localId: localIdList,
           countryId: countryIdList,
           tag: tag,
+          imageFrom: imageFrom
         }
         const batch = db.batch();
-        previousCategoryList.forEach((category) => {
+        previousCategoryList?.forEach((category) => {
           if(category!=="")
             batch.delete(db.collection(category).doc(docId))
         })
         if (previousLocalList.length !== 0) {
-          previousLocalList.forEach((local) => {
+          previousLocalList?.forEach((local) => {
             if(local!=="")
               batch.delete(db.collection(local).doc(docId))
           })
         }
         if (previousCountryList.length !== 0) {
-          previousCountryList.forEach((country) => {
+          previousCountryList?.forEach((country) => {
             if(country!=="")
               batch.delete(db.collection(country).doc(docId))
           })
         }
-        categoryIdList.forEach((category) => {
+        categoryIdList?.forEach((category) => {
           batch.set(db.collection(category).doc(docId), thumbnailHashMap);
         })
         if (localIdList.length !== 0) {
-          localIdList.forEach((local) => {
+          localIdList?.forEach((local) => {
             if(local!=="")
               batch.set(db.collection(local).doc(docId), thumbnailHashMap)
           })
         }
         if (countryIdList.length !== 0) {
-          countryIdList.forEach((country) => {
+          countryIdList?.forEach((country) => {
             if(country!=="")
               batch.set(db.collection(country).doc(docId), thumbnailHashMap)
           })
@@ -264,20 +268,21 @@ const EditArticle = () => {
         setTitle(doc.data().title)
         setSubtitle(doc.data().subtitle)
         setThumbnail(doc.data().thumbnail)
-        setSelectedCategoryList(doc.data().category.split(","))
+        setSelectedCategoryList(doc.data().category?.split(","))
         setPreviousCategoryList(doc.data().categoryId)
         setPreviousLocalList(doc.data().localId)
         setPreviousCountryList(doc.data().countryId)
         if (doc.data().local !== "") {
-          setSelectedLocalList(doc.data().local.split(","))
+          setSelectedLocalList(doc.data().local?.split(","))
         }
         if (doc.data().country !== "") {
-          setSelectedCountryList(doc.data().country.split(","))
+          setSelectedCountryList(doc.data().country?.split(","))
         }
         setTag(doc.data().tag)
         setAuthor(doc.data().author)
         setImportance(doc.data().importance)
         setTextData(doc.data().text)
+        setImageFrom(doc.data().imageFrom)
       } else alert("존재하지 않는 기사 Id 입니다.")
     })
   }
@@ -285,15 +290,15 @@ const EditArticle = () => {
   const onDeleteClick = async () => {
     try {
     const batch = db.batch();
-    previousCategoryList.forEach((category) => {
+    previousCategoryList?.forEach((category) => {
       if(category!=="")
         batch.delete(db.collection(category).doc(docId))
     })
-    previousLocalList.forEach((local) => {
+    previousLocalList?.forEach((local) => {
       if(local!=="")
         batch.delete(db.collection(local).doc(docId))
     })
-    previousCountryList.forEach((country) => {
+    previousCountryList?.forEach((country) => {
       if(country!=="")
       batch.delete(db.collection(country).doc(docId))
     })
@@ -335,6 +340,10 @@ const EditArticle = () => {
         <img className={style.thumbnail} src={thumbnail}></img>
       </div>
       <div className={style.container}>
+        <h4>이미지출처</h4>
+        <p>출처 문구 : <input type="text" value={imageFrom} onChange={onImageFromChange} size="60" /></p>
+      </div>
+      <div className={style.container}>
         <h4>카테고리 선택</h4>
         <p className={style.warning}>*필수 중복선택가능</p>
         {
@@ -361,12 +370,12 @@ const EditArticle = () => {
           localList?.map((data, index) => {
           return (
             <button key={index} onClick={() => {
-              !selectedLocalList.includes(data)
+              !selectedLocalList?.includes(data)
                 ? setSelectedLocalList((selectedLocalList)=>[...selectedLocalList, data])
                 : setSelectedLocalList(selectedLocalList.filter((cate)=>cate!==data))
               }}
               className={
-                selectedLocalList.includes(data) ? `${style.categoryButton} ${style.selected}` : style.categoryButton 
+                selectedLocalList?.includes(data) ? `${style.categoryButton} ${style.selected}` : style.categoryButton 
               }
             >
               {data}
@@ -381,12 +390,12 @@ const EditArticle = () => {
           countryList?.map((data, index) => {
           return (
             <button key={index} onClick={() => {
-              !selectedCountryList.includes(data)
+              !selectedCountryList?.includes(data)
                 ? setSelectedCountryList((selectedCountryList)=>[...selectedCountryList, data])
                 : setSelectedCountryList(selectedCountryList.filter((cate)=>cate!==data))
               }}
               className={
-                selectedCountryList.includes(data) ? `${style.categoryButton} ${style.selected}` : style.categoryButton 
+                selectedCountryList?.includes(data) ? `${style.categoryButton} ${style.selected}` : style.categoryButton 
               }
             >
               {data}

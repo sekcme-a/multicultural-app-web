@@ -100,11 +100,13 @@ const PostList = (props) => {
   
   const getDate = (d) => {
     const date = new Date(d.toMillis())
+    console.log(date)
+    console.log(date.getDate())
     if(date.getMonth()+1<10 && date.getDate()<10)
       return date.getFullYear() + ".0" + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
     else if(date.getMonth()+1<10 && date.getDate()>=10)
       return date.getFullYear() + ".0" + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1>=10 && d.getDate()<10)
+    else if(date.getMonth()+1>=10 && date.getDate()<10)
       return date.getFullYear() + "." + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
     else if(date.getMonth()+1>=10 && date.getDate()>=10)
       return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()

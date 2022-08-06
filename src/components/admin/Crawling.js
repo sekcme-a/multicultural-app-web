@@ -4,6 +4,7 @@ import axios from "axios"
 import cheerio from "cheerio"
 import style from "styles/admin/container.module.css"
 import useAuth from "src/hook/auth"
+import { cityList } from "data/cityList"
 
 const Crawling = () => {
   const [idRange, setIdRange] = useState("")
@@ -11,8 +12,12 @@ const Crawling = () => {
   const [categoryIdList, setCategoryIdList] = useState("")
   const [countryIdList, setCountryIdList] = useState("")
   const [searchData, setSearchData] = useState("")
+  const [keyword, setKeyword] = useState("")
+  const [editId, setEditId] = useState("")
+  const onKeywordChange = (e) => {setKeyword(e.target.value)}
   const onSearchDataChange = (e) => {setSearchData(e.target.value)}
   const onIdRangeChange = (e) => { setIdRange(e.target.value) }
+  const onEditIdChange = (e) => {setEditId(e.target.value)}
   const { user } = useAuth()
   
   useEffect(() => {
@@ -22,6 +27,7 @@ const Crawling = () => {
       const doc = await db.collection("category").doc("list").get()
       if (doc.exists) {
         setSearchData(doc.data().searchData)
+        setKeyword(doc.data().keyword)
         for (let i = 0; i < doc.data().list.length; i++){
           tempCategoryIdList = `${tempCategoryIdList}${doc.data().list[i]} : ${doc.data().idList[i]}\n`
         }
@@ -43,6 +49,15 @@ const Crawling = () => {
   const onSaveclick = () => {
     try {
       db.collection("category").doc("list").update({searchData: searchData})
+      alert("저장완료.")
+    } catch (e) {
+      alert(e.message)
+    }
+  }
+
+  const onKeywordSaveClick = () => {
+    try {
+      db.collection("category").doc("list").update({keyword: keyword})
       alert("저장완료.")
     } catch (e) {
       alert(e.message)
@@ -74,9 +89,12 @@ const Crawling = () => {
     progress = `${progress}Success!\n`;  setProgress(progress)
     progress = `${progress}Fetching max Id saved\n`;  setProgress(progress)
     const doc = await db.collection("category").doc("list").get()
-    let biggestIdSaved = 2150
+    let biggestIdSaved = 0
     if(doc.data().biggestIdSaved)
       biggestIdSaved = doc.data().biggestIdSaved
+    if (editId !== "" || editId !== " ") {
+      biggestIdSaved = editId-1
+    }
     // if(isValidIdRange())
     // for (let i = 0;codeList.push(tmp[i]))
     progress = `${progress}Max Id Saved: ${biggestIdSaved}\n`;  setProgress(progress)
@@ -109,23 +127,26 @@ const Crawling = () => {
             progress = `${progress}Pushing Id: ${missionIdList.list[i]} to db.posts\n`; setProgress(progress)
             try {
               let text = data.subtitle
-              if (data.subtitle === undefined) {
-                const temp = data.content
+              if (data.subtitle === undefined || data.subtitle === "") {
+                // console.log(temp)
+                let temp = data.content
                 temp = temp.replace(/<[^>]*>?/g, '')
                 temp = temp.replace("&lt;", "<")
                 temp = temp.replace("&gt;", ">")
                 temp = temp.replace("&nbsp;", "")
-                temp = temp.substr(0, 80)
-                const tmp = temp
+                // console.log(temp)
+                let tmp = temp.substr(0, 60)
                 while (tmp.includes("\n"))
-                  text = tmp.replace("\n", " ")
+                  tmp = tmp.replace("\n", " ")
+                text = tmp
+                console.log(text)
               }
               const hashMap = {
                 category: nameList[j],
                 importance: 3,
                 title: data.title,
                 subtitle: text,
-                createdAt: new Date(data.createdAt[0],data.createdAt[1],data.createdAt[2],data.createdAt[3],data.createdAt[4]),
+                createdAt: new Date(data.createdAt[0],data.createdAt[1]-1,data.createdAt[2],data.createdAt[3],data.createdAt[4]),
                 thumbnail: data.thumbnailImg,
                 imageFrom: data.imageFrom,
                 author: data.author,
@@ -137,26 +158,45 @@ const Crawling = () => {
                 title: data.title,
                 subtitle: text,
                 thumbnail: data.thumbnailImg,
-                createdAt: new Date(data.createdAt[0],data.createdAt[1],data.createdAt[2],data.createdAt[3],data.createdAt[4]),
+                createdAt: new Date(data.createdAt[0],data.createdAt[1]-1,data.createdAt[2],data.createdAt[3],data.createdAt[4]),
                 imageFrom: data.imageFrom,
                 author: data.author,
                 uid: user.uid,
                 category: nameList[j],
                 tag: data.tag,
               }
-              console.log(data.content)
               const batch = db.batch()
               const categoryDoc = await db.collection("category").doc(idList[j]).get()
               const countryDoc = await db.collection("country").doc(idList[j]).get()
+              //키워드를 통해 지역별 자동 작성
+              cityList.forEach(async (city) => {
+                const localDoc = await db.collection("local").get()
+                localDoc.docs.map((doc) => {
+                  if (city.city === doc.data().name) {
+                    city.item.map((item) => {
+                      if (data.title.includes(item)) {
+                        batch.set(db.collection(doc.id).doc(data.id.toString()), thumbnailHashMap)
+                        progress = `${progress}Found ${doc.data().name} in "local"\n`; setProgress(progress)
+                      }
+                    })
+                  }
+                })
+              })
+              
+
+
               if (categoryDoc.exists) {
                 progress = `${progress}Found ${idList[j]} in "category"\n`; setProgress(progress)
                 batch.set(db.collection("posts").doc(data.id.toString()), hashMap)
-                batch.set(db.collection("category").doc(idList[j].toString()), thumbnailHashMap)
+                batch.set(db.collection(idList[j].toString()).doc(data.id.toString()), thumbnailHashMap)
+                batch.set(db.collection("4qrOMyHdFxkG2AQnRhtQ").doc(data.id.toString()), thumbnailHashMap)
+                batch.set(db.collection("lvc").doc(data.id.toString()), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
+                batch.set(db.collection("posts").doc(data.id.toString()).collection('lvc').doc("count"), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
                 await batch.commit();
               } else if (countryDoc.exists) {
                 progress = `${progress}Found ${idList[j]} in "country"\n`; setProgress(progress)
                 batch.set(db.collection("posts").doc(data.id.toString()), hashMap)
-                batch.set(db.collection("country").doc(idList[j].toString()), thumbnailHashMap)
+                batch.set(db.collection(idList[j].toString()).doc(data.id.toString()), thumbnailHashMap)
                 batch.set(db.collection("lvc").doc(data.id.toString()), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
                 batch.set(db.collection("posts").doc(data.id.toString()).collection('lvc').doc("count"), { likesCount: 0, viewsCount: 0, commentsCount: 0 })
                 await batch.commit();
@@ -164,16 +204,16 @@ const Crawling = () => {
                 progress = `${progress}Error Message: No match for ${idList[j]}, please check id of ${nameList[j]}\n`; setProgress(progress)
               }
             } catch (e) {
-              console.log(e)
               progress = `${progress}Error pushing Id: ${missionIdList.list[i]}\n`; setProgress(progress)
               progress = `${progress}Error Message:  ${e.message}\n`; setProgress(progress)
             }
             progress = `${progress}Successfuly saved all datas from : ${nameList[j]}\n`; setProgress(progress)
-            db.collection("category").doc("list").update({biggestIdSaved: biggestIdSaved})
           }
         }
       }
     }
+    db.collection("category").doc("list").update({biggestIdSaved: newBiggestIdSaved})
+    alert("크롤링 성공")
     // for (let i = 0; i < tempArray.length; i++){
     //   const d = await getData(tempArray[i])
     //   progressText = `${progressText}${d.id} : ${d.title}\n`
@@ -197,7 +237,6 @@ const Crawling = () => {
           })
             .then((res) => res.json())
             .then((userData) => {
-              // console.log(userData)
               resolve(userData)
             })
         } catch (e) {
@@ -220,7 +259,6 @@ const Crawling = () => {
           })
             .then((res) => res.json())
             .then((userData) => {
-              // console.log(userData)
               resolve(userData)
             })
         } catch (e) {
@@ -229,6 +267,7 @@ const Crawling = () => {
       },300)
     })
   }
+
 
 
 
@@ -251,12 +290,6 @@ const Crawling = () => {
   return (
     <div className={style.mainContainer}>
       <div className={style.container}>
-        <h4>크롤링 범위설정</h4>
-        <p className={style.warning}>*2110~2130 와 같이 작성</p>
-        <p className={style.warning}>*https://www.kmcn.kr/news/view.php?no=2195 의 기사는 2195 에 해당.</p>
-        <p>크롤링할 Id 범위 : <input type="text" value={idRange} onChange={onIdRangeChange} size="60" required /></p>
-      </div>
-      <div className={style.container}>
         <h4>카테고리 id 리스트</h4>
         <p>id 리스트 : <textarea type="text" value={categoryIdList} cols="100" rows="10" /></p>
       </div>
@@ -276,16 +309,29 @@ const Crawling = () => {
       <div className={style.submitButton} onClick={onSaveclick}>
         데이터 저장
       </div>
+      <div className={style.submitButton} onClick={onCrawlingClick}>
+        기사 자동 업데이트
+      </div>
+      {/* <div className={style.container}>
+        <h4>지역별 키워드</h4>
+        <p className={style.warning}>{`키워드 줄바꿈 지역명 줄바꿈 id명`}</p>
+        <p className={style.warning}>{`형식으로 작성`}</p>
+        <p>키워드 : <textarea type="text" value={keyword} cols="100" rows="25" onChange={onKeywordChange} required/></p>
+      </div>
+      <div className={style.submitButton} onClick={onKeywordSaveClick}>
+        키워드 저장
+      </div> */}
+      <div className={style.container}>
+        <h4>수정 기사 불러오기</h4>
+        <p>수정할 기사 id : <input type="text" value={editId} onChange={onEditIdChange} size="60" required/></p>
+      </div>
+      <div className={style.submitButton} onClick={onCrawlingClick}>
+        기사 수정 크롤링 시작
+      </div>
       <div className={style.container}>
         <h4>상태창</h4>
           <p className={style.warning}>크롤링 진행 상태입니다.</p>
         <p>상태 문구 : <textarea type="text" value={progress} cols="100" rows="25" required/></p>
-      </div>
-      <div className={style.submitButton} onClick={onUpdateClick}>
-        기사 자동 업데이트
-      </div>
-      <div className={style.submitButton} onClick={onCrawlingClick}>
-        기사 크롤링 시작
       </div>
       <h3 style={{marginBottom: "300px"}}> </h3>
     </div>

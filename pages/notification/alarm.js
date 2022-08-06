@@ -16,19 +16,26 @@ const Alarm = () => {
     if (user?.uid) {
       db.collection("users").doc(user.uid).get().then((doc) => {
         setImportance(doc.data().importance)
+        let imp = doc.data().importance
         if (doc.data().importance !== 0) {
           const now = new Date()
           let temp = [];
-          db.collection("posts").where("importance", ">=", doc.data().importance).limit(30).get().then((querySnapShot) => {
+          // db.collection("posts").where("importance", ">=", doc.data().importance).limit(10).get().then((querySnapShot) => {
+          db.collection("posts").orderBy("createdAt","desc").limit(40).get().then((querySnapShot) => {
             querySnapShot.forEach((doc) => {
-              temp.push({
-                id: doc.id,
-                title: doc.data().title,
-                thumbnail: doc.data().thumbnail,
-                tag: doc.data().tag,
-                category: doc.data().category,
-                author: doc.data().author,
-              })
+              console.log(doc.data().importance <= imp)
+              console.log(doc.data().importance)
+              console.log(imp)
+              if (doc.data().importance <= imp) {
+                temp.push({
+                  id: doc.id,
+                  title: doc.data().title,
+                  thumbnail: doc.data().thumbnail,
+                  tag: doc.data().tag,
+                  category: doc.data().category,
+                  author: doc.data().author,
+                })
+              }
             })
             setList(temp)
             setIsLoading(false)
@@ -37,18 +44,22 @@ const Alarm = () => {
           setIsLoading(false)
       })
     } else {
-      setImportance(5) 
+      setImportance(3) 
+      let imp = 3
       let temp = [];
-      db.collection("posts").where("importance", ">=", 5).limit(30).get().then((querySnapShot) => {
+      // db.collection("posts").where("importance", ">=", 3).limit(10).get().then((querySnapShot) => {
+      db.collection("posts").orderBy("createdAt","desc").limit(40).get().then((querySnapShot) => {
         querySnapShot.forEach((doc) => {
-          temp.push({
-            id: doc.id,
-            title: doc.data().title,
-            thumbnail: doc.data().thumbnail,
-            tag: doc.data().tag,
-            category: doc.data().category,
-            author: doc.data().author, 
-          })
+          if (doc.data().importance <= imp) {
+            temp.push({
+              id: doc.id,
+              title: doc.data().title,
+              thumbnail: doc.data().thumbnail,
+              tag: doc.data().tag,
+              category: doc.data().category,
+              author: doc.data().author,
+            })
+          }
         })
         setList(temp)
         setIsLoading(false)

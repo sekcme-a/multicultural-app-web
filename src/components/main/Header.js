@@ -115,14 +115,14 @@ const Header = (props) => {
               </a>
             </Link>
           </li>
-          <li className={styles.menu_items}>
+          {/* <li className={styles.menu_items}>
             <Link href={`/local/${localList[0].id}`} passHref scroll={false}>
               <a>
                 <p className={router.pathname.includes("local")  ? styles.selected : undefined}>지역별</p>
                 <div className={router.pathname.includes("local") ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
               </a>
             </Link>
-          </li>
+          </li> */}
           <li className={styles.menu_items}>
             <Link href={`/country/${countryList[0].id}`} passHref scroll={false}>
               <a>
@@ -145,7 +145,7 @@ const Header = (props) => {
           })}
         </ul>
       </div>
-      {router.pathname.includes("local")&&
+      {/* {router.pathname.includes("local")&&
         <ul className={styles.sub_header_container}>
           {localList?.map((local,index) => {
             return (
@@ -159,7 +159,7 @@ const Header = (props) => {
             )
           })}
         </ul>
-      }
+      } */}
       {router.pathname.includes("country")&&
         <ul className={styles.sub_header_container}>
           {countryList?.map((country,index) => {

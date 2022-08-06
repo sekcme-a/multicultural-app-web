@@ -96,6 +96,7 @@ const HoverPost = (props) => {
           author: doc.data().author,
           createdAt: getDate(doc.data().createdAt),
           thumbnail: doc.data().thumbnail,
+          imageFrom: doc.data().imageFrom,
         })
         setIsLoading(false)
       } else {
@@ -117,7 +118,7 @@ const HoverPost = (props) => {
       return date.getFullYear() + ".0" + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
     else if(date.getMonth()+1<10 && date.getDate()>=10)
       return date.getFullYear() + ".0" + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
-    else if(date.getMonth()+1>=10 && d.getDate()<10)
+    else if(date.getMonth()+1>=10 && date.getDate()<10)
       return date.getFullYear() + "." + (date.getMonth() + 1) + ".0" + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
     else if(date.getMonth()+1>=10 && date.getDate()>=10)
       return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() +" "+date.getHours()+":"+date.getMinutes()
@@ -292,7 +293,9 @@ const HoverPost = (props) => {
           </motion.p>
         </div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 1.0, delay: 1.2 } }}
-          className={styles.content_container}>
+            className={styles.content_container}>
+            {console.log(data.imageFrom)}
+            {data.imageFrom && <p className={styles.imageFrom}>{data.imageFrom}</p>}
           <QuillNoSSRWrapper value={data.text||""} readOnly={true} theme="bubble" />
         </motion.div>
         <div className={styles.transparent_container} />

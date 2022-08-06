@@ -52,7 +52,7 @@ const ThumbnailPost = (props) => {
   useEffect(() => {
     if(props.id) setId(props.id)
     else setId(props.data.docId)
-  }, [])
+  }, [props.id, props.data.docId])
 
   const onThumbnailClick = () => {
     // setIsOpenThisPost(true)
