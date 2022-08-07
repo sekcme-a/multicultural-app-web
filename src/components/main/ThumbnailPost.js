@@ -164,8 +164,8 @@ const ThumbnailPost = (props) => {
         <CardMedia
           component="img"
           height="194"
-          image={props.data.thumbnail}
-          alt={props.data.thumbnail}
+          image={props.data.thumbnail.replace("http://","https://")}
+          alt={props.data.title}
           onClick={onThumbnailClick}
         />
         <CardContent onClick={onThumbnailClick} style={{ padding: "8px" }}>
