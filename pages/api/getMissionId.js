@@ -11,7 +11,7 @@ export default async (req, res) => { // 2
     try {
       res.statusCode = 200
       // const fetchedHTML = await getHTML(`https://www.kmcn.kr/news/index.php?${code}&page${pageCount}`)
-      for (let pageCount = 1; pageCount <= 5; pageCount++){
+      for (let pageCount = 1; pageCount <= 50; pageCount++){
         console.log(pageCount)
         if (stack > 6)
           break;

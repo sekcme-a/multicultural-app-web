@@ -165,7 +165,7 @@ const ThumbnailPost = (props) => {
           component="img"
           height="194"
           image={props.data.thumbnail}
-          alt="Paella dish"
+          alt={props.data.thumbnail}
           onClick={onThumbnailClick}
         />
         <CardContent onClick={onThumbnailClick} style={{ padding: "8px" }}>
