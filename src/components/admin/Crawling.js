@@ -92,7 +92,7 @@ const Crawling = () => {
     let biggestIdSaved = 0
     if(doc.data().biggestIdSaved)
       biggestIdSaved = doc.data().biggestIdSaved
-    if (editId !== "" || editId !== " ") {
+    if (editId !== "" && editId !== " ") {
       biggestIdSaved = editId-1
     }
     // if(isValidIdRange())
