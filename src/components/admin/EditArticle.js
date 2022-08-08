@@ -363,7 +363,7 @@ const EditArticle = () => {
           )
         })}
       </div>
-      <div className={style.container}>
+      {/* <div className={style.container}>
         <h4>지역별</h4>
         <p className={style.warning}>지역 설정시 지역별 페이지에도 기사 추가됨, 중복선택가능</p>
         {
@@ -382,7 +382,7 @@ const EditArticle = () => {
             </button>
           )
         })}
-      </div>
+      </div> */}
       <div className={style.container}>
         <h4>나라별</h4>
         <p className={style.warning}>나라 설정시 나라별 페이지에도 기사 추가됨, 중복선택가능</p>

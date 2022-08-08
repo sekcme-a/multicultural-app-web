@@ -177,16 +177,6 @@ const Search = () => {
               </Link>
             )
           })}
-          <h3 className={styles.title}>모든 지역별</h3>
-          {localList?.map((item, index) => {
-            return (
-              <Link key={index} href={`/local/${item.id}`} passHref >
-                <div className={`${styles.item_container} ${styles.local}`}>
-                  <p>{item.name}</p>
-                </div>
-              </Link>
-            )
-          })}
           <h3 className={styles.title}>모든 국가별</h3>
           {countryList?.map((item, index) => {
             return (

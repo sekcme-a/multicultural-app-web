@@ -78,7 +78,7 @@ const Admin = () => {
           {slug === "newArticle" &&  <NewArticle />}
           {slug === "editArticle" &&  <EditArticle />}
           {slug === "category" &&  <Setting loc="category" />}
-          {slug === "local" &&  <Setting loc="local" />}
+          {/* {slug === "local" &&  <Setting loc="local" />} */}
           {slug === "country" &&  <Setting loc="country" />}
           {slug === "appInfo" &&  <AppInfo />}
           {slug === "recommand" && <Recommand />}

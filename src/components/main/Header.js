@@ -54,9 +54,9 @@ const Header = (props) => {
   useEffect(() => {
     if (isSwipeToRight && !isOnPost) {
       if (router.pathname === "/")
-        router.push(`/local/${localList[0].id}`)
-      else if(router.pathname.includes("local"))
         router.push(`/country/${countryList[0].id}`)
+      // else if(router.pathname.includes("local"))
+      //   router.push(`/country/${countryList[0].id}`)
       else if(router.pathname.includes("country"))
         router.push(`/category/${categoryList[0].id}`)
       else {
@@ -74,8 +74,8 @@ const Header = (props) => {
       if (router.query.slug === categoryList[0].id) 
         router.push(`/country/${countryList[0].id}`)
       else if(router.pathname.includes("country"))
-        router.push(`/local/${localList[0].id}`)
-      else if(router.pathname.includes("local"))
+      //   router.push(`/local/${localList[0].id}`)
+      // else if(router.pathname.includes("local"))
         router.push('/')
       else {
         for (let i = categoryList.length - 1; i >= 0; i--){
