@@ -45,13 +45,21 @@ const Profile = () => {
     const fetchData = async () => {
       const userData = await db.collection("users").doc(user.uid).get()
       if (userData.exists) {
-        setUserName(userData.data().name)
-        setEmail(userData.data().email)
-        setProfileUrl(userData.data().photo)
-        setPhoneNumber(userData.data().phoneNumber)
-        setDate(userData.data().date)
-        setCountry(userData.data().country)
-        setRealName(userData.data().realName)
+        if(userData.data().name !== undefined)
+          setUserName(userData.data().name)
+        if(userData.data().email!== undefined)
+          setEmail(userData.data().email)
+        if(userData.data().photo!== undefined)
+          setProfileUrl(userData.data().photo)
+        if(userData.data().phoneNumber!== undefined)
+          setPhoneNumber(userData.data().phoneNumber)
+        if(userData.data().date!== undefined)
+          setDate(userData.data().date)
+        if(userData.data().country!== undefined)
+          setCountry(userData.data().country)
+        if(userData.data().realName!== undefined)
+          setRealName(userData.data().realName)
+        if(userData.data().gender!== undefined)
         setGender(userData.data().gender)
         setIsLoading(false)
       }
@@ -66,25 +74,37 @@ const Profile = () => {
   const onSubmit = () => {
     const blank_pattern = /^\s+|\s+$/g;
     const special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
-    if (userName === "")
-      setError("userName")
-    else if (userName.length > 25)
+    let gen = "none"
+    console.log(country)
+    if (userName === undefined)
+      setUserName("")
+    if(realName===undefined)
+      setRealName("")
+    if(phoneNumber === undefined)
+      setPhoneNumber("")
+    if (date === undefined)
+      setDate("")
+    if(email === undefined)
+      setEmail("")
+    if(gender !== undefined)
+      gen = gender
+    if (userName !== "" && userName !==" " && userName.length > 25 && userName!==null&& userName!==undefined)
       setError("userNameToLong")
-    else if (userName.replace(blank_pattern, "") === "")
+    else if (userName !== "" && userName !==" "&& userName!==undefined && userName.replace(blank_pattern, "") === "" && userName!==null)
       setError("userNameOnlyBlank")
-    else if (special_pattern.test(userName) === true)
+    else if (userName !== "" && userName !==" "&& userName!==undefined && userName!==null && special_pattern.test(userName) === true)
       setError("userNameHasSpecial")
-    else if (realName.length > 60)
+    else if (realName!=="" && realName!==" "&& realName!==undefined && realName!==null && realName?.length > 60)
       setError("realNameToLong")
-    else if(realName.replace(blank_pattern, "")==="")
+    else if(realName!=="" && realName!==" "&& realName!==undefined && realName!==null && realName?.replace(blank_pattern, "")==="")
       setError("realNameOnlyBlank")
-    else if(special_pattern.test(realName)===true)
+    else if(realName!=="" && realName!==" " && realName!==undefined && realName!==null && special_pattern.test(realName)===true)
       setError("realNameHasSpecial")
-    else if (/^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}/.test(phoneNumber) === false || phoneNumber.length>13 && phoneNumber!=="")
+    else if ((/^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}/.test(phoneNumber) === false || phoneNumber?.length>13) && phoneNumber!==""&& phoneNumber!==" "&& phoneNumber!==null&& phoneNumber!==undefined)
       setError("phoneNumber")
-    else if (!checkValidDate(date) && date!=="")
+    else if (!checkValidDate(date) && date!=="" && date!==" " && date!==null && date!==undefined)
       setError("date")
-    else if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === false && email!=="")
+    else if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === false && email!=="" && email!==" " && email!==null&& email!==undefined)
       setError("email")
     else if (profileUrl !== undefined) {
       const profileHashMap = {
@@ -95,7 +115,7 @@ const Profile = () => {
         country: country,
         photo: profileUrl,
         realName: realName,
-        gender: gender
+        gender: gen
       }
       try {
          db.collection("users").doc(user.uid).update(profileHashMap)
@@ -107,6 +127,7 @@ const Profile = () => {
         },2500)
 
       } catch (e) {
+        console.log(e)
         setAlertText("저장 실패")
         setAlertMode("error")
         setTimeout(() => {

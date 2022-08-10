@@ -13,8 +13,14 @@ export function withPublic(Component) {
     if (auth.user) {
       db.collection("users").doc(auth.user.uid).get().then((doc) => {
         if (!doc.exists && auth.user) {
+            let photoURL = "https://firebasestorage.googleapis.com/v0/b/multicultural-news-web.appspot.com/o/profile%2FvB2S4XriW1RFbt21u078FI8va6D2?alt=media&token=728fe9e8-ae4e-41d1-b9c4-f26ee84f19f2"
+            let displayName = `사용자${auth.user.uid.substr(1,5)}`
+          if (auth.user.photoURL)
+            photoURL = auth.user.photoURL
+          if(auth.user.displayName)
+            displayName = auth.user.displayName
           db.collection("users").doc(auth.user.uid).set({
-            roles: ["user"], name: auth.user.displayName, photo: auth.user.photoURL,
+            roles: ["user"], name: displayName, photo: photoURL,
             phoneNumber: auth.user.phoneNumber, email: auth.user.email, emailVerified: auth.user.emailVerified,
             importance: 5, bookmark: [], like: [], isSoundOn:true, isBreakingNewsOn: true
           })
