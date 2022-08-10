@@ -1,4 +1,4 @@
-import { auth, facebookAuthProvider, firestore, googleAuthProvider } from "firebase/firebase"
+import { auth, facebookAuthProvider, firestore, googleAuthProvider, appleAuthProvider } from "firebase/firebase"
 
 export const AuthService = {
   loginWithGoogle: async () => {
@@ -16,6 +16,19 @@ export const AuthService = {
   },
   loginWithFacebook: async () => {
     const provider = facebookAuthProvider;
+    try {
+      const userCred = await auth.signInWithRedirect(provider);
+      return {
+        user: userCred.user
+      };
+    } catch (e) {
+      return {
+        error: e.message,
+      }
+    }
+  },
+  loginWithApple: async () => {
+    const provider = appleAuthProvider;
     try {
       const userCred = await auth.signInWithRedirect(provider);
       return {

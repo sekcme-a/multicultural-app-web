@@ -6,11 +6,12 @@ import Image from "next/image";
 import logo from "public/logo.png"
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { FacebookLoginButton } from "react-social-login-buttons";
+import { AppleLoginButton } from "react-social-login-buttons";
 import { motion } from "framer-motion";
 import { useRouter} from "next/router"
 
 const Login = ({auth}) => {
-  const { user, loginWithGoogle, loginWithFacebook, error } = auth;
+  const { user, loginWithGoogle, loginWithFacebook, error, loginWithApple } = auth;
   const router = useRouter()
 
   const onBackButtonClick = () => {
@@ -33,6 +34,9 @@ const Login = ({auth}) => {
         <motion.h4 className={styles.social_text} initial={{ opacity: 0, }} animate={{ opacity: 1, transition: { duration: 1, delay: 0.5 } }}>소셜 로그인으로 간편하게 로그인하세요!</motion.h4>
         <motion.h4 className={styles.social_text2} initial={{ opacity: 0, }} animate={{ opacity: 1, transition: { duration: 1, delay: 0.5 } }}>Log in easily with social login!</motion.h4>
         <motion.div className={styles.button_container} initial={{ opacity: 0, }} animate={{ opacity: 1, transition: { duration: 1, delay: 0.5} }}>
+          <AppleLoginButton onClick={()=>loginWithApple()}><span>애플로 로그인</span></AppleLoginButton>
+        </motion.div>
+        <motion.div className={styles.button_container2} initial={{ opacity: 0, }} animate={{ opacity: 1, transition: { duration: 1, delay: 0.5} }}>
           <GoogleLoginButton onClick={()=>loginWithGoogle()}><span>구글로 로그인</span></GoogleLoginButton>
         </motion.div>
         <motion.div className={styles.button_container2} initial={{ opacity: 0, }} animate={{ opacity: 1, transition: { duration: 1, delay:0.5 } }}>

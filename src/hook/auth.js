@@ -35,6 +35,14 @@ export function AuthProvider(props) {
 		// 	db.collection("users").doc(user.uid).update({token: token})
 		// }
   }
+	const loginWithApple = async () => {
+    const { error, user } = await AuthService.loginWithApple();
+		setUser(user ?? null)
+		setError(error ?? "")
+		// if (user !== null) {
+		// 	db.collection("users").doc(user.uid).update({token: token})
+		// }
+  }
 
   const logout = async () => {
     await AuthService.logout();
@@ -108,7 +116,8 @@ export function AuthProvider(props) {
 		token,
 		setToken,
     loginWithGoogle,
-    loginWithFacebook,
+		loginWithFacebook,
+		loginWithApple,
 		logout,
 		setUser,
 		setUserrole,
