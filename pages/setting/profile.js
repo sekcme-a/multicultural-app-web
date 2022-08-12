@@ -17,7 +17,7 @@ import Alert from "src/components/public/Alert"
 import Backdrop from '@mui/material/Backdrop';
 const Profile = () => {
   const router = useRouter()
-  const { user, logout } = useAuth()
+  const { user, logout, deleteAccount } = useAuth()
   const [userName, setUserName] = useState("")
   const onUserNameChange = (e) => { setUserName(e.target.value); if(error==="userName") setError("none")}
   const [email, setEmail] = useState("")
@@ -206,6 +206,7 @@ const checkValidDate = (value) => {
 
   const onYesClick = async() => {
     await db.collection("users").doc(user.uid).delete()
+    deleteAccount()
     logout()
     router.push("/login")
   }

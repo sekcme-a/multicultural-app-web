@@ -25,7 +25,7 @@ const Comments = (props) => {
   const [triggerReload, setTriggerReload] = useState(true)
   const [isEndOfComment, setIsEndOfComment] = useState(false)
   const [isDelay, setIsDelay] = useState(false)
-  const [commentsCount, setCommentsCount] = useState()
+  const [commentsCount, setCommentsCount] = useState(0)
   
   const timeCountingOption = {
     lang: "ko",
@@ -50,29 +50,37 @@ const Comments = (props) => {
       data.docs.map(async (doc) => {
         const userDoc = await db.collection("users").doc(doc.data().userId).get()
         const lvcDoc = await db.collection("posts").doc(props.id).collection('lvc').doc("count").get()
-        setCommentsCount(lvcDoc.data().commentsCount)
-        tempCommentsList = [
-          ...tempCommentsList,
-          {
-            name: userDoc.data().name,
-            photo: userDoc.data().photo,
-            comment: doc.data().comment,
-            createdAt: TimeCounting(new Date(doc.data().createdAt.toMillis()), timeCountingOption),
-            userId: doc.data().userId,
-            id: doc.id,
+          setCommentsCount(lvcDoc.data().commentsCount)
+        if (userDoc.exists) {
+          tempCommentsList = [
+            ...tempCommentsList,
+            {
+              name: userDoc.data().name,
+              photo: userDoc.data().photo,
+              comment: doc.data().comment,
+              createdAt: TimeCounting(new Date(doc.data().createdAt.toMillis()), timeCountingOption),
+              userId: doc.data().userId,
+              id: doc.id,
+            }
+          ]
+          count++
+          if (count === FIRST_LOAD_COMMENT_NUM) {
+            setLastDoc(doc)
           }
-        ] 
-        count++
-        if (count === FIRST_LOAD_COMMENT_NUM) {
-          setLastDoc(doc)
+          setCommentList(tempCommentsList)
+          console.log(tempCommentsList.length)
+          setIsLoading(false)
+          if (tempCommentsList.length < FIRST_LOAD_COMMENT_NUM)
+            setIsEndOfComment(true)
+          else
+            setIsEndOfComment(false)
+        } else {
+          //없는 댓글은 삭제하기
+          console.log(doc.id)
+          await db.collection("posts").doc(props.id).collection("comments").doc(doc.id).delete()
+          await db.collection("posts").doc(props.id).collection("lvc").doc("count").update({commentsCount: lvcDoc.data().commentsCount-1})
+          setCommentsCount(lvcDoc.data().commentsCount-1)
         }
-        setCommentList(tempCommentsList)
-        console.log(tempCommentsList.length)
-        setIsLoading(false)
-        if (tempCommentsList.length < FIRST_LOAD_COMMENT_NUM)
-          setIsEndOfComment(true)
-        else
-          setIsEndOfComment(false)
       })
       setIsLoading(false)
     }
@@ -154,28 +162,40 @@ const Comments = (props) => {
       const data = await db.collection("posts").doc(props.id).collection("comments")?.orderBy("createdAt", 'desc').startAfter(lastDoc).limit(MORE_COMMENT_NUM).get()
       data.docs.map(async (doc) => {
         const userDoc = await db.collection("users").doc(doc.data().userId).get()
-        tempCommentsList = [
-          ...tempCommentsList,
-          {
-            name: userDoc.data().name,
-            photo: userDoc.data().photo,
-            comment: doc.data().comment,
-            createdAt: TimeCounting(new Date(doc.data().createdAt.toMillis()), timeCountingOption),
-            userId: doc.data().userId,
-            id: doc.id,
+        if (userDoc.exists) {
+          tempCommentsList = [
+            ...tempCommentsList,
+            {
+              name: userDoc.data().name,
+              photo: userDoc.data().photo,
+              comment: doc.data().comment,
+              createdAt: TimeCounting(new Date(doc.data().createdAt.toMillis()), timeCountingOption),
+              userId: doc.data().userId,
+              id: doc.id,
+            }
+          ]
+          count++
+          if (count === MORE_COMMENT_NUM) {
+            setLastDoc(doc)
           }
-        ] 
-        count++
-        if (count === MORE_COMMENT_NUM) {
-          setLastDoc(doc)
+          if (commentList[commentList.length - 1].docId !== tempCommentsList[tempCommentsList.length - 1])
+            setCommentList([...commentList, ...tempCommentsList])
+          if (tempCommentsList.length < MORE_COMMENT_NUM)
+            setIsEndOfComment(true)
+          else
+            setIsEndOfComment(false)
+          setIsLoading(false)
+        } else {
+          //없는 댓글은 삭제하기
+          console.log(doc.id)
+          await db.collection("posts").doc(props.id).collection("comments").doc(doc.id).delete()
+          try {
+            await db.collection("posts").doc(props.id).collection("lvc").doc("count").update({commentsCount: commentsCount-1})
+          } catch (e) {
+            console.log(e)
+          }
+          setCommentsCount(commentsCount-1)
         }
-        if(commentList[commentList.length-1].docId !== tempCommentsList[tempCommentsList.length-1])
-          setCommentList([...commentList, ...tempCommentsList])
-        if(tempCommentsList.length<MORE_COMMENT_NUM)
-          setIsEndOfComment(true)
-        else
-          setIsEndOfComment(false)
-        setIsLoading(false)
       })
     }
   }
@@ -218,7 +238,7 @@ const Comments = (props) => {
                   <div className={styles.info_container}>
                     <p className={styles.name}>{data.name}</p>
                     <p className={styles.created_at}>{data.createdAt}</p>
-                    {(user.uid === data.userId || userrole[0] === "admin") && <p className={styles.delete} onClick={()=>onDeleteClick(data.id)}>삭제</p>}
+                    {userrole !== null && (user?.uid === data.userId || userrole[0] === "admin") && <p className={styles.delete} onClick={()=>onDeleteClick(data.id)}>삭제</p>}
                   </div>
                   <p>{data.comment}</p>
                 </div>

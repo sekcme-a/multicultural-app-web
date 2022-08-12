@@ -52,13 +52,18 @@ export default async (req, res) => { // 2
           tag = `${tag} #${item}`
       })
       
-      const $content = $(".view_con_wrap > p").text()
-      let content = $content
-      while (content.includes("\n"))
-        content = content.replace("\n", `<p class="ql-align-justify"/>&nbsp;</p>`)
+      // const $content = $(".view_con_wrap > p").text()
+      // let content = $content
+      // console.log(content)
+      // while (content.includes("\n"))
+      //   content = content.replace("\n", `<p class="ql-align-justify"/>&nbsp;</p>`)
       // while (content.includes("\u00A0"))
       //   // content = content.replace("\u00A0", `&lt;p class="ql-align-justify"&gt;&nbsp;&lt;/p&gt;`)
       //   content = content.replace("\u00A0", `<p class="ql-align-justify"/>&nbsp;</p>`)
+      let content = ""
+      $(".view_con_wrap").find("p").each((index, element) => {
+        content = `${content}${$(element).text()}<p class="ql-align-justify"/>&nbsp;</p>`
+      })
       console.log(content)
 
       return res.json({

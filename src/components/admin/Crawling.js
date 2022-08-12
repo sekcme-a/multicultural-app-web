@@ -102,6 +102,7 @@ const Crawling = () => {
       progress = `${progress}Fetching Id List from ${nameList[j]}\n`;  setProgress(progress)
       progress = `${progress}Code: ${codeList[j]}\n`;  setProgress(progress)
       const missionIdList = await getMissionId(codeList[j], biggestIdSaved)
+      // const missionIdList= {"newBiggestIdSaved": 2225, "list" : ["1883"]}
       progress = `${progress}Fetched Ids: `;  setProgress(progress)
       missionIdList.list.map((doc) => {
         progress = `${progress}${doc}, `;  setProgress(progress)
@@ -141,6 +142,7 @@ const Crawling = () => {
                 text = tmp
                 console.log(text)
               }
+              console.log(data.content)
               const hashMap = {
                 category: nameList[j],
                 importance: 3,

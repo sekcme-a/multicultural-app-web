@@ -1,4 +1,4 @@
-import { auth, facebookAuthProvider, firestore, googleAuthProvider, appleAuthProvider } from "firebase/firebase"
+import { auth, facebookAuthProvider, firestore, googleAuthProvider, appleAuthProvider, firestore as db } from "firebase/firebase"
 
 export const AuthService = {
   loginWithGoogle: async () => {
@@ -48,7 +48,7 @@ export const AuthService = {
   createUserWithEmailAndPassword: async (email, password) => {
 		try {
 			const userCred = await auth.createUserWithEmailAndPassword(email, password);
-			await userCred.user.sendEmailVerification();
+			// await userCred.user.sendEmailVerification();
 			return {
 				user: userCred.user,
 			};
@@ -58,6 +58,7 @@ export const AuthService = {
 			};
 		}
 	},
+
 	signInUserWithEmailAndPassword: async (email, password) => {
 		try {
 			const userCred = await auth.signInWithEmailAndPassword(email, password);
@@ -72,7 +73,7 @@ export const AuthService = {
 	},
 	resetPassword: async (email) => {
 		try {
-			await auth.sendPasswordResetEmail(email);
+				await auth.sendPasswordResetEmail(email);
 		} catch (e) {
 			return e.message;
 		}

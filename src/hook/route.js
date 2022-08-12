@@ -22,7 +22,7 @@ export function withPublic(Component) {
           db.collection("users").doc(auth.user.uid).set({
             roles: ["user"], name: displayName, photo: photoURL,
             phoneNumber: auth.user.phoneNumber, email: auth.user.email, emailVerified: auth.user.emailVerified,
-            importance: 5, bookmark: [], like: [], isSoundOn:true, isBreakingNewsOn: true
+            importance: 5, bookmark: [], like: [], isSoundOn:true, isBreakingNewsOn: true, providerId : auth.user.providerData[0].providerId
           })
           router.replace("/setting")
           return <div></div>
