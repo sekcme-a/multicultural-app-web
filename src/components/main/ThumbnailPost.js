@@ -42,6 +42,7 @@ const ThumbnailPost = (props) => {
   const [alarmText, setAlarmText] = useState("")
   const [showBackdrop, setShowBackdrop] = useState(false)
   const [alarmMode, setAlarmMode] = useState("success")
+  const [subtitle, setSubtitle] = useState("")
   const router = useRouter()
   
   const { user } = useAuth()
@@ -52,6 +53,12 @@ const ThumbnailPost = (props) => {
   useEffect(() => {
     if(props.id) setId(props.id)
     else setId(props.data.docId)
+    if(props.data.subtitle.includes("&nbsp;"))
+      console.log("asdf")
+    let temp = props.data.subtitle
+    while (temp.includes("&nbsp;"))
+      temp = temp.replace("&nbsp;", "")
+    setSubtitle(temp)
   }, [props.id, props.data.docId])
 
   const onThumbnailClick = () => {
@@ -173,7 +180,7 @@ const ThumbnailPost = (props) => {
             {props.data.tag}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`${props.data.subtitle}...`}
+            {`${subtitle}...`}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>

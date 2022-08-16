@@ -129,12 +129,15 @@ export function AuthProvider(props) {
 		setError({ [pathname]: error });
 	};
 
-	const updatePassword = async (confirmPassword, password) => {
-		if (confirmPassword === password) {
-			const error = await AuthService.updatePassword(password);
-			setError({ [pathname]: error });
-		} else {
-			setError({ [pathname]: "password doesn't match!" });
+	const updatePassword = async(newPassword, confirmNewPassword) => {
+		if (newPassword !== confirmNewPassword) {
+			setError({ [pathname.replace("/setting/","")]: "재확인 비밀번호가 다릅니다." });
+		} else{
+			AuthService.updatePassword(newPassword).then(() => {
+				setError({ [pathname.replace("/setting/","")]: "비밀번호가 변경되었습니다." });
+			}).catch((error) => {
+				setError({ [pathname.replace("/setting/","")]: error });
+			})
 		}
 	};
 

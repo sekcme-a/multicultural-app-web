@@ -47,40 +47,45 @@ const Comments = (props) => {
         })
       }
       const data = await db.collection("posts").doc(props.id).collection("comments")?.orderBy("createdAt", 'desc').limit(FIRST_LOAD_COMMENT_NUM).get()
+      let i = 0;
       data.docs.map(async (doc) => {
-        const userDoc = await db.collection("users").doc(doc.data().userId).get()
-        const lvcDoc = await db.collection("posts").doc(props.id).collection('lvc').doc("count").get()
-          setCommentsCount(lvcDoc.data().commentsCount)
-        if (userDoc.exists) {
-          tempCommentsList = [
-            ...tempCommentsList,
-            {
-              name: userDoc.data().name,
-              photo: userDoc.data().photo,
-              comment: doc.data().comment,
-              createdAt: TimeCounting(new Date(doc.data().createdAt.toMillis()), timeCountingOption),
-              userId: doc.data().userId,
-              id: doc.id,
+        setTimeout(async() => {
+          const userDoc = await db.collection("users").doc(doc.data().userId).get()
+          const lvcDoc = await db.collection("posts").doc(props.id).collection('lvc').doc("count").get()
+            setCommentsCount(lvcDoc.data().commentsCount)
+          if (userDoc.exists) {
+            tempCommentsList = [
+              ...tempCommentsList,
+              {
+                name: userDoc.data().name,
+                photo: userDoc.data().photo,
+                comment: doc.data().comment,
+                createdAt: TimeCounting(new Date(doc.data().createdAt.toMillis()), timeCountingOption),
+                userId: doc.data().userId,
+                id: doc.id,
+              }
+            ]
+            count++
+            if (count === FIRST_LOAD_COMMENT_NUM) {
+              setLastDoc(doc)
             }
-          ]
-          count++
-          if (count === FIRST_LOAD_COMMENT_NUM) {
-            setLastDoc(doc)
+            setCommentList(tempCommentsList)
+            console.log(tempCommentsList.length)
+            setIsLoading(false)
+            if (tempCommentsList.length < FIRST_LOAD_COMMENT_NUM)
+              setIsEndOfComment(true)
+            else
+              setIsEndOfComment(false)
+          } else {
+            //없는 댓글은 삭제하기
+            console.log(doc.id)
+            await db.collection("posts").doc(props.id).collection("comments").doc(doc.id).delete()
+            const lvcNow = await db.collection("posts").doc(props.id).collection("lvc").doc("count").get()
+            await db.collection("posts").doc(props.id).collection("lvc").doc("count").update({commentsCount: lvcNow.data().commentsCount-1})
+            setCommentsCount(lvcNow.data().commentsCount-1)
           }
-          setCommentList(tempCommentsList)
-          console.log(tempCommentsList.length)
-          setIsLoading(false)
-          if (tempCommentsList.length < FIRST_LOAD_COMMENT_NUM)
-            setIsEndOfComment(true)
-          else
-            setIsEndOfComment(false)
-        } else {
-          //없는 댓글은 삭제하기
-          console.log(doc.id)
-          await db.collection("posts").doc(props.id).collection("comments").doc(doc.id).delete()
-          await db.collection("posts").doc(props.id).collection("lvc").doc("count").update({commentsCount: lvcDoc.data().commentsCount-1})
-          setCommentsCount(lvcDoc.data().commentsCount-1)
-        }
+          i++;
+        },i*1000)
       })
       setIsLoading(false)
     }

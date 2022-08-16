@@ -22,10 +22,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Button from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
-import { red } from "@mui/material/colors";
 
 const SignIn = ({auth}) => {
   const router = useRouter()

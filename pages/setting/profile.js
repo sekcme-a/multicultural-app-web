@@ -35,7 +35,6 @@ const Profile = () => {
   const onRealNameChange = (e)=>{setRealName(e.target.value)}
   const [gender, setGender] = useState()
   const onGenderChange = (gender) => { setGender(gender) }
-
   const [showBackdrop, setShowBackdrop] = useState(false)
   
   const [alertText, setAlertText] = useState("")
@@ -60,7 +59,7 @@ const Profile = () => {
         if(userData.data().realName!== undefined)
           setRealName(userData.data().realName)
         if(userData.data().gender!== undefined)
-        setGender(userData.data().gender)
+          setGender(userData.data().gender)
         setIsLoading(false)
       }
     }
@@ -204,10 +203,12 @@ const checkValidDate = (value) => {
     setShowBackdrop(false)
   }
 
-  const onYesClick = async() => {
-    await db.collection("users").doc(user.uid).delete()
-    deleteAccount()
-    logout()
+  const onYesClick = async () => {
+    // await db.collection("users").doc(user.uid).delete().then(() => {
+      deleteAccount()
+      logout()
+    // }
+    // )
     router.push("/login")
   }
 
@@ -255,6 +256,7 @@ const checkValidDate = (value) => {
         }
       </div>
       <label htmlFor="input_file" className={styles.img_button} >사진 편집</label><input onChange={onImgChange} type="file" id="input_file" accept="image/*" className={styles.hide_input} />
+      <div className={styles.img_button} style={{marginTop: "10px"}}>{email}</div>
       <div className={styles.input_container}>
         <TextField
           fullWidth

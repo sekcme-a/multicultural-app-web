@@ -22,14 +22,16 @@ const Setting = ({auth}) => {
     const fetchData = async () => {
       if (user.uid) {
         db.collection("users").doc(user.uid).get().then((doc) => {
-          setName(doc.data().name)
-          setPhoto(doc.data().photo)
-          setIsLoading(false)
+          if (doc.exists) {
+            setName(doc.data().name)
+            setPhoto(doc.data().photo)
+            setIsLoading(false)
+          }
         })
       }
     }
     fetchData()
-  }, [])
+  }, [user])
   useEffect(() => {
     if (user !== null) {
     getBookmarkList(user.uid)
@@ -115,6 +117,11 @@ const Setting = ({auth}) => {
         </div>
       </Link>
       <div className={styles.custom_border} />
+      <Link href="/setting/changepassword">
+        <p className={styles.item_container}>
+          비밀번호 변경
+        </p>
+      </Link>
       <Link href="/setting/appinfo">
         <p className={styles.item_container}>
           앱 정보

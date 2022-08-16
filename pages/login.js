@@ -72,9 +72,15 @@ const Login = ({auth}) => {
     // resetPassword(email)
   }
 
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      onLoginClick()
+    }
+  }
+
 
   return (
-    <div className={styles.main_container}>
+    <div className={styles.main_container} onKeyPress={handleOnKeyPress}>
       <div className={styles.header_container}>
         <div className={styles.icon_container} onClick={onBackButtonClick}><ArrowBackIosIcon style={{fontSize: "15px"}}/></div>
           <p onClick={onBackButtonClick}>뒤로가기</p>
