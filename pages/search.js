@@ -168,25 +168,29 @@ const Search = () => {
         (
         <>
           <h3 className={styles.title}>모든 카테고리</h3>
-          {categoryList?.map((item, index) => {
-            return (
-              <Link key={index} href={`/category/${item.id}`} passHref >
-                <div className={`${styles.item_container} ${styles.category}`}>
-                  <p>{item.name}</p>
-                </div>
-              </Link>
-            )
-          })}
-          <h3 className={styles.title}>모든 국가별</h3>
-          {countryList?.map((item, index) => {
-            return (
-              <Link key={index} href={`/country/${item.id}`} passHref >
-                <div className={`${styles.item_container} ${styles.country}`}>
-                  <p>{item.name}</p>
-                </div>
-              </Link>
-            )
-          })}
+          <div className={styles.list_container}>
+            {categoryList?.map((item, index) => {
+              return (
+                <Link key={index} href={`/category/${item.id}`} passHref >
+                  <div className={`${styles.item_container} ${styles.category}`}>
+                    <p>{item.name}</p>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+          <h3 className={styles.title}>모든 언어별</h3>
+          <div className={styles.list_container}>
+            {countryList?.map((item, index) => {
+              return (
+                <Link key={index} href={`/country/${item.id}`} passHref >
+                  <div className={`${styles.item_container} ${styles.country}`}>
+                    <p>{item.name}</p>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
           </>
         )}
     </div>

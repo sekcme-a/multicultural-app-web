@@ -139,7 +139,14 @@ const HoverPost = (props) => {
     else router.back()
   }
   const onShareIconClick = () => {
-    setShowBackdrop(true)
+    // setShowBackdrop(true)
+    if (navigator.share) {
+      navigator.share({
+        title: data.title,
+        text: data.title,
+        url: `https://multicultural-news.netlify.app/post/${history[history.length-1]}`,
+      })
+    }
   }
   const handleShowBackdrop = (bool) => {
     setShowBackdrop(bool)
@@ -263,8 +270,8 @@ const HoverPost = (props) => {
         <div className={styles.header_container}>
           <div className={styles.overlay}>
             <motion.div initial={{ opacity: 0}} animate={{ opacity: 1, transition: { duration: .5 } }} className={styles.icons}>
-              <ArrowBackIcon className={styles.icon} onClick={onBack} />
-              <ShareIcon className={styles.icon} onClick={onShareIconClick}  />
+                <ArrowBackIcon className={styles.icon} onClick={onBack} style={{fontSize: "30px"}} />
+              <ShareIcon className={styles.icon} onClick={onShareIconClick}  style={{fontSize: "30px"}} />
               <Backdrop open={showBackdrop} onClick={handleCloseBackDrop} sx={{ color: '#fff', zIndex: 1000, }}>
                 <ShareLink url={`https://multicultural-news.netlify.app/post/${history[history.length-1]}`} handleCopy={handleCopy} />
               </Backdrop>

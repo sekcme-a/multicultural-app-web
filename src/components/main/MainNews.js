@@ -5,13 +5,14 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { EffectCards, Pagination, Navigation } from "swiper";
+import SwiperCore, { EffectCards, Pagination, Navigation, Autoplay } from "swiper";
 import { firestore as db } from "firebase/firebase"
 import Link from "next/link";
 import Image from "next/image";
 
 const MainNews = () => {
   const [list, setList] = useState()
+  SwiperCore.use([Autoplay])
   useEffect(() => {
     const fetchData = async () => {
     let tempIdList = []
@@ -80,6 +81,8 @@ const MainNews = () => {
         modules={[EffectCards, Pagination, Navigation]}
         className={styles.swiper}
         pagination={true}
+        autoplay={{ delay: 2000, disableOnInteraction: false }}
+        loop={true}
       >
         {list?.map((doc, index) => {
           return (

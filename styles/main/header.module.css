@@ -1,5 +1,5 @@
 .header{
-  height: 85px;
+  height: 95px;
   width: 100%;
   position: fixed;
   background-color: white;
@@ -77,7 +77,7 @@ div.selected{
 }
 
 .sub_header_container{
-  margin-top: 88px;
+  margin-top: 98px;
   padding: 5px 10px;
   position: fixed;
   display: flex;

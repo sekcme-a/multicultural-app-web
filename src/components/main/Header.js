@@ -100,10 +100,10 @@ const Header = (props) => {
       <div className={styles.header}>
         <div className={styles.logo_search_container}>
           <Link href="/" passHref scroll={false}>
-            <a><Image src={logo} width={150} height={27} layout="fixed" priority/></a>
+            <a><Image src={logo} width={200} height={36} layout="fixed" priority/></a>
           </Link>
           <div className={styles.search_container} onClick={onSearchContainerClick}>
-            <SearchIcon sx={{fontSize: 15}} />
+            <SearchIcon sx={{fontSize: 18}} />
           </div>
         </div>
         <ul className={styles.menu_container}>
@@ -126,7 +126,7 @@ const Header = (props) => {
           <li className={styles.menu_items}>
             <Link href={`/country/${countryList[0].id}`} passHref scroll={false}>
               <a>
-                <p className={router.pathname.includes("country") ? styles.selected : undefined}>국가별</p>
+                <p className={router.pathname.includes("country") ? styles.selected : undefined}>언어별</p>
                 <div className={router.pathname.includes("country") ? `${styles.selected} ${styles.selected_item}`:styles.selected_item}></div>
               </a>
             </Link>
