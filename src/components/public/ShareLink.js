@@ -17,8 +17,11 @@ const ShareLink = (props) => {
         <CopyToClipboard text={props.url} onCopy={onCopy}>
           <div>
             <input readOnly value={props.url}/>
-            <FileCopyIcon />
+            {/* <FileCopyIcon /> */}
           </div>
+        </CopyToClipboard>
+        <CopyToClipboard text={props.url} onCopy={onCopy}>
+          <div className={styles.copy_container}>복사하기</div>
         </CopyToClipboard>
       </div>
     </>

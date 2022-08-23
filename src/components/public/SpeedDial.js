@@ -65,8 +65,16 @@ export default function ControlledOpenSpeedDial(props) {
       setActions(yesBookmarkYesLike)
   },[bookmarkList.length, likeList.length])
   const handleClick = (name) => {
-    if (name==="share") {
-      props.handleShowBackdrop(true)
+    if (name === "share") {
+      if (navigator.share) {
+        navigator.share({
+          title: "한국다문화뉴스",
+          text: props.title,
+          url: `https://multicultural-news.netlify.app/post/${history[history.length-1]}`,
+        })
+      } else {
+        props.handleShowBackdrop(true)
+      }
     } else if (name === "pdf") {
       props.downloadPdf()
     } else if (name === "bookmark") {

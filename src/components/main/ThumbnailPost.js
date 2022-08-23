@@ -147,7 +147,15 @@ const ThumbnailPost = (props) => {
   }
 
   const onShareClick = () => {
+    if (navigator.share) {
+    navigator.share({
+      title: "한국다문화뉴스",
+      text: props.title,
+      url: `https://multicultural-news.netlify.app/post/${history[history.length-1]}`,
+    })
+  } else {
     setShowBackdrop(true)
+  }
   }
   const handleCloseBackDrop = () => {
     setShowBackdrop(false)

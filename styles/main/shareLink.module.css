@@ -16,3 +16,9 @@
   width: 200px;
   font-family: 'SUIT-MEDIUM', sans-serif;
 }
+.copy_container{
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 18px;
+}

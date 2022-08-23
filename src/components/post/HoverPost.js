@@ -86,7 +86,7 @@ const HoverPost = (props) => {
     const fetchData = async () => {
       setIsLoading(true)
       const doc = await db.collection("posts").doc(showId).get()
-      if (doc.data()) {
+      if (doc.exists) {
         setHasData(true)
         setData({
           category: doc.data().category,
@@ -142,10 +142,12 @@ const HoverPost = (props) => {
     // setShowBackdrop(true)
     if (navigator.share) {
       navigator.share({
-        title: data.title,
+        title: "한국다문화뉴스",
         text: data.title,
         url: `https://multicultural-news.netlify.app/post/${history[history.length-1]}`,
       })
+    } else {
+      setShowBackdrop(true)
     }
   }
   const handleShowBackdrop = (bool) => {
